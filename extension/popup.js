@@ -369,12 +369,14 @@
           message: 'Manual scan completed',
           data: { entityCount: response.totalEntities, risk: response.overallRisk }
         });
+        return true;
       } else {
         updateRiskDisplay('--');
         accessStatus.innerHTML = '<span class="access-icon">&#10060;</span> Scan Failed: ' + escapeHtml(displayError(response && response.error, 'No response'));
         accessStatus.style.background = 'rgba(220, 38, 38, 0.08)';
         accessStatus.style.borderColor = 'rgba(220, 38, 38, 0.2)';
         accessStatus.style.color = '#f87171';
+        return false;
       }
     } catch (err) {
       updateRiskDisplay('--');
@@ -382,6 +384,7 @@
       accessStatus.style.background = 'rgba(220, 38, 38, 0.08)';
       accessStatus.style.borderColor = 'rgba(220, 38, 38, 0.2)';
       accessStatus.style.color = '#f87171';
+      return false;
     } finally {
       showLoading(scanBtn, false);
     }
@@ -439,8 +442,10 @@
     agentResult.textContent = 'Scanning locally and preparing sanitized context...';
 
     try {
-      if (!lastResult || !lastResult.sanitizedContext) await handleScan();
-      if (!lastResult || !lastResult.sanitizedContext) throw new Error('A successful local scan is required.');
+      var scanOk = await handleScan();
+      if (!scanOk || !lastResult || !lastResult.sanitizedContext) {
+        throw new Error('Local scan failed. Refresh the webpage and reload the extension before asking AI.');
+      }
       var response = await new Promise(function (resolve) {
         chrome.runtime.sendMessage({ type: 'CLOUD_AGENT_REQUEST', instruction: instruction, context: lastResult.sanitizedContext }, resolve);
       });
