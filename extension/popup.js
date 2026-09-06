@@ -55,13 +55,42 @@
           reject(new Error('No active tab'));
           return;
         }
+        function send() {
+          chrome.tabs.sendMessage(tab.id, message, function (response) {
+            var err = chrome.runtime.lastError;
+            if (err) {
+              reject(new Error(err.message));
+            } else {
+              resolve(response || { success: false });
+            }
+          });
+        }
+
         chrome.tabs.sendMessage(tab.id, message, function (response) {
           var err = chrome.runtime.lastError;
-          if (err) {
-            reject(new Error(err.message));
-          } else {
+          if (!err) {
             resolve(response || { success: false });
+            return;
           }
+
+          if (!err.message || err.message.indexOf('Receiving end does not exist') === -1) {
+            reject(new Error(err.message));
+            return;
+          }
+
+          if (!chrome.scripting || !chrome.scripting.executeScript) {
+            reject(new Error('Privacy Vision is not running on this tab. Reload the page after enabling the extension.'));
+            return;
+          }
+
+          chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['content.js'] }, function () {
+            var injectError = chrome.runtime.lastError;
+            if (injectError) {
+              reject(new Error('Cannot access this page. Open a normal website tab and reload it.'));
+              return;
+            }
+            send();
+          });
         });
       });
     });
