@@ -294,10 +294,19 @@ function requestCloudAgent(message) {
     var safeInstruction = redactForCloud(message.instruction || '');
     var safeContext = redactForCloud(message.context || {});
     if (safeContext.length > 9000) safeContext = safeContext.slice(0, 9000) + '\n[CONTEXT_TRUNCATED]';
+    var directSearch = safeInstruction.match(/^\s*(?:search|find)\s+(?:for\s+)?(.+)\s*$/i);
+    if (directSearch && directSearch[1]) {
+      return {
+        success: true,
+        answer: 'Searching the page for "' + directSearch[1] + '".',
+        actions: validateCloudActions([{ action: 'search', target: '', value: directSearch[1] }])
+      };
+    }
+
     var prompt = [
       'You are a privacy-safe browser assistant.',
       'The page context below has already been redacted locally. Never ask for or infer the hidden values.',
-      'Return JSON only, with this exact shape: {"answer":"short explanation","actions":[{"action":"click|type|scroll|submit|select|keypress|back|forward|reload","target":"safe selector or empty string","value":"non-sensitive text only","key":"Enter|Escape|Tab","direction":"up|down|top|bottom|left|right","amount":500}]}',
+      'Return JSON only, with this exact shape: {"answer":"short explanation","actions":[{"action":"search|click|type|scroll|submit|select|keypress|back|forward|reload","target":"safe selector or empty string","value":"non-sensitive text only","key":"Enter|Escape|Tab","direction":"up|down|top|bottom|left|right","amount":500}]}',
       'Use at most 8 actions. Never type passwords, tokens, financial data, personal data, or secrets. Use empty actions when the instruction is ambiguous.',
       'USER INSTRUCTION:', safeInstruction,
       'SANITIZED PAGE CONTEXT:', safeContext
@@ -353,13 +362,14 @@ function requestCloudAgent(message) {
 }
 
 function validateCloudActions(actions) {
-  var allowed = { click: true, type: true, scroll: true, submit: true, select: true, keypress: true, back: true, forward: true, reload: true };
+  var allowed = { search: true, click: true, type: true, scroll: true, submit: true, select: true, keypress: true, back: true, forward: true, reload: true };
   var allowedKeys = { Enter: true, Escape: true, Tab: true, ArrowUp: true, ArrowDown: true, ArrowLeft: true, ArrowRight: true };
   var sensitive = /(?:password|passwd|token|secret|api[_-]?key|credit|card|ssn|social security|account number)/i;
   return (Array.isArray(actions) ? actions : []).filter(function (item) {
     if (!item || !allowed[item.action]) return false;
     if (typeof item.target !== 'string' || item.target.length > 300) return false;
     if (item.action === 'type' && (typeof item.value !== 'string' || item.value.length > 500 || sensitive.test(item.value) || sensitive.test(item.target))) return false;
+    if (item.action === 'search' && (typeof item.value !== 'string' || item.value.length < 1 || item.value.length > 200)) return false;
     if (item.action === 'select' && (typeof item.value !== 'string' || item.value.length > 200 || sensitive.test(item.value))) return false;
     if (item.action === 'keypress' && !allowedKeys[item.key]) return false;
     if (item.action === 'scroll' && item.amount !== undefined && (!Number.isFinite(item.amount) || item.amount < 1 || item.amount > 2000)) return false;

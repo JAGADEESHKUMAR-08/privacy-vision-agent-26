@@ -1349,6 +1349,41 @@
     return true;
   }
 
+  function executeSearch(selector, query) {
+    var input = null;
+    if (selector) {
+      try { input = document.querySelector(selector); } catch (e) { input = null; }
+    }
+    if (!input) {
+      var candidates = document.querySelectorAll('input:not([type="password"]), textarea');
+      var searchTerms = /search|query|keyword|find|product|item/i;
+      for (var i = 0; i < candidates.length; i++) {
+        var candidate = candidates[i];
+        var hint = [candidate.type, candidate.name, candidate.id, candidate.placeholder, candidate.getAttribute('aria-label')].join(' ');
+        if (searchTerms.test(hint)) { input = candidate; break; }
+      }
+      if (!input && candidates.length === 1) input = candidates[0];
+    }
+    if (!(input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement)) return false;
+    if (input.type === 'password') return false;
+    input.focus();
+    var proto = input instanceof HTMLInputElement ? HTMLInputElement.prototype : HTMLTextAreaElement.prototype;
+    var setter = Object.getOwnPropertyDescriptor(proto, 'value');
+    if (setter && setter.set) setter.set.call(input, query);
+    else input.value = query;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    var form = input.form;
+    if (form) {
+      if (typeof form.requestSubmit === 'function') form.requestSubmit();
+      else form.submit();
+      return true;
+    }
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true }));
+    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', code: 'Enter', bubbles: true }));
+    return true;
+  }
+
   // ─── MutationObserver for Dynamic Content ───────────────────────────────────
   function startObserver() {
     if (observerActive) return;
@@ -1442,7 +1477,9 @@
 
       case 'EXECUTE_ACTION':
         var actionResult = false;
-        if (message.action === 'click') {
+        if (message.action === 'search') {
+          actionResult = executeSearch(message.target, message.value);
+        } else if (message.action === 'click') {
           actionResult = executeClick(message.target);
         } else if (message.action === 'type') {
           actionResult = executeType(message.target, message.value);
