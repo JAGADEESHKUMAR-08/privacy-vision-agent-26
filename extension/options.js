@@ -39,7 +39,7 @@
     cloudAi: {
       enabled: false,
       endpoint: 'https://router.huggingface.co/v1/chat/completions',
-      model: 'mistralai/Mistral-7B-Instruct-v0.3',
+      model: 'meta-llama/Llama-3.1-8B-Instruct',
       token: ''
     }
   };
@@ -249,7 +249,7 @@
       cloudAi: {
         enabled: cloudAiEnabledEl.checked,
         endpoint: cloudAiEndpointEl.value.trim(),
-        model: 'mistralai/Mistral-7B-Instruct-v0.3',
+        model: 'meta-llama/Llama-3.1-8B-Instruct',
         token: cloudAiTokenEl.value.trim()
       }
     };

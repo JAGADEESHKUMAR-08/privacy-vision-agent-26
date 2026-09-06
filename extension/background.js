@@ -8,8 +8,8 @@ var PVA_VERSION = '1.0.0';
 var MAX_LOG_ENTRIES = 200;
 var HF_ROUTER_ENDPOINT = 'https://router.huggingface.co/v1/chat/completions';
 var HF_MODELS = [
-  'mistralai/Mistral-7B-Instruct-v0.3',
-  'meta-llama/Llama-3.1-8B-Instruct'
+  'meta-llama/Llama-3.1-8B-Instruct',
+  'Qwen/Qwen2.5-72B-Instruct'
 ];
 var DEFAULT_SETTINGS = {
   enabled: true,
@@ -26,7 +26,7 @@ var DEFAULT_SETTINGS = {
   cloudAi: {
     enabled: false,
     endpoint: 'https://router.huggingface.co/v1/chat/completions',
-    model: 'mistralai/Mistral-7B-Instruct-v0.3',
+    model: 'meta-llama/Llama-3.1-8B-Instruct',
     token: ''
   }
 };
