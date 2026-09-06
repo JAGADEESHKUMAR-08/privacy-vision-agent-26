@@ -21,6 +21,13 @@
       <button class="btn primary" id="scanBtn">Scan Page</button>
     </div>
 
+    <div class="agent-panel">
+      <label for="agentInstruction">Instruction for cloud AI</label>
+      <textarea id="agentInstruction" rows="3" placeholder="What should I do on this page?"></textarea>
+      <button class="btn cloud" id="askAgentBtn">Ask Open-Source AI</button>
+      <div class="agent-result" id="agentResult" hidden></div>
+    </div>
+
     <div class="risk-card" id="riskCard">
       <div class="risk-label">Current Page Risk</div>
       <div class="risk-level" id="riskLevel">--</div>
@@ -55,13 +62,6 @@
 
     <div class="access-status" id="accessStatus">
       <span class="access-icon">&#9989;</span> AI Access: SANITIZED ONLY
-    </div>
-
-    <div class="agent-panel">
-      <label for="agentInstruction">Instruction for cloud AI</label>
-      <textarea id="agentInstruction" rows="3" placeholder="What should I do on this page?"></textarea>
-      <button class="btn cloud" id="askAgentBtn">Ask Open-Source AI</button>
-      <div class="agent-result" id="agentResult" hidden></div>
     </div>
 
     <div class="metrics" id="metricsSection">

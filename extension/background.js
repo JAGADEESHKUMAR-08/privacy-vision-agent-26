@@ -293,6 +293,7 @@ function requestCloudAgent(message) {
 
     var safeInstruction = redactForCloud(message.instruction || '');
     var safeContext = redactForCloud(message.context || {});
+    if (safeContext.length > 9000) safeContext = safeContext.slice(0, 9000) + '\n[CONTEXT_TRUNCATED]';
     var prompt = [
       'You are a privacy-safe browser assistant.',
       'The page context below has already been redacted locally. Never ask for or infer the hidden values.',
@@ -316,8 +317,8 @@ function requestCloudAgent(message) {
       body: JSON.stringify({
         model: HF_MODELS.indexOf(cloud.model) >= 0 ? cloud.model : HF_MODELS[0],
         messages: [{ role: 'user', content: prompt }],
-        max_tokens: 300,
-        temperature: 0.2
+        max_tokens: 180,
+        temperature: 0.1
       })
     }).then(function (response) {
       return response.text().then(function (body) {
