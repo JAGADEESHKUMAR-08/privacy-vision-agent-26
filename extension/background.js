@@ -292,7 +292,7 @@ function requestCloudAgent(message) {
     var prompt = [
       'You are a privacy-safe browser assistant.',
       'The page context below has already been redacted locally. Never ask for or infer the hidden values.',
-      'Return JSON only, with this exact shape: {"answer":"short explanation","actions":[{"action":"click|type|scroll","target":"safe selector or empty string","value":"non-sensitive text only","direction":"up|down|top|bottom|left|right","amount":500}]}',
+      'Return JSON only, with this exact shape: {"answer":"short explanation","actions":[{"action":"click|type|scroll|submit","target":"safe selector or empty string","value":"non-sensitive text only","direction":"up|down|top|bottom|left|right","amount":500}]}',
       'Use at most 5 actions. Never type passwords, tokens, financial data, personal data, or secrets. Use empty actions when the instruction is ambiguous.',
       'USER INSTRUCTION:', safeInstruction,
       'SANITIZED PAGE CONTEXT:', safeContext
@@ -320,7 +320,8 @@ function requestCloudAgent(message) {
         var data;
         try { data = JSON.parse(body); } catch { data = {}; }
         if (!response.ok) {
-          throw new Error(data.error || 'Cloud AI request failed (' + response.status + ')');
+          var providerError = typeof data.error === 'string' ? data.error : JSON.stringify(data.error || data);
+          throw new Error(providerError || 'Cloud AI request failed (' + response.status + ')');
         }
         var answer = Array.isArray(data) && data[0] ? data[0].generated_text : data.generated_text;
         if (!answer && data.choices && data.choices[0]) answer = data.choices[0].message?.content || data.choices[0].text;
@@ -347,7 +348,7 @@ function requestCloudAgent(message) {
 }
 
 function validateCloudActions(actions) {
-  var allowed = { click: true, type: true, scroll: true };
+  var allowed = { click: true, type: true, scroll: true, submit: true };
   var sensitive = /(?:password|passwd|token|secret|api[_-]?key|credit|card|ssn|social security|account number)/i;
   return (Array.isArray(actions) ? actions : []).filter(function (item) {
     if (!item || !allowed[item.action]) return false;

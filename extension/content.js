@@ -1309,6 +1309,22 @@
     return true;
   }
 
+  function executeSubmit(selector) {
+    var el;
+    try { el = document.querySelector(selector); } catch (e) { return false; }
+    if (!el) return false;
+    if (el instanceof HTMLFormElement) {
+      if (typeof el.requestSubmit === 'function') el.requestSubmit();
+      else el.submit();
+      return true;
+    }
+    if (el instanceof HTMLButtonElement || el instanceof HTMLInputElement) {
+      var type = (el.getAttribute('type') || '').toLowerCase();
+      if (type === 'submit' || el instanceof HTMLButtonElement) { el.click(); return true; }
+    }
+    return false;
+  }
+
   // ─── MutationObserver for Dynamic Content ───────────────────────────────────
   function startObserver() {
     if (observerActive) return;
@@ -1408,6 +1424,8 @@
           actionResult = executeType(message.target, message.value);
         } else if (message.action === 'scroll') {
           actionResult = executeScroll(message.direction, message.amount);
+        } else if (message.action === 'submit') {
+          actionResult = executeSubmit(message.target);
         }
         sendResponse({ success: actionResult });
         return false;
