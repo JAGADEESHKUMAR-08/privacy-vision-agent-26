@@ -1180,6 +1180,9 @@
             title: pageContext.title,
             pageType: pageContext.pageType,
             safeText: safeText,
+            safeElements: (pageContext.domElements || []).filter(function (element) { return element.isVisible && (element.isButton || element.isLink || element.isInput); }).map(function (element) {
+              return { selector: element.selector, tag: element.tagName, label: element.ariaLabel || element.placeholder || element.name || element.text || element.tagName, role: element.isButton ? 'button' : element.isLink ? 'link' : 'textbox' };
+            }),
             safeForms: (pageContext.formFields || []).map(function (field) {
               return { label: field.label || field.placeholder || field.name || field.type, type: field.type, required: false };
             }),
@@ -1264,6 +1267,7 @@
     var el;
     try { el = document.querySelector(selector); } catch (e) { return false; }
     if (!el) return false;
+    if (el instanceof HTMLInputElement && el.type === 'password') return false;
 
     var isTextInput = el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement;
     if (!isTextInput) {

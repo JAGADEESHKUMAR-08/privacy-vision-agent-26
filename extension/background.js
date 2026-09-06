@@ -291,7 +291,8 @@ function requestCloudAgent(message) {
     var prompt = [
       'You are a privacy-safe browser assistant.',
       'The page context below has already been redacted locally. Never ask for or infer the hidden values.',
-      'Give concise, actionable next steps for the user instruction.',
+      'Return JSON only, with this exact shape: {"answer":"short explanation","actions":[{"action":"click|type|scroll","target":"safe selector or empty string","value":"non-sensitive text only","direction":"up|down|top|bottom|left|right","amount":500}]}',
+      'Use at most 5 actions. Never type passwords, tokens, financial data, personal data, or secrets. Use empty actions when the instruction is ambiguous.',
       'USER INSTRUCTION:', safeInstruction,
       'SANITIZED PAGE CONTEXT:', safeContext
     ].join('\n');
@@ -320,8 +321,52 @@ function requestCloudAgent(message) {
         }
         var answer = Array.isArray(data) && data[0] ? data[0].generated_text : data.generated_text;
         if (!answer && data.choices && data.choices[0]) answer = data.choices[0].message?.content || data.choices[0].text;
-        return { success: true, answer: answer || 'The model returned no guidance.' };
+        var plan = { answer: answer || 'The model returned no guidance.', actions: [] };
+        if (answer) {
+          try {
+            var jsonText = answer.replace(/^```json\s*|```$/g, '').trim();
+            var parsed = JSON.parse(jsonText);
+            if (parsed && typeof parsed.answer === 'string') plan.answer = parsed.answer;
+            if (Array.isArray(parsed && parsed.actions)) plan.actions = parsed.actions.slice(0, 5);
+          } catch (parseError) {
+            // Preserve prose from models that do not follow the JSON contract, but execute nothing.
+          }
+        }
+        return { success: true, answer: plan.answer, actions: validateCloudActions(plan.actions) };
       });
+    });
+  });
+}
+
+function validateCloudActions(actions) {
+  var allowed = { click: true, type: true, scroll: true };
+  var sensitive = /(?:password|passwd|token|secret|api[_-]?key|credit|card|ssn|social security|account number)/i;
+  return (Array.isArray(actions) ? actions : []).filter(function (item) {
+    if (!item || !allowed[item.action]) return false;
+    if (typeof item.target !== 'string' || item.target.length > 300) return false;
+    if (item.action === 'type' && (typeof item.value !== 'string' || item.value.length > 500 || sensitive.test(item.value) || sensitive.test(item.target))) return false;
+    if (item.action === 'scroll' && item.amount !== undefined && (!Number.isFinite(item.amount) || item.amount < 1 || item.amount > 2000)) return false;
+    return true;
+  }).map(function (item) {
+    return { action: item.action, target: item.target || '', value: typeof item.value === 'string' ? item.value : '', direction: item.direction || 'down', amount: Number.isFinite(item.amount) ? item.amount : 500 };
+  });
+}
+
+function executeCloudActions(actions) {
+  return new Promise(function (resolve) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      var tab = tabs && tabs[0];
+      if (!tab || !tab.id) { resolve({ success: false, error: 'No active tab' }); return; }
+      var safeActions = validateCloudActions(actions);
+      var results = [];
+      function next(index) {
+        if (index >= safeActions.length) { resolve({ success: true, results: results }); return; }
+        chrome.tabs.sendMessage(tab.id, { type: 'EXECUTE_ACTION', action: safeActions[index].action, target: safeActions[index].target, value: safeActions[index].value, direction: safeActions[index].direction, amount: safeActions[index].amount }, function (response) {
+          results.push({ action: safeActions[index].action, success: !!(response && response.success), error: response && response.error });
+          next(index + 1);
+        });
+      }
+      next(0);
     });
   });
 }
@@ -370,6 +415,12 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
     case 'CLOUD_AGENT_REQUEST':
       requestCloudAgent(message)
+        .then(function (result) { sendResponse(result); })
+        .catch(function (err) { sendResponse({ success: false, error: err.message }); });
+      return true;
+
+    case 'CLOUD_EXECUTE_ACTIONS':
+      executeCloudActions(message.actions)
         .then(function (result) { sendResponse(result); })
         .catch(function (err) { sendResponse({ success: false, error: err.message }); });
       return true;

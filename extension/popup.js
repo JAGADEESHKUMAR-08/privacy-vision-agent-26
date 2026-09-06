@@ -436,7 +436,14 @@
         chrome.runtime.sendMessage({ type: 'CLOUD_AGENT_REQUEST', instruction: instruction, context: lastResult.sanitizedContext }, resolve);
       });
       if (!response || !response.success) throw new Error(response && response.error ? response.error : 'Cloud AI request failed.');
-      agentResult.textContent = response.answer;
+      agentResult.textContent = response.answer || 'No guidance returned.';
+      if (Array.isArray(response.actions) && response.actions.length > 0) {
+        var execution = await new Promise(function (resolve) {
+          chrome.runtime.sendMessage({ type: 'CLOUD_EXECUTE_ACTIONS', actions: response.actions }, resolve);
+        });
+        var completed = execution && execution.results ? execution.results.filter(function (item) { return item.success; }).length : 0;
+        agentResult.textContent += '\n\nExecuted ' + completed + ' of ' + response.actions.length + ' approved actions.';
+      }
     } catch (err) {
       agentResult.textContent = err.message;
     } finally {
