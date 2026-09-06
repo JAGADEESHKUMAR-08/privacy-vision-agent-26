@@ -20,6 +20,7 @@ const MIME_TYPES = {
 
 const ROUTES = {
   '/': 'index.html',
+  '/index': 'index.html',
   '/banking': 'banking.html',
   '/ecommerce': 'ecommerce.html',
   '/login': 'login.html',
