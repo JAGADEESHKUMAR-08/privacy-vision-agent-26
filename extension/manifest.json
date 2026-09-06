@@ -11,7 +11,8 @@
   ],
   "host_permissions": [
     "<all_urls>",
-    "file:///*"
+    "file:///*",
+    "https://api-inference.huggingface.co/*"
   ],
   "background": {
     "service_worker": "background.js"

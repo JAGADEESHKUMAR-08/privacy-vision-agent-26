@@ -26,6 +26,9 @@
   var previewBtn = document.getElementById('previewBtn');
   var reportBtn = document.getElementById('reportBtn');
   var settingsBtn = document.getElementById('settingsBtn');
+  var agentInstruction = document.getElementById('agentInstruction');
+  var askAgentBtn = document.getElementById('askAgentBtn');
+  var agentResult = document.getElementById('agentResult');
 
   var lastResult = null;
   var settingsPanel = null;
@@ -384,6 +387,35 @@
     }
   }
 
+  async function handleAskAgent() {
+    var instruction = agentInstruction.value.trim();
+    if (!instruction) {
+      agentResult.hidden = false;
+      agentResult.textContent = 'Enter an instruction first.';
+      return;
+    }
+
+    askAgentBtn.disabled = true;
+    askAgentBtn.textContent = 'Checking and asking...';
+    agentResult.hidden = false;
+    agentResult.textContent = 'Scanning locally and preparing sanitized context...';
+
+    try {
+      if (!lastResult || !lastResult.sanitizedContext) await handleScan();
+      if (!lastResult || !lastResult.sanitizedContext) throw new Error('A successful local scan is required.');
+      var response = await new Promise(function (resolve) {
+        chrome.runtime.sendMessage({ type: 'CLOUD_AGENT_REQUEST', instruction: instruction, context: lastResult.sanitizedContext }, resolve);
+      });
+      if (!response || !response.success) throw new Error(response && response.error ? response.error : 'Cloud AI request failed.');
+      agentResult.textContent = response.answer;
+    } catch (err) {
+      agentResult.textContent = err.message;
+    } finally {
+      askAgentBtn.disabled = false;
+      askAgentBtn.textContent = 'Ask Open-Source AI';
+    }
+  }
+
   async function handleSettings() {
     if (settingsPanel) {
       settingsPanel.remove();
@@ -464,6 +496,7 @@
   previewBtn.addEventListener('click', handlePreview);
   reportBtn.addEventListener('click', handleReport);
   settingsBtn.addEventListener('click', handleSettings);
+  askAgentBtn.addEventListener('click', handleAskAgent);
 
   // ─── Initialize ────────────────────────────────────────────────────────────
   function init() {

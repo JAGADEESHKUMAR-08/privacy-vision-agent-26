@@ -17,7 +17,13 @@ var DEFAULT_SETTINGS = {
   enableFirewall: true,
   enableLogging: true,
   maxLogEntries: 200,
-  theme: 'dark'
+  theme: 'dark',
+  cloudAi: {
+    enabled: false,
+    endpoint: 'https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct',
+    model: 'Qwen/Qwen2.5-7B-Instruct',
+    token: ''
+  }
 };
 
 var DEFAULT_REDACTION_METHODS = {
@@ -251,6 +257,75 @@ function firewallCheck(payload) {
   };
 }
 
+function redactForCloud(value) {
+  var text = typeof value === 'string' ? value : JSON.stringify(value || '');
+  var patterns = [
+    { re: /\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b/g, label: 'EMAIL' },
+    { re: /\b\d{4}[\s\-]?\d{4}[\s\-]?\d{4}[\s\-]?\d{4}\b/g, label: 'CREDIT_CARD' },
+    { re: /\b\d{3}-?\d{2}-?\d{4}\b/g, label: 'GOVERNMENT_ID' },
+    { re: /Bearer\s+[A-Za-z0-9_\-.]+/gi, label: 'AUTH_TOKEN' },
+    { re: /\b(?:password|passwd|pwd|secret|api[_-]?key)\s*[:=]\s*[^\s,}]+/gi, label: 'SECRET' }
+  ];
+  patterns.forEach(function (entry) {
+    text = text.replace(entry.re, '[' + entry.label + '_REDACTED]');
+  });
+  return text;
+}
+
+function requestCloudAgent(message) {
+  return getSettings().then(function (config) {
+    var settings = config.settings || {};
+    var cloud = settings.cloudAi || {};
+    if (!cloud.enabled) {
+      throw new Error('Cloud AI is disabled. Configure it in extension settings first.');
+    }
+    if (!cloud.endpoint || !/^https:\/\/api-inference\.huggingface\.co\//.test(cloud.endpoint)) {
+      throw new Error('Only the Hugging Face Inference API endpoint is allowed.');
+    }
+    if (!cloud.token) {
+      throw new Error('Hugging Face access token is missing. Add it in extension settings.');
+    }
+
+    var safeInstruction = redactForCloud(message.instruction || '');
+    var safeContext = redactForCloud(message.context || {});
+    var prompt = [
+      'You are a privacy-safe browser assistant.',
+      'The page context below has already been redacted locally. Never ask for or infer the hidden values.',
+      'Give concise, actionable next steps for the user instruction.',
+      'USER INSTRUCTION:', safeInstruction,
+      'SANITIZED PAGE CONTEXT:', safeContext
+    ].join('\n');
+
+    var firewall = firewallCheck({ type: 'cloud_ai_prompt', data: { prompt: prompt }, source: cloud.endpoint });
+    if (!firewall.safe) {
+      throw new Error('Cloud request blocked by privacy firewall: ' + firewall.reason);
+    }
+
+    return fetch(cloud.endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + cloud.token
+      },
+      body: JSON.stringify({
+        inputs: prompt,
+        parameters: { max_new_tokens: 300, temperature: 0.2, return_full_text: false }
+      })
+    }).then(function (response) {
+      return response.text().then(function (body) {
+        var data;
+        try { data = JSON.parse(body); } catch { data = {}; }
+        if (!response.ok) {
+          throw new Error(data.error || 'Cloud AI request failed (' + response.status + ')');
+        }
+        var answer = Array.isArray(data) && data[0] ? data[0].generated_text : data.generated_text;
+        if (!answer && data.choices && data.choices[0]) answer = data.choices[0].message?.content || data.choices[0].text;
+        return { success: true, answer: answer || 'The model returned no guidance.' };
+      });
+    });
+  });
+}
+
 // ─── Message Router ──────────────────────────────────────────────────────────
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   switch (message.type) {
@@ -292,6 +367,12 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
       var fwResult = firewallCheck(message.payload);
       sendResponse({ success: true, safe: fwResult.safe, reason: fwResult.reason, detectedFields: fwResult.detectedFields });
       return false;
+
+    case 'CLOUD_AGENT_REQUEST':
+      requestCloudAgent(message)
+        .then(function (result) { sendResponse(result); })
+        .catch(function (err) { sendResponse({ success: false, error: err.message }); });
+      return true;
 
     case 'LOG_EVENT':
       logEvent(message.level || 'info', message.message, message.data)

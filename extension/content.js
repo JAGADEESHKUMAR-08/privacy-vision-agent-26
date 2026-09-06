@@ -1145,6 +1145,13 @@
 
         var totalTime = Math.round(performance.now() - startTime);
 
+        var safeText = pageContext.visibleText || '';
+        entities.slice().sort(function (a, b) { return b.value.length - a.value.length; }).forEach(function (entity) {
+          if (!entity.value) return;
+          var escaped = entity.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          try { safeText = safeText.replace(new RegExp(escaped, 'g'), '[' + entity.type + '_REDACTED]'); } catch (e) {}
+        });
+
         var scanResult = {
           success: true,
           entities: entities,
@@ -1167,6 +1174,16 @@
             domElementCount: pageContext.domElements.length,
             formFieldCount: pageContext.formFields.length,
             visibleTextLength: pageContext.visibleText.length
+          },
+          sanitizedContext: {
+            url: pageContext.url,
+            title: pageContext.title,
+            pageType: pageContext.pageType,
+            safeText: safeText,
+            safeForms: (pageContext.formFields || []).map(function (field) {
+              return { label: field.label || field.placeholder || field.name || field.type, type: field.type, required: false };
+            }),
+            detectedTypes: entities.map(function (entity) { return entity.type; })
           }
         };
 

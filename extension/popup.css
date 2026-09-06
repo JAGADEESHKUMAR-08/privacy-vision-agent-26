@@ -109,6 +109,12 @@ body::-webkit-scrollbar-thumb:hover {
   box-shadow: 0 0 6px rgba(96, 165, 250, 0.5);
 }
 
+.agent-panel { display: flex; flex-direction: column; gap: 7px; padding: 12px; background: #172033; border: 1px solid #334155; border-radius: 10px; }
+.agent-panel label { color: #cbd5e1; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+#agentInstruction { width: 100%; resize: vertical; min-height: 64px; padding: 8px; border: 1px solid #475569; border-radius: 6px; background: #0f172a; color: #e2e8f0; font: inherit; }
+.btn.cloud { background: #2563eb; color: #fff; }
+.agent-result { white-space: pre-wrap; color: #cbd5e1; font-size: 12px; border-top: 1px solid #334155; padding-top: 8px; }
+
 /* ─── Risk Card ──────────────────────────────────────────────────────────── */
 .risk-card {
   background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);

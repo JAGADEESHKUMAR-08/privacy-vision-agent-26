@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var SETTINGS_KEY = 'pva_settings';
+  var SETTINGS_KEY = 'settings';
 
   var DEFAULT_SETTINGS = {
     enabled: true,
@@ -35,7 +35,13 @@
     enableFirewall: true,
     enableLogging: true,
     maxLogEntries: 200,
-    theme: 'dark'
+    theme: 'dark',
+    cloudAi: {
+      enabled: false,
+      endpoint: 'https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct',
+      model: 'Qwen/Qwen2.5-7B-Instruct',
+      token: ''
+    }
   };
 
   var PII_CATEGORIES = [
@@ -81,6 +87,9 @@
   var resetBtn = document.getElementById('resetBtn');
   var exportBtn = document.getElementById('exportBtn');
   var statusMsg = document.getElementById('statusMsg');
+  var cloudAiEnabledEl = document.getElementById('cloudAiEnabled');
+  var cloudAiEndpointEl = document.getElementById('cloudAiEndpoint');
+  var cloudAiTokenEl = document.getElementById('cloudAiToken');
 
   // ─── Utility ──────────────────────────────────────────────────────────────
   function showStatus(message, type, duration) {
@@ -162,6 +171,10 @@
     enableFirewallEl.checked = !!settings.enableFirewall;
     enableLoggingEl.checked = !!settings.enableLogging;
     maxLogEntriesEl.value = settings.maxLogEntries || 200;
+    var cloudAi = settings.cloudAi || DEFAULT_SETTINGS.cloudAi;
+    cloudAiEnabledEl.checked = !!cloudAi.enabled;
+    cloudAiEndpointEl.value = cloudAi.endpoint || DEFAULT_SETTINGS.cloudAi.endpoint;
+    cloudAiTokenEl.value = cloudAi.token || '';
 
     var themes = ['dark', 'light', 'system'];
     var selectedTheme = settings.theme || 'dark';
@@ -228,7 +241,13 @@
       enableFirewall: enableFirewallEl.checked,
       enableLogging: enableLoggingEl.checked,
       maxLogEntries: clamp(parseInt(maxLogEntriesEl.value, 10), 50, 1000, 200),
-      theme: themeEl.value
+      theme: themeEl.value,
+      cloudAi: {
+        enabled: cloudAiEnabledEl.checked,
+        endpoint: cloudAiEndpointEl.value.trim(),
+        model: 'Qwen/Qwen2.5-7B-Instruct',
+        token: cloudAiTokenEl.value.trim()
+      }
     };
   }
 

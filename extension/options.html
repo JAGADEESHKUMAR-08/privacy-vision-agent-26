@@ -123,6 +123,19 @@
     </section>
 
     <section class="settings-group">
+      <h2>Open-Source Cloud AI</h2>
+      <div class="settings-list">
+        <label class="toggle" for="cloudAiEnabled">
+          <input type="checkbox" id="cloudAiEnabled">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label"><span class="toggle-title">Allow sanitized context to cloud AI</span><span class="toggle-desc">Uses Hugging Face Inference API. Raw PII is blocked locally before transmission.</span></span>
+        </label>
+        <div class="field"><label for="cloudAiEndpoint">Hugging Face endpoint</label><div class="field-control"><input type="text" id="cloudAiEndpoint" value="https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct"><span class="field-hint">Only Hugging Face Inference API endpoints are accepted.</span></div></div>
+        <div class="field"><label for="cloudAiToken">Hugging Face access token</label><div class="field-control"><input type="password" id="cloudAiToken" autocomplete="off"><span class="field-hint">Stored locally in this browser and never written to audit logs.</span></div></div>
+      </div>
+    </section>
+
+    <section class="settings-group">
       <h2>UI</h2>
       <div class="settings-list">
         <div class="field">
