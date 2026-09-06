@@ -36,8 +36,17 @@
   // ─── Helpers ───────────────────────────────────────────────────────────────
   function escapeHtml(str) {
     var div = document.createElement('div');
+    if (str && typeof str === 'object') {
+      try { str = str.message || JSON.stringify(str); } catch (e) { str = String(str); }
+    }
     div.textContent = str || '';
     return div.innerHTML;
+  }
+
+  function displayError(value, fallback) {
+    if (!value) return fallback || 'Unknown error';
+    if (typeof value === 'string') return value;
+    try { return value.message || JSON.stringify(value); } catch (e) { return String(value); }
   }
 
   function getCurrentTab() {
@@ -362,7 +371,7 @@
         });
       } else {
         updateRiskDisplay('--');
-        accessStatus.innerHTML = '<span class="access-icon">&#10060;</span> Scan Failed: ' + escapeHtml(response ? response.error : 'No response');
+        accessStatus.innerHTML = '<span class="access-icon">&#10060;</span> Scan Failed: ' + escapeHtml(displayError(response && response.error, 'No response'));
         accessStatus.style.background = 'rgba(220, 38, 38, 0.08)';
         accessStatus.style.borderColor = 'rgba(220, 38, 38, 0.2)';
         accessStatus.style.color = '#f87171';
@@ -435,8 +444,8 @@
       var response = await new Promise(function (resolve) {
         chrome.runtime.sendMessage({ type: 'CLOUD_AGENT_REQUEST', instruction: instruction, context: lastResult.sanitizedContext }, resolve);
       });
-      if (!response || !response.success) throw new Error(response && response.error ? response.error : 'Cloud AI request failed.');
-      agentResult.textContent = response.answer || 'No guidance returned.';
+      if (!response || !response.success) throw new Error(displayError(response && response.error, 'Cloud AI request failed.'));
+      agentResult.textContent = displayError(response.answer, 'No guidance returned.');
       if (Array.isArray(response.actions) && response.actions.length > 0) {
         var execution = await new Promise(function (resolve) {
           chrome.runtime.sendMessage({ type: 'CLOUD_EXECUTE_ACTIONS', actions: response.actions }, resolve);
