@@ -6,6 +6,7 @@
 
 var PVA_VERSION = '1.0.0';
 var MAX_LOG_ENTRIES = 200;
+var HF_ROUTER_ENDPOINT = 'https://router.huggingface.co/v1/chat/completions';
 var DEFAULT_SETTINGS = {
   enabled: true,
   autoScan: true,
@@ -135,6 +136,8 @@ function getSettings() {
   return new Promise(function (resolve) {
     chrome.storage.local.get(['settings', 'redactionMethods'], function (result) {
       var settings = Object.assign({}, DEFAULT_SETTINGS, result.settings || {});
+      settings.cloudAi = Object.assign({}, DEFAULT_SETTINGS.cloudAi, settings.cloudAi || {});
+      settings.cloudAi.endpoint = HF_ROUTER_ENDPOINT;
       var redactionMethods = Object.assign({}, DEFAULT_REDACTION_METHODS, result.redactionMethods || {});
       resolve({ settings: settings, redactionMethods: redactionMethods });
     });
@@ -279,9 +282,7 @@ function requestCloudAgent(message) {
     if (!cloud.enabled) {
       throw new Error('Cloud AI is disabled. Configure it in extension settings first.');
     }
-    if (!cloud.endpoint || !/^https:\/\/router\.huggingface\.co\/v1\/chat\/completions$/.test(cloud.endpoint)) {
-      throw new Error('Use the Hugging Face router endpoint: https://router.huggingface.co/v1/chat/completions');
-    }
+    cloud.endpoint = HF_ROUTER_ENDPOINT;
     if (!cloud.token) {
       throw new Error('Hugging Face access token is missing. Add it in extension settings.');
     }
