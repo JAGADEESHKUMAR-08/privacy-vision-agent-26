@@ -20,7 +20,7 @@ var DEFAULT_SETTINGS = {
   theme: 'dark',
   cloudAi: {
     enabled: false,
-    endpoint: 'https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct',
+    endpoint: 'https://router.huggingface.co/v1/chat/completions',
     model: 'Qwen/Qwen2.5-7B-Instruct',
     token: ''
   }
@@ -279,8 +279,8 @@ function requestCloudAgent(message) {
     if (!cloud.enabled) {
       throw new Error('Cloud AI is disabled. Configure it in extension settings first.');
     }
-    if (!cloud.endpoint || !/^https:\/\/api-inference\.huggingface\.co\//.test(cloud.endpoint)) {
-      throw new Error('Only the Hugging Face Inference API endpoint is allowed.');
+    if (!cloud.endpoint || !/^https:\/\/router\.huggingface\.co\/v1\/chat\/completions$/.test(cloud.endpoint)) {
+      throw new Error('Use the Hugging Face router endpoint: https://router.huggingface.co/v1/chat/completions');
     }
     if (!cloud.token) {
       throw new Error('Hugging Face access token is missing. Add it in extension settings.');
@@ -309,8 +309,10 @@ function requestCloudAgent(message) {
         'Authorization': 'Bearer ' + cloud.token
       },
       body: JSON.stringify({
-        inputs: prompt,
-        parameters: { max_new_tokens: 300, temperature: 0.2, return_full_text: false }
+        model: cloud.model || 'Qwen/Qwen2.5-7B-Instruct',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 300,
+        temperature: 0.2
       })
     }).then(function (response) {
       return response.text().then(function (body) {
@@ -334,6 +336,11 @@ function requestCloudAgent(message) {
         }
         return { success: true, answer: plan.answer, actions: validateCloudActions(plan.actions) };
       });
+    }).catch(function (err) {
+      if (err && err.name === 'TypeError') {
+        throw new Error('Cannot reach Hugging Face. Check your internet connection and use the router endpoint in Settings.');
+      }
+      throw err;
     });
   });
 }

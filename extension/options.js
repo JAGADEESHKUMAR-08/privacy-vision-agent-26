@@ -38,7 +38,7 @@
     theme: 'dark',
     cloudAi: {
       enabled: false,
-      endpoint: 'https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct',
+      endpoint: 'https://router.huggingface.co/v1/chat/completions',
       model: 'Qwen/Qwen2.5-7B-Instruct',
       token: ''
     }
@@ -138,7 +138,11 @@
           reject(new Error(err.message));
         } else {
           var stored = result[SETTINGS_KEY] || {};
-          resolve(deepMerge(DEFAULT_SETTINGS, stored));
+          var settings = deepMerge(DEFAULT_SETTINGS, stored);
+          if (settings.cloudAi && settings.cloudAi.endpoint.indexOf('api-inference.huggingface.co') !== -1) {
+            settings.cloudAi.endpoint = DEFAULT_SETTINGS.cloudAi.endpoint;
+          }
+          resolve(settings);
         }
       });
     });
