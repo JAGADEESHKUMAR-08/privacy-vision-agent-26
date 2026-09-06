@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedSynth - Patient Record</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f4f6f9; color: #2d3748; line-height: 1.6; }
+    .topbar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .topbar .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .topbar .brand-icon { width: 36px; height: 36px; background: #0d9488; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; }
+    .topbar .brand-name { font-size: 1.2rem; font-weight: 700; color: #1a365d; }
+    .topbar .brand-name span { color: #0d9488; }
+    .topbar .user-info { display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; color: #666; }
+    .topbar .avatar { width: 34px; height: 34px; background: #0d9488; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 0.85rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem; }
+    .breadcrumb { font-size: 0.8rem; color: #999; margin-bottom: 1rem; }
+    .breadcrumb a { color: #0d9488; text-decoration: none; }
+    .patient-header { background: #fff; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; display: flex; gap: 1.5rem; align-items: flex-start; }
+    .patient-avatar { width: 72px; height: 72px; background: linear-gradient(135deg, #0d9488, #14b8a6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.8rem; font-weight: 700; flex-shrink: 0; }
+    .patient-details { flex: 1; }
+    .patient-details h2 { font-size: 1.3rem; font-weight: 700; color: #1a365d; margin-bottom: 0.25rem; }
+    .patient-details .subtitle { color: #666; font-size: 0.85rem; margin-bottom: 0.75rem; }
+    .patient-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+    .meta-item { font-size: 0.8rem; }
+    .meta-item .label { color: #999; text-transform: uppercase; letter-spacing: 0.3px; font-size: 0.7rem; }
+    .meta-item .value { font-weight: 600; color: #333; font-family: 'SF Mono', monospace; }
+    .status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+    .status-active { background: #d1fae5; color: #065f46; }
+    .status-critical { background: #fee2e2; color: #991b1b; }
+    .status-stable { background: #dbeafe; color: #1e40af; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .card { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .card-header h3 { font-size: 0.95rem; font-weight: 700; color: #1a365d; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; }
+    th { font-weight: 600; color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3px; background: #f8fafc; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; }
+    .badge-normal { background: #d1fae5; color: #065f46; }
+    .badge-high { background: #fee2e2; color: #991b1b; }
+    .badge-low { background: #fef3c7; color: #92400e; }
+    .med-list { list-style: none; }
+    .med-list li { padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+    .med-list .med-name { font-weight: 600; color: #333; }
+    .med-list .med-dose { color: #666; font-size: 0.8rem; }
+    .appt-item { padding: 0.6rem 0; border-bottom: 1px solid #f1f5f9; display: flex; gap: 0.75rem; align-items: center; }
+    .appt-date { background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 8px; padding: 0.4rem 0.6rem; text-align: center; min-width: 50px; }
+    .appt-date .day { font-size: 1.1rem; font-weight: 700; color: #0d9488; }
+    .appt-date .month { font-size: 0.65rem; text-transform: uppercase; color: #666; }
+    .appt-info .appt-title { font-weight: 600; font-size: 0.85rem; color: #333; }
+    .appt-info .appt-time { font-size: 0.75rem; color: #666; }
+    footer { text-align: center; padding: 1.5rem; color: #999; font-size: 0.8rem; }
+    @media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } .container { padding: 1rem; } .patient-header { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">M</div>
+      <div class="brand-name">Med<span>Synth</span></div>
+    </div>
+    <div class="user-info">
+      <span>Dr. Emily Watson, MD</span>
+      <div class="avatar">EW</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="#">Patients</a> / <a href="#">Active</a> / Margaret Thompson
+    </div>
+
+    <div class="patient-header" data-testid="patient-header">
+      <div class="patient-avatar">MT</div>
+      <div class="patient-details">
+        <h2 data-testid="patient-name">Margaret Thompson</h2>
+        <div class="subtitle">Patient Record &mdash; <span class="status-badge status-active">Active</span></div>
+        <div class="patient-meta">
+          <div class="meta-item">
+            <div class="label">Date of Birth</div>
+            <div class="value" data-testid="patient-dob">03/15/1958</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Medical Record #</div>
+            <div class="value" data-testid="patient-mrn">MRN-28471936</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Insurance ID</div>
+            <div class="value" data-testid="insurance-id">BCX-928471056</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Phone</div>
+            <div class="value" data-testid="patient-phone">(555) 234-8901</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Email</div>
+            <div class="value" data-testid="patient-email">margaret.t@synthmail.net</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Address</div>
+            <div class="value" data-testid="patient-address">142 Maple Avenue, Springfield, IL 62704</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <h3>Diagnosis Summary</h3>
+          <span class="status-badge status-stable">Stable</span>
+        </div>
+        <table data-testid="diagnosis-table">
+          <thead><tr><th>ICD-10</th><th>Description</th><th>Status</th><th>Diagnosed</th></tr></thead>
+          <tbody>
+            <tr><td>E11.9</td><td>Type 2 Diabetes Mellitus</td><td><span class="status-badge status-active">Active</span></td><td>03/2019</td></tr>
+            <tr><td>I10</td><td>Essential Hypertension</td><td><span class="status-badge status-active">Active</span></td><td>07/2017</td></tr>
+            <tr><td>E78.5</td><td>Hyperlipidemia</td><td><span class="status-badge status-active">Active</span></td><td>03/2019</td></tr>
+            <tr><td>M17.11</td><td>Primary Osteoarthritis, Right Knee</td><td><span class="status-badge status-stable">Managed</span></td><td>11/2022</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>Current Medications</h3></div>
+        <ul class="med-list" data-testid="medication-list">
+          <li><span class="med-name">Metformin 500mg</span><span class="med-dose">Twice daily</span></li>
+          <li><span class="med-name">Lisinopril 10mg</span><span class="med-dose">Once daily</span></li>
+          <li><span class="med-name">Atorvastatin 20mg</span><span class="med-dose">Once daily at bedtime</span></li>
+          <li><span class="med-name">Acetaminophen 500mg</span><span class="med-dose">As needed for knee pain</span></li>
+          <li><span class="med-name">Vitamin D3 2000 IU</span><span class="med-dose">Once daily</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><h3>Recent Lab Results</h3></div>
+        <table data-testid="lab-results-table">
+          <thead><tr><th>Test</th><th>Result</th><th>Range</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>HbA1c</td><td>7.2%</td><td>&lt; 7.0%</td><td><span class="badge badge-high">High</span></td></tr>
+            <tr><td>Fasting Glucose</td><td>142 mg/dL</td><td>70-100</td><td><span class="badge badge-high">High</span></td></tr>
+            <tr><td>Total Cholesterol</td><td>198 mg/dL</td><td>&lt; 200</td><td><span class="badge badge-normal">Normal</span></td></tr>
+            <tr><td>LDL</td><td>112 mg/dL</td><td>&lt; 100</td><td><span class="badge badge-high">High</span></td></tr>
+            <tr><td>HDL</td><td>54 mg/dL</td><td>&gt; 40</td><td><span class="badge badge-normal">Normal</span></td></tr>
+            <tr><td>Creatinine</td><td>0.9 mg/dL</td><td>0.6-1.2</td><td><span class="badge badge-normal">Normal</span></td></tr>
+            <tr><td>Blood Pressure</td><td>138/86 mmHg</td><td>&lt; 130/80</td><td><span class="badge badge-high">High</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>Upcoming Appointments</h3></div>
+        <div data-testid="appointments-list">
+          <div class="appt-item">
+            <div class="appt-date"><div class="day">12</div><div class="month">Sep</div></div>
+            <div class="appt-info"><div class="appt-title">Endocrinology Follow-up</div><div class="appt-time">10:00 AM - Dr. Watson</div></div>
+          </div>
+          <div class="appt-item">
+            <div class="appt-date"><div class="day">25</div><div class="month">Sep</div></div>
+            <div class="appt-info"><div class="appt-title">Lab Work - Fasting Panel</div><div class="appt-time">8:30 AM - Lab Corp</div></div>
+          </div>
+          <div class="appt-item">
+            <div class="appt-date"><div class="day">08</div><div class="month">Oct</div></div>
+            <div class="appt-info"><div class="appt-title">Cardiology Consultation</div><div class="appt-time">2:00 PM - Dr. Patel</div></div>
+          </div>
+          <div class="appt-item">
+            <div class="appt-date"><div class="day">20</div><div class="month">Oct</div></div>
+            <div class="appt-info"><div class="appt-title">Annual Physical Exam</div><div class="appt-time">9:00 AM - Dr. Watson</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>MedSynth Health Systems &mdash; Protected Health Information (PHI) &mdash; Authorized Access Only</p>
+    <p style="margin-top:0.3rem;">All patient data shown is synthetic and for testing purposes only.</p>
+  </footer>
+</body>
+</html>

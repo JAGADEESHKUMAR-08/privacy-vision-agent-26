@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Vision Agent</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app">
+    <div class="header">
+      <div class="logo">&#128737; Privacy Vision</div>
+      <div class="status-badge" id="statusBadge">ACTIVE</div>
+    </div>
+
+    <div class="mode-indicator" id="modeIndicator">
+      <span class="mode-dot local"></span> Fully Local
+    </div>
+
+    <div class="risk-card" id="riskCard">
+      <div class="risk-label">Current Page Risk</div>
+      <div class="risk-level" id="riskLevel">--</div>
+    </div>
+
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-item">
+        <div class="stat-value" id="emailCount">0</div>
+        <div class="stat-label">Emails</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="phoneCount">0</div>
+        <div class="stat-label">Phones</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="passwordCount">0</div>
+        <div class="stat-label">Passwords</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="tokenCount">0</div>
+        <div class="stat-label">Tokens</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="otherCount">0</div>
+        <div class="stat-label">Other PII</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="redactedCount">0</div>
+        <div class="stat-label">Redacted</div>
+      </div>
+    </div>
+
+    <div class="access-status" id="accessStatus">
+      <span class="access-icon">&#9989;</span> AI Access: SANITIZED ONLY
+    </div>
+
+    <div class="metrics" id="metricsSection">
+      <div class="metric-row">
+        <span>Inference:</span>
+        <span id="inferenceMode">Local / DOM</span>
+      </div>
+      <div class="metric-row">
+        <span>Latency:</span>
+        <span id="latencyValue">-- ms</span>
+      </div>
+      <div class="metric-row">
+        <span>Page Type:</span>
+        <span id="pageTypeValue">--</span>
+      </div>
+    </div>
+
+    <div class="entities-list" id="entitiesList" style="display:none;"></div>
+
+    <div class="buttons">
+      <button class="btn primary" id="scanBtn">Scan Page</button>
+      <button class="btn secondary" id="previewBtn">Preview Redaction</button>
+      <button class="btn secondary" id="reportBtn">Privacy Report</button>
+      <button class="btn secondary" id="settingsBtn">Settings</button>
+    </div>
+
+    <div class="report-panel" id="reportPanel" style="display:none;"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

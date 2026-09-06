@@ -1,0 +1,620 @@
+{
+  "timestamp": "2026-09-06T16:02:25.899Z",
+  "testSamples": 475,
+  "note": "Honest evaluation: every method predicts purely from input text; no ground-truth label is fed to any classifier.",
+  "methods": {
+    "regex-only": {
+      "method": "Regex-Only",
+      "accuracy": 0.4189473684210526,
+      "macroPrecision": 0.6124880469648368,
+      "macroRecall": 0.39776178041478055,
+      "macroF1": 0.3862300389848796,
+      "weightedPrecision": 0.6418662597909771,
+      "weightedRecall": 0.4189473684210526,
+      "weightedF1": 0.4080820799975876,
+      "avgTimePerSampleUs": 128,
+      "totalSamples": 475,
+      "correctDetections": 199,
+      "memoryRssMB": 71,
+      "memoryHeapUsedMB": 30,
+      "perClass": {
+        "ADDRESS": {
+          "precision": 0.6585365853658537,
+          "recall": 0.75,
+          "f1": 0.7012987012987012,
+          "tp": 27,
+          "fp": 14,
+          "fn": 9,
+          "support": 36
+        },
+        "API_KEY": {
+          "precision": 1,
+          "recall": 0.5806451612903226,
+          "f1": 0.7346938775510204,
+          "tp": 18,
+          "fp": 0,
+          "fn": 13,
+          "support": 31
+        },
+        "AUTH_TOKEN": {
+          "precision": 1,
+          "recall": 0.3103448275862069,
+          "f1": 0.4736842105263158,
+          "tp": 9,
+          "fp": 0,
+          "fn": 20,
+          "support": 29
+        },
+        "BANK_ACCOUNT": {
+          "precision": 1,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "tp": 12,
+          "fp": 0,
+          "fn": 12,
+          "support": 24
+        },
+        "CREDIT_CARD": {
+          "precision": 1,
+          "recall": 0.11764705882352941,
+          "f1": 0.21052631578947367,
+          "tp": 4,
+          "fp": 0,
+          "fn": 30,
+          "support": 34
+        },
+        "DATE_OF_BIRTH": {
+          "precision": 1,
+          "recall": 0.9736842105263158,
+          "f1": 0.9866666666666666,
+          "tp": 37,
+          "fp": 0,
+          "fn": 1,
+          "support": 38
+        },
+        "EMAIL": {
+          "precision": 1,
+          "recall": 0.926829268292683,
+          "f1": 0.9620253164556963,
+          "tp": 38,
+          "fp": 0,
+          "fn": 3,
+          "support": 41
+        },
+        "FINANCIAL_DATA": {
+          "precision": 1,
+          "recall": 0.11764705882352941,
+          "f1": 0.21052631578947367,
+          "tp": 4,
+          "fp": 0,
+          "fn": 30,
+          "support": 34
+        },
+        "GOVERNMENT_ID": {
+          "precision": 0.2903225806451613,
+          "recall": 0.6923076923076923,
+          "f1": 0.4090909090909091,
+          "tp": 18,
+          "fp": 44,
+          "fn": 8,
+          "support": 26
+        },
+        "MEDICAL_ID": {
+          "precision": 1,
+          "recall": 0.02857142857142857,
+          "f1": 0.05555555555555556,
+          "tp": 1,
+          "fp": 0,
+          "fn": 34,
+          "support": 35
+        },
+        "NAME": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 28,
+          "support": 28
+        },
+        "NONE": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 27,
+          "support": 27
+        },
+        "PASSWORD": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 33,
+          "support": 33
+        },
+        "PHONE": {
+          "precision": 0.23846153846153847,
+          "recall": 0.96875,
+          "f1": 0.3827160493827161,
+          "tp": 31,
+          "fp": 99,
+          "fn": 1,
+          "support": 32
+        },
+        "USERNAME": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 27,
+          "support": 27
+        }
+      }
+    },
+    "dom-context-enhanced": {
+      "method": "DOM-Context-Enhanced",
+      "accuracy": 0.4189473684210526,
+      "macroPrecision": 0.6124880469648368,
+      "macroRecall": 0.39776178041478055,
+      "macroF1": 0.3862300389848796,
+      "weightedPrecision": 0.6418662597909771,
+      "weightedRecall": 0.4189473684210526,
+      "weightedF1": 0.4080820799975876,
+      "avgTimePerSampleUs": 118,
+      "totalSamples": 475,
+      "correctDetections": 199,
+      "memoryRssMB": 74,
+      "memoryHeapUsedMB": 29,
+      "perClass": {
+        "ADDRESS": {
+          "precision": 0.6585365853658537,
+          "recall": 0.75,
+          "f1": 0.7012987012987012,
+          "tp": 27,
+          "fp": 14,
+          "fn": 9,
+          "support": 36
+        },
+        "API_KEY": {
+          "precision": 1,
+          "recall": 0.5806451612903226,
+          "f1": 0.7346938775510204,
+          "tp": 18,
+          "fp": 0,
+          "fn": 13,
+          "support": 31
+        },
+        "AUTH_TOKEN": {
+          "precision": 1,
+          "recall": 0.3103448275862069,
+          "f1": 0.4736842105263158,
+          "tp": 9,
+          "fp": 0,
+          "fn": 20,
+          "support": 29
+        },
+        "BANK_ACCOUNT": {
+          "precision": 1,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "tp": 12,
+          "fp": 0,
+          "fn": 12,
+          "support": 24
+        },
+        "CREDIT_CARD": {
+          "precision": 1,
+          "recall": 0.11764705882352941,
+          "f1": 0.21052631578947367,
+          "tp": 4,
+          "fp": 0,
+          "fn": 30,
+          "support": 34
+        },
+        "DATE_OF_BIRTH": {
+          "precision": 1,
+          "recall": 0.9736842105263158,
+          "f1": 0.9866666666666666,
+          "tp": 37,
+          "fp": 0,
+          "fn": 1,
+          "support": 38
+        },
+        "EMAIL": {
+          "precision": 1,
+          "recall": 0.926829268292683,
+          "f1": 0.9620253164556963,
+          "tp": 38,
+          "fp": 0,
+          "fn": 3,
+          "support": 41
+        },
+        "FINANCIAL_DATA": {
+          "precision": 1,
+          "recall": 0.11764705882352941,
+          "f1": 0.21052631578947367,
+          "tp": 4,
+          "fp": 0,
+          "fn": 30,
+          "support": 34
+        },
+        "GOVERNMENT_ID": {
+          "precision": 0.2903225806451613,
+          "recall": 0.6923076923076923,
+          "f1": 0.4090909090909091,
+          "tp": 18,
+          "fp": 44,
+          "fn": 8,
+          "support": 26
+        },
+        "MEDICAL_ID": {
+          "precision": 1,
+          "recall": 0.02857142857142857,
+          "f1": 0.05555555555555556,
+          "tp": 1,
+          "fp": 0,
+          "fn": 34,
+          "support": 35
+        },
+        "NAME": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 28,
+          "support": 28
+        },
+        "NONE": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 27,
+          "support": 27
+        },
+        "PASSWORD": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 33,
+          "support": 33
+        },
+        "PHONE": {
+          "precision": 0.23846153846153847,
+          "recall": 0.96875,
+          "f1": 0.3827160493827161,
+          "tp": 31,
+          "fp": 99,
+          "fn": 1,
+          "support": 32
+        },
+        "USERNAME": {
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 27,
+          "support": 27
+        }
+      }
+    },
+    "ml-only": {
+      "method": "ML-Only",
+      "accuracy": 0.8905263157894737,
+      "macroPrecision": 0.8945363736638373,
+      "macroRecall": 0.8839006457125778,
+      "macroF1": 0.8845837320160197,
+      "weightedPrecision": 0.9028718278112117,
+      "weightedRecall": 0.8905263157894737,
+      "weightedF1": 0.8920849711074855,
+      "avgTimePerSampleUs": 207,
+      "totalSamples": 475,
+      "correctDetections": 423,
+      "memoryRssMB": 77,
+      "memoryHeapUsedMB": 28,
+      "perClass": {
+        "ADDRESS": {
+          "precision": 0.9722222222222222,
+          "recall": 0.9722222222222222,
+          "f1": 0.9722222222222222,
+          "tp": 35,
+          "fp": 1,
+          "fn": 1,
+          "support": 36
+        },
+        "API_KEY": {
+          "precision": 0.8157894736842105,
+          "recall": 1,
+          "f1": 0.898550724637681,
+          "tp": 31,
+          "fp": 7,
+          "fn": 0,
+          "support": 31
+        },
+        "AUTH_TOKEN": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 29,
+          "fp": 0,
+          "fn": 0,
+          "support": 29
+        },
+        "BANK_ACCOUNT": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 18,
+          "fp": 6,
+          "fn": 6,
+          "support": 24
+        },
+        "CREDIT_CARD": {
+          "precision": 0.7297297297297297,
+          "recall": 0.7941176470588235,
+          "f1": 0.7605633802816901,
+          "tp": 27,
+          "fp": 10,
+          "fn": 7,
+          "support": 34
+        },
+        "DATE_OF_BIRTH": {
+          "precision": 0.95,
+          "recall": 1,
+          "f1": 0.9743589743589743,
+          "tp": 38,
+          "fp": 2,
+          "fn": 0,
+          "support": 38
+        },
+        "EMAIL": {
+          "precision": 0.975609756097561,
+          "recall": 0.975609756097561,
+          "f1": 0.975609756097561,
+          "tp": 40,
+          "fp": 1,
+          "fn": 1,
+          "support": 41
+        },
+        "FINANCIAL_DATA": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 34,
+          "fp": 0,
+          "fn": 0,
+          "support": 34
+        },
+        "GOVERNMENT_ID": {
+          "precision": 0.48484848484848486,
+          "recall": 0.6153846153846154,
+          "f1": 0.5423728813559322,
+          "tp": 16,
+          "fp": 17,
+          "fn": 10,
+          "support": 26
+        },
+        "MEDICAL_ID": {
+          "precision": 1,
+          "recall": 0.8,
+          "f1": 0.888888888888889,
+          "tp": 28,
+          "fp": 0,
+          "fn": 7,
+          "support": 35
+        },
+        "NAME": {
+          "precision": 0.9642857142857143,
+          "recall": 0.9642857142857143,
+          "f1": 0.9642857142857143,
+          "tp": 27,
+          "fp": 1,
+          "fn": 1,
+          "support": 28
+        },
+        "NONE": {
+          "precision": 0.9642857142857143,
+          "recall": 1,
+          "f1": 0.9818181818181818,
+          "tp": 27,
+          "fp": 1,
+          "fn": 0,
+          "support": 27
+        },
+        "PASSWORD": {
+          "precision": 0.8529411764705882,
+          "recall": 0.8787878787878788,
+          "f1": 0.8656716417910447,
+          "tp": 29,
+          "fp": 5,
+          "fn": 4,
+          "support": 33
+        },
+        "PHONE": {
+          "precision": 1,
+          "recall": 0.65625,
+          "f1": 0.7924528301886793,
+          "tp": 21,
+          "fp": 0,
+          "fn": 11,
+          "support": 32
+        },
+        "USERNAME": {
+          "precision": 0.9583333333333334,
+          "recall": 0.8518518518518519,
+          "f1": 0.9019607843137256,
+          "tp": 23,
+          "fp": 1,
+          "fn": 4,
+          "support": 27
+        }
+      }
+    },
+    "hybrid-regex+ml": {
+      "method": "Hybrid-Regex+ML",
+      "accuracy": 0.9368421052631579,
+      "macroPrecision": 0.8136263804607011,
+      "macroRecall": 0.9327127629088412,
+      "macroF1": 0.843738659791116,
+      "weightedPrecision": 0.8213056459466267,
+      "weightedRecall": 0.9368421052631579,
+      "weightedF1": 0.8511724525511234,
+      "avgTimePerSampleUs": 399,
+      "totalSamples": 475,
+      "correctDetections": 445,
+      "memoryRssMB": 77,
+      "memoryHeapUsedMB": 24,
+      "perClass": {
+        "ADDRESS": {
+          "precision": 0.7058823529411765,
+          "recall": 1,
+          "f1": 0.8275862068965517,
+          "tp": 36,
+          "fp": 15,
+          "fn": 0,
+          "support": 36
+        },
+        "API_KEY": {
+          "precision": 0.8157894736842105,
+          "recall": 1,
+          "f1": 0.898550724637681,
+          "tp": 31,
+          "fp": 7,
+          "fn": 0,
+          "support": 31
+        },
+        "AUTH_TOKEN": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 29,
+          "fp": 0,
+          "fn": 0,
+          "support": 29
+        },
+        "BANK_ACCOUNT": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 18,
+          "fp": 6,
+          "fn": 6,
+          "support": 24
+        },
+        "CREDIT_CARD": {
+          "precision": 0.7297297297297297,
+          "recall": 0.7941176470588235,
+          "f1": 0.7605633802816901,
+          "tp": 27,
+          "fp": 10,
+          "fn": 7,
+          "support": 34
+        },
+        "DATE_OF_BIRTH": {
+          "precision": 0.95,
+          "recall": 1,
+          "f1": 0.9743589743589743,
+          "tp": 38,
+          "fp": 2,
+          "fn": 0,
+          "support": 38
+        },
+        "EMAIL": {
+          "precision": 0.9761904761904762,
+          "recall": 1,
+          "f1": 0.9879518072289156,
+          "tp": 41,
+          "fp": 1,
+          "fn": 0,
+          "support": 41
+        },
+        "FINANCIAL_DATA": {
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 34,
+          "fp": 0,
+          "fn": 0,
+          "support": 34
+        },
+        "GOVERNMENT_ID": {
+          "precision": 0.2926829268292683,
+          "recall": 0.9230769230769231,
+          "f1": 0.4444444444444444,
+          "tp": 24,
+          "fp": 58,
+          "fn": 2,
+          "support": 26
+        },
+        "MEDICAL_ID": {
+          "precision": 1,
+          "recall": 0.8285714285714286,
+          "f1": 0.90625,
+          "tp": 29,
+          "fp": 0,
+          "fn": 6,
+          "support": 35
+        },
+        "NAME": {
+          "precision": 0.9642857142857143,
+          "recall": 0.9642857142857143,
+          "f1": 0.9642857142857143,
+          "tp": 27,
+          "fp": 1,
+          "fn": 1,
+          "support": 28
+        },
+        "NONE": {
+          "precision": 0.9642857142857143,
+          "recall": 1,
+          "f1": 0.9818181818181818,
+          "tp": 27,
+          "fp": 1,
+          "fn": 0,
+          "support": 27
+        },
+        "PASSWORD": {
+          "precision": 0.8529411764705882,
+          "recall": 0.8787878787878788,
+          "f1": 0.8656716417910447,
+          "tp": 29,
+          "fp": 5,
+          "fn": 4,
+          "support": 33
+        },
+        "PHONE": {
+          "precision": 0.24427480916030533,
+          "recall": 1,
+          "f1": 0.39263803680981596,
+          "tp": 32,
+          "fp": 99,
+          "fn": 0,
+          "support": 32
+        },
+        "USERNAME": {
+          "precision": 0.9583333333333334,
+          "recall": 0.8518518518518519,
+          "f1": 0.9019607843137256,
+          "tp": 23,
+          "fp": 1,
+          "fn": 4,
+          "support": 27
+        }
+      }
+    }
+  },
+  "summary": {
+    "bestAccuracy": "Hybrid-Regex+ML",
+    "bestF1": "ML-Only",
+    "fastestMethod": "DOM-Context-Enhanced"
+  }
+}

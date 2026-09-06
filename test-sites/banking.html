@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="csrf_tok_a8k2m4n6p8r1">
+  <title>Synthetic Bank - Account Dashboard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.6; }
+    .navbar { background: #1a237e; color: #fff; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 100; }
+    .navbar .logo { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px; }
+    .navbar .logo span { color: #7c4dff; }
+    .navbar nav a { color: rgba(255,255,255,0.85); text-decoration: none; margin-left: 1.5rem; font-size: 0.9rem; transition: color 0.2s; }
+    .navbar nav a:hover { color: #fff; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .greeting { margin-bottom: 1.5rem; }
+    .greeting h1 { font-size: 1.6rem; font-weight: 600; color: #1a237e; }
+    .greeting p { color: #666; font-size: 0.95rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border: 1px solid #e8eaed; }
+    .card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; color: #666; margin-bottom: 0.5rem; }
+    .card .amount { font-size: 1.8rem; font-weight: 700; color: #1a237e; }
+    .card .amount.negative { color: #c62828; }
+    .card .sub { font-size: 0.8rem; color: #999; margin-top: 0.25rem; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; }
+    .badge-green { background: #e8f5e9; color: #2e7d32; }
+    .badge-red { background: #ffebee; color: #c62828; }
+    .badge-blue { background: #e3f2fd; color: #1565c0; }
+    .section-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #1a237e; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+    th { font-weight: 600; color: #666; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.3px; }
+    tr:hover { background: #f8f9ff; }
+    .transfer-form { display: grid; gap: 1rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #555; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.3px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.7rem 1rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #1a237e; box-shadow: 0 0 0 3px rgba(26,35,126,0.1); }
+    .btn { padding: 0.75rem 2rem; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: #1a237e; color: #fff; }
+    .btn-primary:hover { background: #283593; }
+    .two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+    .sidebar-links { list-style: none; }
+    .sidebar-links li { padding: 0.6rem 0; border-bottom: 1px solid #f0f0f0; }
+    .sidebar-links a { color: #1a237e; text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .sidebar-links a:hover { text-decoration: underline; }
+    .account-info { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .account-info dt { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+    .account-info dd { font-size: 0.95rem; font-weight: 500; color: #333; margin-bottom: 0.5rem; font-family: 'SF Mono', 'Fira Code', monospace; }
+    footer { background: #1a237e; color: rgba(255,255,255,0.8); padding: 1.5rem 2rem; text-align: center; font-size: 0.85rem; margin-top: 2rem; }
+    footer a { color: #7c4dff; text-decoration: none; }
+    @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } .grid { grid-template-columns: 1fr; } .container { padding: 1rem; } }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Synth<span>Bank</span></div>
+    <nav>
+      <a href="/">Dashboard</a>
+      <a href="/banking">Accounts</a>
+      <a href="/payment">Payments</a>
+      <a href="/profile">Profile</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="greeting">
+      <h1>Welcome back, Robert</h1>
+      <p>Here's your account overview as of September 6, 2026</p>
+    </div>
+
+    <div class="grid">
+      <div class="card" data-testid="checking-balance">
+        <h3>Checking Account</h3>
+        <div class="amount">$12,847.63</div>
+        <div class="sub">Account ending in 2910</div>
+      </div>
+      <div class="card" data-testid="savings-balance">
+        <h3>Savings Account</h3>
+        <div class="amount">$45,291.18</div>
+        <div class="sub">Account ending in 8472</div>
+      </div>
+      <div class="card" data-testid="credit-balance">
+        <h3>Credit Card</h3>
+        <div class="amount negative">-$2,341.56</div>
+        <div class="sub">Visa ending in 5523</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="card" style="margin-bottom:1.5rem;">
+          <div class="section-title">Account Holder Information</div>
+          <dl class="account-info">
+            <dt>Full Name</dt>
+            <dd data-testid="account-holder-name">Robert James Mitchell</dd>
+            <dt>Email Address</dt>
+            <dd data-testid="account-email">robert.mitchell@synthmail.com</dd>
+            <dt>Phone Number</dt>
+            <dd data-testid="account-phone">+1 (555) 847-2936</dd>
+            <dt>Account Number</dt>
+            <dd data-testid="account-number">4829 1056 7384 2910</dd>
+            <dt>Routing Number</dt>
+            <dd data-testid="routing-number">021000089</dd>
+            <dt>SSN</dt>
+            <dd data-testid="account-ssn">***-**-7842</dd>
+          </dl>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Recent Transactions</div>
+          <table data-testid="transactions-table">
+            <thead>
+              <tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Sep 05</td><td>Whole Foods Market</td><td><span class="badge badge-green">Groceries</span></td><td>-$127.43</td></tr>
+              <tr><td>Sep 04</td><td>Direct Deposit - SynthCorp Payroll</td><td><span class="badge badge-blue">Income</span></td><td>+$3,847.00</td></tr>
+              <tr><td>Sep 03</td><td>Netflix Subscription</td><td><span class="badge badge-red">Entertainment</span></td><td>-$15.99</td></tr>
+              <tr><td>Sep 02</td><td>Shell Gas Station</td><td><span class="badge badge-green">Transport</span></td><td>-$54.20</td></tr>
+              <tr><td>Sep 01</td><td>Amazon.com Purchase</td><td><span class="badge badge-red">Shopping</span></td><td>-$89.97</td></tr>
+              <tr><td>Aug 30</td><td>Transfer from Savings</td><td><span class="badge badge-blue">Transfer</span></td><td>+$500.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:1.5rem;">
+          <div class="section-title">Quick Links</div>
+          <ul class="sidebar-links">
+            <li><a href="/banking">View All Transactions</a></li>
+            <li><a href="/payment">Make a Payment</a></li>
+            <li><a href="/profile">Update Profile</a></li>
+            <li><a href="#">Download Statements</a></li>
+            <li><a href="#">Set Up Alerts</a></li>
+            <li><a href="#">Card Management</a></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Transfer Money</div>
+          <form class="transfer-form" data-testid="transfer-form">
+            <div class="form-group">
+              <label for="from-account">From Account</label>
+              <select id="from-account" name="from_account" data-testid="from-account-select">
+                <option value="checking">Checking - ****2910 ($12,847.63)</option>
+                <option value="savings">Savings - ****8472 ($45,291.18)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="to-account">To Account Number</label>
+              <input type="text" id="to-account" name="to_account" placeholder="Enter account number" data-testid="to-account-input">
+            </div>
+            <div class="form-group">
+              <label for="amount">Amount</label>
+              <input type="number" id="amount" name="amount" placeholder="0.00" step="0.01" min="0" data-testid="transfer-amount">
+            </div>
+            <div class="form-group">
+              <label for="note">Note (Optional)</label>
+              <textarea id="note" name="note" rows="2" placeholder="Add a note..." data-testid="transfer-note"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" data-testid="transfer-submit">Transfer Funds</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Synthetic Bank, N.A. | Member FDIC | Equal Housing Lender</p>
+    <p>Contact: <a href="mailto:support@synthbank.example.com">support@synthbank.example.com</a> | 1-555-BANK</p>
+    <p style="margin-top:0.5rem;font-size:0.75rem;color:rgba(255,255,255,0.5);">This is a synthetic test page for privacy detection research. All data is fictional.</p>
+  </footer>
+</body>
+</html>

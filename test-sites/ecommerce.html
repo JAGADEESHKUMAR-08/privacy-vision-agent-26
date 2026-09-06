@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthStore - Premium Wireless Headphones</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fafbfc; color: #1a1a2e; line-height: 1.6; }
+    .navbar { background: #fff; border-bottom: 1px solid #e8eaed; padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .navbar .brand { font-size: 1.3rem; font-weight: 800; color: #1a1a2e; }
+    .navbar .brand span { color: #e53935; }
+    .navbar nav a { color: #555; text-decoration: none; margin-left: 1.5rem; font-size: 0.9rem; font-weight: 500; }
+    .navbar nav a:hover { color: #1a1a2e; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .breadcrumb { font-size: 0.8rem; color: #999; margin-bottom: 1.5rem; }
+    .breadcrumb a { color: #e53935; text-decoration: none; }
+    .product-section { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 2rem; }
+    .product-image { background: #f0f0f0; border-radius: 16px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 5rem; color: #ccc; }
+    .product-info h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; color: #1a1a2e; }
+    .product-rating { color: #f59e0b; font-size: 0.9rem; margin-bottom: 1rem; }
+    .product-price { font-size: 2rem; font-weight: 800; color: #e53935; margin-bottom: 1rem; }
+    .product-price .original { font-size: 1.1rem; color: #999; text-decoration: line-through; margin-left: 0.5rem; font-weight: 400; }
+    .product-desc { color: #666; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .product-features { list-style: none; margin-bottom: 1.5rem; }
+    .product-features li { padding: 0.3rem 0; font-size: 0.9rem; color: #444; }
+    .product-features li::before { content: "\2713 "; color: #0d9488; font-weight: 700; margin-right: 0.5rem; }
+    .quantity-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .quantity-row label { font-size: 0.85rem; font-weight: 600; color: #555; }
+    .quantity-row input { width: 60px; padding: 0.5rem; border: 2px solid #e8eaed; border-radius: 8px; text-align: center; font-size: 1rem; }
+    .btn { padding: 0.85rem 2rem; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-cart { background: #e53935; color: #fff; }
+    .btn-cart:hover { background: #c62828; }
+    .btn-buy { background: #1a1a2e; color: #fff; margin-left: 0.75rem; }
+    .btn-buy:hover { background: #333; }
+    .checkout-section { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+    .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border: 1px solid #e8eaed; }
+    .card h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: #1a1a2e; border-bottom: 2px solid #f0f0f0; padding-bottom: 0.75rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: #666; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.3px; }
+    .form-group input, .form-group select { width: 100%; padding: 0.7rem 1rem; border: 2px solid #e8eaed; border-radius: 8px; font-size: 0.9rem; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #e53935; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .order-summary { position: sticky; top: 80px; }
+    .summary-item { display: flex; justify-content: space-between; padding: 0.5rem 0; font-size: 0.9rem; }
+    .summary-item.total { font-weight: 700; font-size: 1.1rem; border-top: 2px solid #e8eaed; margin-top: 0.5rem; padding-top: 0.75rem; }
+    .summary-item .label { color: #666; }
+    .summary-item.total .label, .summary-item.total .amount { color: #1a1a2e; }
+    .secure-note { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; font-size: 0.8rem; color: #999; }
+    .secure-note .icon { font-size: 1rem; }
+    footer { background: #1a1a2e; color: rgba(255,255,255,0.7); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; margin-top: 3rem; }
+    @media (max-width: 768px) { .product-section, .checkout-section { grid-template-columns: 1fr; } .container { padding: 1rem; } .form-row, .form-row-3 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="brand">Synth<span>Store</span></div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/ecommerce">Shop</a>
+      <a href="#">Cart (1)</a>
+      <a href="/profile">Account</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="#">Home</a> / <a href="#">Audio</a> / Premium Wireless Headphones
+    </div>
+
+    <div class="product-section">
+      <div class="product-image" data-testid="product-image">
+        &#127911;
+      </div>
+      <div class="product-info">
+        <h1 data-testid="product-name">SynthWave Pro X1 Wireless Headphones</h1>
+        <div class="product-rating">&#9733;&#9733;&#9733;&#9733;&#9734; 4.3 (2,847 reviews)</div>
+        <div class="product-price">$249.99 <span class="original">$349.99</span></div>
+        <p class="product-desc">Experience crystal-clear audio with active noise cancellation, 40-hour battery life, and premium memory foam ear cushions. Bluetooth 5.3 with multipoint connection.</p>
+        <ul class="product-features">
+          <li>Active Noise Cancellation (ANC)</li>
+          <li>40-Hour Battery Life</li>
+          <li>Bluetooth 5.3 Multipoint</li>
+          <li>Hi-Res Audio Certified</li>
+          <li>Foldable Design with Carry Case</li>
+        </ul>
+        <div class="quantity-row">
+          <label for="qty">Quantity:</label>
+          <input type="number" id="qty" name="quantity" value="1" min="1" max="10" data-testid="quantity-input">
+        </div>
+        <div>
+          <button class="btn btn-cart" data-testid="add-to-cart">Add to Cart</button>
+          <button class="btn btn-buy" data-testid="buy-now">Buy Now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-section" id="checkout">
+      <div class="card">
+        <h2>Shipping Information</h2>
+        <form data-testid="checkout-form">
+          <div class="form-group">
+            <label for="full-name">Full Name</label>
+            <input type="text" id="full-name" name="full_name" value="James Rodriguez" data-testid="checkout-name" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" value="j.rodriguez@synthmail.com" data-testid="checkout-email" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" value="+1-512-555-0147" data-testid="checkout-phone" autocomplete="tel">
+          </div>
+          <div class="form-group">
+            <label for="address">Shipping Address</label>
+            <input type="text" id="address" name="address" value="789 Oak Street, Austin, TX 78701" data-testid="checkout-address" autocomplete="street-address">
+          </div>
+          <h2 style="margin-top:1.5rem;">Payment Details</h2>
+          <div class="form-group">
+            <label for="card-name">Name on Card</label>
+            <input type="text" id="card-name" name="card_name" value="James Rodriguez" data-testid="card-name" autocomplete="cc-name">
+          </div>
+          <div class="form-group">
+            <label for="card-number">Card Number</label>
+            <input type="text" id="card-number" name="card_number" value="4532 8901 2345 6789" data-testid="card-number" autocomplete="cc-number" maxlength="19">
+          </div>
+          <div class="form-row-3">
+            <div class="form-group">
+              <label for="exp-month">Month</label>
+              <select id="exp-month" name="exp_month" data-testid="card-exp-month">
+                <option value="09" selected>09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exp-year">Year</label>
+              <select id="exp-year" name="exp_year" data-testid="card-exp-year">
+                <option value="27">2027</option>
+                <option value="28" selected>2028</option>
+                <option value="29">2029</option>
+                <option value="30">2030</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV</label>
+              <input type="password" id="cvv" name="cvv" value="847" data-testid="card-cvv" maxlength="4" autocomplete="cc-csc">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-cart" style="width:100%;margin-top:0.5rem;" data-testid="place-order">Place Order - $249.99</button>
+        </form>
+      </div>
+
+      <div class="card order-summary">
+        <h2>Order Summary</h2>
+        <div class="summary-item">
+          <span class="label">SynthWave Pro X1 (x1)</span>
+          <span class="amount">$249.99</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Shipping</span>
+          <span class="amount">Free</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Tax (estimated)</span>
+          <span class="amount">$0.00</span>
+        </div>
+        <div class="summary-item total">
+          <span class="label">Total</span>
+          <span class="amount" data-testid="order-total">$249.99</span>
+        </div>
+        <div class="secure-note">
+          <span class="icon">&#128274;</span> Secure 256-bit SSL encryption
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>SynthStore &copy; 2026 &mdash; All product data is synthetic and for testing purposes only.</p>
+  </footer>
+</body>
+</html>

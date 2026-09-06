@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthMail - Inbox</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f4f6f9; color: #2d3748; line-height: 1.6; height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0 1.5rem; height: 52px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .topbar .brand { font-size: 1.1rem; font-weight: 700; color: #1a365d; }
+    .topbar .brand span { color: #0d9488; }
+    .topbar .user { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #666; }
+    .topbar .avatar { width: 30px; height: 30px; background: #0d9488; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 0.75rem; }
+    .layout { display: grid; grid-template-columns: 200px 320px 1fr; flex: 1; overflow: hidden; }
+    .sidebar { background: #fff; border-right: 1px solid #e2e8f0; padding: 1rem 0; flex-shrink: 0; }
+    .sidebar nav a { display: block; padding: 0.5rem 1.25rem; color: #555; text-decoration: none; font-size: 0.85rem; font-weight: 500; }
+    .sidebar nav a:hover { background: #f0fdfa; color: #0d9488; }
+    .sidebar nav a.active { background: #f0fdfa; color: #0d9488; border-left: 3px solid #0d9488; font-weight: 600; }
+    .sidebar nav .count { float: right; background: #e53935; color: #fff; font-size: 0.65rem; padding: 1px 6px; border-radius: 10px; font-weight: 700; }
+    .email-list { background: #fff; border-right: 1px solid #e2e8f0; overflow-y: auto; flex-shrink: 0; }
+    .email-list-header { padding: 1rem; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; }
+    .email-list-header h2 { font-size: 1rem; font-weight: 700; }
+    .email-item { padding: 0.85rem 1rem; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: background 0.15s; }
+    .email-item:hover { background: #f8fafc; }
+    .email-item.unread { background: #f0fdfa; border-left: 3px solid #0d9488; }
+    .email-item .from { font-weight: 600; font-size: 0.85rem; color: #1a365d; margin-bottom: 0.15rem; }
+    .email-item .subject { font-size: 0.8rem; color: #333; font-weight: 500; margin-bottom: 0.15rem; }
+    .email-item .preview { font-size: 0.75rem; color: #999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .email-item .time { font-size: 0.7rem; color: #999; float: right; margin-top: -2.5rem; }
+    .email-detail { padding: 1.5rem; overflow-y: auto; }
+    .email-detail-header { margin-bottom: 1.5rem; }
+    .email-detail-header h1 { font-size: 1.3rem; font-weight: 700; color: #1a365d; margin-bottom: 0.5rem; }
+    .email-meta { display: flex; gap: 1.5rem; font-size: 0.8rem; color: #666; margin-bottom: 0.5rem; }
+    .email-meta .label { color: #999; }
+    .email-body { background: #fff; border-radius: 10px; padding: 1.5rem; border: 1px solid #e2e8f0; font-size: 0.9rem; color: #333; white-space: pre-wrap; }
+    .email-body .sensitive { background: #fef3c7; padding: 1px 4px; border-radius: 3px; font-family: 'SF Mono', monospace; font-size: 0.85rem; }
+    .compose-area { padding: 1rem; border-top: 1px solid #e2e8f0; background: #fff; }
+    .compose-area h3 { font-size: 0.85rem; font-weight: 700; color: #1a365d; margin-bottom: 0.75rem; }
+    .compose-form .form-group { margin-bottom: 0.6rem; }
+    .compose-form .form-group label { font-size: 0.7rem; color: #999; text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 0.2rem; }
+    .compose-form input, .compose-form textarea { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.85rem; font-family: inherit; }
+    .compose-form textarea { resize: vertical; min-height: 80px; }
+    .btn-send { padding: 0.5rem 1.25rem; background: #0d9488; color: #fff; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .email-list { max-height: 200px; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Synth<span>Mail</span></div>
+    <div class="user"><span>Sarah Chen</span><div class="avatar">SC</div></div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <nav>
+        <a href="#" class="active">Inbox <span class="count">5</span></a>
+        <a href="#">Starred</a>
+        <a href="#">Sent</a>
+        <a href="#">Drafts</a>
+        <a href="#">Archive</a>
+        <a href="#">Spam</a>
+        <a href="#">Trash</a>
+      </nav>
+    </aside>
+
+    <div class="email-list" data-testid="email-list">
+      <div class="email-list-header"><h2>Inbox</h2><span style="font-size:0.8rem;color:#999;">5 messages</span></div>
+
+      <div class="email-item unread" data-testid="email-item-1" onclick="showEmail(1)">
+        <div class="from">HR Department</div>
+        <div class="subject">Benefits Enrollment - Action Required</div>
+        <div class="preview">Please find attached your benefits enrollment details for 2026...</div>
+        <div class="time">10:32 AM</div>
+      </div>
+      <div class="email-item unread" data-testid="email-item-2" onclick="showEmail(2)">
+        <div class="from">Finance Team</div>
+        <div class="subject">Q4 Bonus Notification</div>
+        <div class="preview">Congratulations! Your Q4 performance bonus has been approved...</div>
+        <div class="time">9:15 AM</div>
+      </div>
+      <div class="email-item" data-testid="email-item-3" onclick="showEmail(3)">
+        <div class="from">IT Security</div>
+        <div class="subject">Password Expiry Reminder</div>
+        <div class="preview">Your password will expire in 7 days. Please update...</div>
+        <div class="time">Yesterday</div>
+      </div>
+      <div class="email-item" data-testid="email-item-4" onclick="showEmail(4)">
+        <div class="from">SynthCorp Benefits</div>
+        <div class="subject">Health Plan ID Card</div>
+        <div class="preview">Your new health plan member ID card is ready for download...</div>
+        <div class="time">Sep 3</div>
+      </div>
+      <div class="email-item" data-testid="email-item-5" onclick="showEmail(5)">
+        <div class="from">Payroll</div>
+        <div class="subject">Direct Deposit Setup Confirmation</div>
+        <div class="preview">Your direct deposit has been updated to account ****4521...</div>
+        <div class="time">Sep 1</div>
+      </div>
+    </div>
+
+    <div class="email-detail" id="email-detail" data-testid="email-detail">
+      <!-- Email 1: HR Benefits Enrollment -->
+      <div class="email-detail-header" id="email-1">
+        <h1>Benefits Enrollment - Action Required</h1>
+        <div class="email-meta">
+          <span><span class="label">From:</span> hr@synthcorp.example.com</span>
+          <span><span class="label">To:</span> sarah.chen@synthmail.io</span>
+          <span><span class="label">Date:</span> Sep 6, 2026 10:32 AM</span>
+        </div>
+      </div>
+      <div class="email-body" id="email-body-1" data-testid="email-body-1">Dear Sarah,
+
+Please find below your updated benefits enrollment information for the 2026 plan year:
+
+EMPLOYEE INFORMATION:
+  Name: Sarah Chen
+  Employee ID: EMP-3847291
+  SSN: XXX-XX-7842
+  Department: Engineering
+
+HEALTH PLAN DETAILS:
+  Plan: SynthCorp Gold PPO
+  Member ID: HP-2847193
+  Group #: GRP-928471056
+  Effective: January 1, 2026
+
+BANKING INFORMATION (for HSA/FSA contributions):
+  Bank: First Synthetic National
+  Routing: 021000089
+  Account: ****4521
+  Account Type: Checking
+
+Please review and confirm your elections by October 31, 2026.
+If you have questions, contact HR at 1-555-SYNTH.
+
+Best regards,
+SynthCorp Human Resources</div>
+
+      <!-- Email 2: Finance Bonus -->
+      <div id="email-2" style="display:none;">
+        <div class="email-detail-header">
+          <h1>Q4 Bonus Notification</h1>
+          <div class="email-meta">
+            <span><span class="label">From:</span> finance@synthcorp.example.com</span>
+            <span><span class="label">To:</span> sarah.chen@synthmail.io</span>
+            <span><span class="label">Date:</span> Sep 6, 2026 9:15 AM</span>
+          </div>
+        </div>
+      </div>
+      <div class="email-body" id="email-body-2" style="display:none;" data-testid="email-body-2">Dear Sarah,
+
+Congratulations! Based on your outstanding performance in Q3, we are pleased to inform you that you have been awarded a quarterly performance bonus.
+
+BONUS DETAILS:
+  Amount: $12,500.00
+  Bonus Type: Q3 Performance
+  Tax Withholding: 22% ($2,750.00)
+  Net Payment: $9,750.00
+
+DEPOSIT INFORMATION:
+  Payment Method: Direct Deposit
+  Bank: First Synthetic National
+  Routing: 021000089
+  Account: ****4521
+  Expected Deposit: September 15, 2026
+
+This bonus reflects your exceptional contributions to the platform migration project. Keep up the great work!
+
+Best regards,
+SynthCorp Finance Team</div>
+
+      <!-- Email 3: IT Security -->
+      <div id="email-3" style="display:none;">
+        <div class="email-detail-header">
+          <h1>Password Expiry Reminder</h1>
+          <div class="email-meta">
+            <span><span class="label">From:</span> security@synthcorp.example.com</span>
+            <span><span class="label">To:</span> sarah.chen@synthmail.io</span>
+            <span><span class="label">Date:</span> Sep 5, 2026 3:00 PM</span>
+          </div>
+        </div>
+      </div>
+      <div class="email-body" id="email-body-3" style="display:none;">Dear Sarah Chen,
+
+This is a reminder that your SynthCorp account password will expire in 7 days (September 12, 2026).
+
+To update your password:
+1. Go to https://auth.synthcorp.internal
+2. Click "Change Password"
+3. Follow the password policy requirements
+
+Password Policy:
+- Minimum 12 characters
+- At least one uppercase and one lowercase letter
+- At least one number and one special character
+- Cannot reuse last 5 passwords
+
+If you need assistance, contact IT Helpdesk at help@synthcorp.example.com.
+
+IT Security Team</div>
+
+      <!-- Email 4: Benefits ID -->
+      <div id="email-4" style="display:none;">
+        <div class="email-detail-header">
+          <h1>Health Plan ID Card</h1>
+          <div class="email-meta">
+            <span><span class="label">From:</span> benefits@synthcorp.example.com</span>
+            <span><span class="label">To:</span> sarah.chen@synthmail.io</span>
+            <span><span class="label">Date:</span> Sep 3, 2026 11:00 AM</span>
+          </div>
+        </div>
+      </div>
+      <div class="email-body" id="email-body-4" style="display:none;">Dear Sarah,
+
+Your new health plan member ID card is now available for download.
+
+HEALTH PLAN INFORMATION:
+  Member Name: Sarah Chen
+  Member ID: HP-2847193
+  Plan: SynthCorp Gold PPO
+  Effective: January 1, 2026
+  Copay (PCP): $25
+  Copay (Specialist): $50
+  Deductible: $1,500
+  Out-of-Pocket Max: $6,000
+
+You can download your digital ID card from the SynthCorp Benefits Portal or use the mobile app.
+
+Please carry this information for all medical visits.
+
+SynthCorp Benefits</div>
+
+      <!-- Email 5: Payroll -->
+      <div id="email-5" style="display:none;">
+        <div class="email-detail-header">
+          <h1>Direct Deposit Setup Confirmation</h1>
+          <div class="email-meta">
+            <span><span class="label">From:</span> payroll@synthcorp.example.com</span>
+            <span><span class="label">To:</span> sarah.chen@synthmail.io</span>
+            <span><span class="label">Date:</span> Sep 1, 2026 2:15 PM</span>
+          </div>
+        </div>
+      </div>
+      <div class="email-body" id="email-body-5" style="display:none;">Dear Sarah,
+
+This confirms that your direct deposit information has been successfully updated.
+
+PREVIOUS ACCOUNT:
+  Bank: Chase
+  Account: ****8834
+
+NEW ACCOUNT:
+  Bank: First Synthetic National
+  Routing: 021000089
+  Account: ****4521
+  Account Type: Checking
+
+Your next paycheck ($3,847.00 net) will be deposited to the new account on September 15, 2026.
+
+Please allow one pay cycle for verification. If there are any issues, contact payroll@synthcorp.example.com.
+
+SynthCorp Payroll Department</div>
+    </div>
+  </div>
+
+  <script>
+    function showEmail(num) {
+      for (let i = 1; i <= 5; i++) {
+        const detail = document.getElementById('email-' + i);
+        const body = document.getElementById('email-body-' + i);
+        if (detail) detail.style.display = i === num ? '' : 'none';
+        if (body) body.style.display = i === num ? '' : 'none';
+      }
+      document.querySelectorAll('.email-item').forEach((el, idx) => {
+        el.classList.toggle('unread', idx === num - 1);
+      });
+    }
+  </script>
+</body>
+</html>

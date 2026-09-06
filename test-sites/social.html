@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthConnect - Alex Thompson</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1c1e21; line-height: 1.6; }
+    .navbar { background: linear-gradient(135deg, #1877f2, #42a5f5); color: #fff; padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    .navbar .brand { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
+    .navbar nav a { color: rgba(255,255,255,0.9); text-decoration: none; margin-left: 1.5rem; font-size: 0.9rem; }
+    .navbar nav a:hover { color: #fff; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+    .profile-header { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+    .cover-photo { height: 200px; background: linear-gradient(135deg, #1877f2 0%, #7c4dff 50%, #e040fb 100%); }
+    .profile-info { padding: 0 2rem 1.5rem; position: relative; }
+    .profile-avatar { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #1877f2, #42a5f5); border: 4px solid #fff; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2.5rem; font-weight: 700; position: relative; top: -60px; margin-bottom: -40px; }
+    .profile-info h1 { font-size: 1.6rem; font-weight: 700; }
+    .profile-info .handle { color: #65676b; font-size: 0.9rem; }
+    .profile-info .bio { color: #333; margin: 0.5rem 0; }
+    .profile-meta { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.75rem; font-size: 0.85rem; color: #65676b; }
+    .profile-meta span { display: flex; align-items: center; gap: 0.3rem; }
+    .two-col { display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.5rem; }
+    .card { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+    .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #1c1e21; border-bottom: 1px solid #e4e6eb; padding-bottom: 0.5rem; }
+    .contact-list { list-style: none; }
+    .contact-list li { padding: 0.5rem 0; font-size: 0.85rem; color: #333; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid #f0f0f0; }
+    .contact-list li:last-child { border-bottom: none; }
+    .contact-list .label { color: #65676b; min-width: 70px; font-size: 0.8rem; }
+    .friend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+    .friend-item { text-align: center; }
+    .friend-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #e040fb, #7c4dff); margin: 0 auto 0.3rem; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 0.9rem; }
+    .friend-item .name { font-size: 0.75rem; color: #333; font-weight: 500; }
+    .post-card { border-bottom: 1px solid #e4e6eb; padding: 1rem 0; }
+    .post-card:last-child { border-bottom: none; }
+    .post-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+    .post-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #1877f2, #42a5f5); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 0.85rem; }
+    .post-header .name { font-weight: 600; font-size: 0.9rem; }
+    .post-header .time { font-size: 0.75rem; color: #65676b; }
+    .post-content { font-size: 0.9rem; color: #333; margin-bottom: 0.75rem; }
+    .post-image { width: 100%; border-radius: 8px; background: #e4e6eb; height: 200px; display: flex; align-items: center; justify-content: center; color: #999; margin-bottom: 0.75rem; }
+    .post-actions { display: flex; gap: 1rem; font-size: 0.8rem; color: #65676b; }
+    .post-actions span { cursor: pointer; padding: 0.3rem 0.75rem; border-radius: 6px; }
+    .post-actions span:hover { background: #f0f2f5; }
+    .settings-group { margin-bottom: 1rem; }
+    .settings-group label { display: block; font-size: 0.75rem; font-weight: 600; color: #65676b; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.3px; }
+    .settings-group input, .settings-group textarea { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid #dddfe2; border-radius: 8px; font-size: 0.9rem; font-family: inherit; }
+    .settings-group input:focus, .settings-group textarea:focus { outline: none; border-color: #1877f2; }
+    .settings-group .token { background: #f0f2f5; padding: 0.6rem 0.8rem; border-radius: 8px; font-family: 'SF Mono', monospace; font-size: 0.75rem; color: #333; word-break: break-all; border: 1px solid #e4e6eb; }
+    .btn-save { padding: 0.6rem 1.5rem; background: #1877f2; color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+    .btn-save:hover { background: #166fe5; }
+    footer { text-align: center; padding: 1.5rem; color: #999; font-size: 0.8rem; }
+    @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } .friend-grid { grid-template-columns: repeat(3, 1fr); } .container { padding: 0.75rem; } }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="brand">SynthConnect</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/social">Profile</a>
+      <a href="#">Messages</a>
+      <a href="#">Notifications</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="profile-header" data-testid="profile-header">
+      <div class="cover-photo"></div>
+      <div class="profile-info">
+        <div class="profile-avatar">AT</div>
+        <h1 data-testid="display-name">Alex Thompson</h1>
+        <div class="handle" data-testid="username">@alexthompson</div>
+        <div class="bio" data-testid="bio">Software Engineer at TechCorp | Coffee enthusiast | Building the future one commit at a time</div>
+        <div class="profile-meta">
+          <span data-testid="location">&#128205; San Francisco, CA</span>
+          <span data-testid="birthday">&#127874; July 22, 1992</span>
+          <span data-testid="joined">Member since March 2019</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="card">
+          <h3>Contact Information</h3>
+          <ul class="contact-list" data-testid="contact-info">
+            <li><span class="label">Email</span> <a href="mailto:alex.t@synthmail.dev" data-testid="contact-email">alex.t@synthmail.dev</a></li>
+            <li><span class="label">Phone</span> <span data-testid="contact-phone">555-867-5309</span></li>
+            <li><span class="label">Location</span> San Francisco, CA</li>
+            <li><span class="label">Birthday</span> July 22, 1992</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Friends <span style="color:#65676b;font-weight:400;font-size:0.85rem;">(847)</span></h3>
+          <div class="friend-grid" data-testid="friend-list">
+            <div class="friend-item"><div class="friend-avatar">JK</div><div class="name">Jamie Kim</div></div>
+            <div class="friend-item"><div class="friend-avatar">SP</div><div class="name">Sam Park</div></div>
+            <div class="friend-item"><div class="friend-avatar">LR</div><div class="name">Lisa Ray</div></div>
+            <div class="friend-item"><div class="friend-avatar">DM</div><div class="name">David M.</div></div>
+            <div class="friend-item"><div class="friend-avatar">CW</div><div class="name">Chris Wu</div></div>
+            <div class="friend-item"><div class="friend-avatar">AN</div><div class="name">Amy Ngo</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Account Settings</h3>
+          <form data-testid="settings-form">
+            <div class="settings-group">
+              <label for="set-username">Username</label>
+              <input type="text" id="set-username" name="username" value="alexthompson" data-testid="settings-username">
+            </div>
+            <div class="settings-group">
+              <label for="set-displayname">Display Name</label>
+              <input type="text" id="set-displayname" name="display_name" value="Alex Thompson" data-testid="settings-displayname">
+            </div>
+            <div class="settings-group">
+              <label for="set-bio">Bio</label>
+              <textarea id="set-bio" name="bio" rows="3" data-testid="settings-bio">Software Engineer at TechCorp | Coffee enthusiast | Building the future one commit at a time</textarea>
+            </div>
+            <div class="settings-group">
+              <label>API Key</label>
+              <div class="token" data-testid="api-key">sk_live_8f3k2m9x4p1n7b5vRtY6qW2</div>
+            </div>
+            <div class="settings-group">
+              <label>Session Token</label>
+              <div class="token" data-testid="session-token">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkFsZXggVGhvbXBzb24iLCJpYXQiOjE1MTYyMzkwMjJ9.fake_signature_here</div>
+            </div>
+            <button type="button" class="btn-save" data-testid="save-settings">Save Changes</button>
+          </form>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h3>Posts</h3>
+          <div data-testid="posts-feed">
+            <div class="post-card">
+              <div class="post-header">
+                <div class="post-avatar">AT</div>
+                <div><div class="name">Alex Thompson</div><div class="time">2 hours ago</div></div>
+              </div>
+              <div class="post-content">Just shipped the new feature release! 3 months of work, countless cups of coffee, and one epic team effort. So proud of what we built. &#127881;</div>
+              <div class="post-image">&#128187; [Code deployment screenshot]</div>
+              <div class="post-actions"><span>&#128077; 247 Likes</span><span>&#128172; 43 Comments</span><span>&#128228; 12 Shares</span></div>
+            </div>
+            <div class="post-card">
+              <div class="post-header">
+                <div class="post-avatar">AT</div>
+                <div><div class="name">Alex Thompson</div><div class="time">Yesterday</div></div>
+              </div>
+              <div class="post-content">Morning coffee in the Mission District. There's nothing quite like starting the day with a perfect pour-over and some sunshine. &#9749;</div>
+              <div class="post-image">&#9749; [Coffee shop photo]</div>
+              <div class="post-actions"><span>&#128077; 182 Likes</span><span>&#128172; 28 Comments</span><span>&#128228; 5 Shares</span></div>
+            </div>
+            <div class="post-card">
+              <div class="post-header">
+                <div class="post-avatar">AT</div>
+                <div><div class="name">Alex Thompson</div><div class="time">3 days ago</div></div>
+              </div>
+              <div class="post-content">Excited to announce that I'll be speaking at DevConf 2026! Topic: "Building Privacy-First Applications with Modern Web APIs." See you there!</div>
+              <div class="post-actions"><span>&#128077; 512 Likes</span><span>&#128172; 87 Comments</span><span>&#128228; 64 Shares</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>SynthConnect &copy; 2026 &mdash; Synthetic social media data for privacy detection testing.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Vision Agent - Icon Generator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 720px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 24px;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .preview-card {
+      background: #0f172a;
+      border: 1px solid #293548;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .preview-card:hover {
+      transform: translateY(-2px);
+      border-color: #6366f1;
+    }
+
+    .preview-card canvas {
+      display: block;
+      margin: 0 auto 12px;
+    }
+
+    .preview-size {
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 4px;
+    }
+
+    .preview-dim {
+      font-size: 11px;
+      color: #475569;
+      margin-bottom: 12px;
+    }
+
+    .download-btn {
+      display: inline-block;
+      padding: 6px 14px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+
+    .download-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .action-btn {
+      padding: 10px 20px;
+      background: #334155;
+      color: #e2e8f0;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .action-btn:hover {
+      background: #475569;
+      border-color: #64748b;
+    }
+
+    .status {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 12px;
+      color: #64748b;
+      min-height: 18px;
+    }
+
+    .status.success {
+      color: #4ade80;
+    }
+
+    .status.error {
+      color: #f87171;
+    }
+
+    .note {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 8px;
+      font-size: 12px;
+      color: #a5b4fc;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>&#128737; Privacy Vision Icon Generator</h1>
+    <p class="subtitle">Generates extension icons as PNG files. Download each size and place them in <code>extension/icons/</code>.</p>
+
+    <div class="preview-grid">
+      <div class="preview-card">
+        <canvas id="canvas16" width="16" height="16"></canvas>
+        <div class="preview-size">Icon 16x16</div>
+        <div class="preview-dim">Toolbar icon</div>
+        <a class="download-btn" id="dl16" download="icon16.png" href="#">Download</a>
+      </div>
+      <div class="preview-card">
+        <canvas id="canvas48" width="48" height="48"></canvas>
+        <div class="preview-size">Icon 48x48</div>
+        <div class="preview-dim">Extension shelf</div>
+        <a class="download-btn" id="dl48" download="icon48.png" href="#">Download</a>
+      </div>
+      <div class="preview-card">
+        <canvas id="canvas128" width="128" height="128"></canvas>
+        <div class="preview-size">Icon 128x128</div>
+        <div class="preview-dim">Store / install dialog</div>
+        <a class="download-btn" id="dl128" download="icon128.png" href="#">Download</a>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="action-btn" id="downloadAllBtn">Download All Sizes</button>
+      <button class="action-btn" id="regenerateBtn">Regenerate</button>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <div class="note">
+      <strong>Usage:</strong> Open this file in a browser, click "Download All Sizes", and save the three PNG files into
+      <code>extension/icons/</code> directory next to <code>icon.svg</code>. The manifest.json already references these files.
+      The icons use a purple-to-indigo gradient shield (#7c3aed to #4f46e5) with a white lock and keyhole — matching the popup theme.
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var status = document.getElementById('status');
+      var dl16 = document.getElementById('dl16');
+      var dl48 = document.getElementById('dl48');
+      var dl128 = document.getElementById('dl128');
+      var canvas16 = document.getElementById('canvas16');
+      var canvas48 = document.getElementById('canvas48');
+      var canvas128 = document.getElementById('canvas128');
+
+      function setStatus(msg, cls) {
+        status.textContent = msg;
+        status.className = 'status' + (cls ? ' ' + cls : '');
+      }
+
+      // Draw the shield icon onto a canvas at the given size with crisp rendering.
+      function drawIcon(canvas, size) {
+        var ctx = canvas.getContext('2d');
+        var scale = size / 128;
+        ctx.clearRect(0, 0, size, size);
+        ctx.save();
+        ctx.scale(scale, scale);
+
+        // --- Shadow under shield ---
+        ctx.save();
+        ctx.shadowColor = 'rgba(49, 46, 129, 0.5)';
+        ctx.shadowBlur = 12;
+        ctx.shadowOffsetY = 4;
+
+        // --- Shield body ---
+        var grad = ctx.createLinearGradient(0, 0, 128, 128);
+        grad.addColorStop(0, '#7c3aed');
+        grad.addColorStop(0.5, '#6366f1');
+        grad.addColorStop(1, '#4f46e5');
+
+        ctx.beginPath();
+        ctx.moveTo(64, 12);
+        ctx.lineTo(24, 28);
+        ctx.lineTo(24, 62);
+        ctx.quadraticCurveTo(24, 92, 64, 116);
+        ctx.quadraticCurveTo(104, 92, 104, 62);
+        ctx.lineTo(104, 28);
+        ctx.closePath();
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.restore();
+
+        // --- Shield stroke ---
+        ctx.beginPath();
+        ctx.moveTo(64, 12);
+        ctx.lineTo(24, 28);
+        ctx.lineTo(24, 62);
+        ctx.quadraticCurveTo(24, 92, 64, 116);
+        ctx.quadraticCurveTo(104, 92, 104, 62);
+        ctx.lineTo(104, 28);
+        ctx.closePath();
+        ctx.strokeStyle = '#4f46e5';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // --- Inner highlight stroke on shield ---
+        ctx.beginPath();
+        ctx.moveTo(64, 22);
+        ctx.lineTo(32, 35);
+        ctx.lineTo(32, 60);
+        ctx.quadraticCurveTo(32, 85, 64, 106);
+        ctx.quadraticCurveTo(96, 85, 96, 60);
+        ctx.lineTo(96, 35);
+        ctx.closePath();
+        ctx.strokeStyle = 'rgba(165, 180, 252, 0.7)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // --- Lock shackle (with glow) ---
+        ctx.save();
+        ctx.shadowColor = 'rgba(167, 139, 250, 0.8)';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.moveTo(48, 56);
+        ctx.lineTo(48, 46);
+        ctx.arc(64, 46, 16, Math.PI, 0);
+        ctx.lineTo(80, 56);
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 8;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+        ctx.restore();
+
+        // --- Lock body ---
+        var lockGrad = ctx.createLinearGradient(40, 54, 88, 90);
+        lockGrad.addColorStop(0, '#ffffff');
+        lockGrad.addColorStop(1, '#e0e7ff');
+        ctx.beginPath();
+        ctx.roundRect(40, 54, 48, 36, 7);
+        ctx.fillStyle = lockGrad;
+        ctx.fill();
+
+        // --- Keyhole ---
+        ctx.fillStyle = '#4f46e5';
+        ctx.beginPath();
+        ctx.arc(64, 70, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(61, 70);
+        ctx.lineTo(61, 82);
+        ctx.arc(64, 82, 3, Math.PI, 0);
+        ctx.lineTo(67, 82);
+        ctx.lineTo(67, 70);
+        ctx.closePath();
+        ctx.fill();
+
+        // --- Subtle reflection on top ---
+        ctx.beginPath();
+        ctx.moveTo(64, 12);
+        ctx.lineTo(24, 28);
+        ctx.lineTo(24, 34);
+        ctx.lineTo(64, 18);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(167, 139, 250, 0.5)';
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      function makeDownloadLink(canvas, id) {
+        try {
+          var dataUrl = canvas.toDataURL('image/png');
+          var link = document.getElementById(id);
+          link.href = dataUrl;
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function generateAll() {
+        drawIcon(canvas16, 16);
+        drawIcon(canvas48, 48);
+        drawIcon(canvas128, 128);
+
+        var ok16 = makeDownloadLink(canvas16, 'dl16');
+        var ok48 = makeDownloadLink(canvas48, 'dl48');
+        var ok128 = makeDownloadLink(canvas128, 'dl128');
+
+        if (ok16 && ok48 && ok128) {
+          setStatus('Icons generated. Click each "Download" or use "Download All Sizes".', 'success');
+        } else {
+          setStatus('Error generating icons. Make sure you opened this file in a modern browser.', 'error');
+        }
+      }
+
+      // Download all three at once by switching data URLs sequentially.
+      function downloadAll() {
+        var links = [dl16, dl48, dl128];
+        for (var i = 0; i < links.length; i++) {
+          if (links[i].href && links[i].href.startsWith('data:')) {
+            var a = document.createElement('a');
+            a.href = links[i].href;
+            a.download = links[i].getAttribute('download');
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          }
+        }
+        setStatus('Downloaded all 3 icon sizes.', 'success');
+      }
+
+      document.getElementById('downloadAllBtn').addEventListener('click', downloadAll);
+      document.getElementById('regenerateBtn').addEventListener('click', generateAll);
+
+      generateAll();
+    })();
+  </script>
+</body>
+</html>

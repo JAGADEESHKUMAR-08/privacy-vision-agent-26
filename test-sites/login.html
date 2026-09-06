@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="csrf_tok_a8k2m4n6p8r1">
+  <title>SynthMail - Sign In</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .login-card { background: #fff; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); width: 100%; max-width: 440px; padding: 2.5rem; }
+    .logo-area { text-align: center; margin-bottom: 2rem; }
+    .logo-icon { width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .logo-icon span { color: #fff; font-size: 1.5rem; font-weight: 800; }
+    .logo-area h1 { font-size: 1.5rem; color: #1a1a2e; font-weight: 700; }
+    .logo-area p { color: #888; font-size: 0.9rem; margin-top: 0.3rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #555; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-group input { width: 100%; padding: 0.8rem 1rem; border: 2px solid #e8eaed; border-radius: 10px; font-size: 0.95rem; transition: all 0.2s; }
+    .form-group input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+    .form-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+    .checkbox-group { display: flex; align-items: center; gap: 0.5rem; }
+    .checkbox-group input[type="checkbox"] { width: 16px; height: 16px; accent-color: #667eea; }
+    .checkbox-group label { font-size: 0.85rem; color: #666; text-transform: none; letter-spacing: 0; font-weight: 400; }
+    .forgot-link { color: #667eea; text-decoration: none; font-size: 0.85rem; font-weight: 500; }
+    .forgot-link:hover { text-decoration: underline; }
+    .btn-login { width: 100%; padding: 0.85rem; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-login:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(102,126,234,0.4); }
+    .divider { text-align: center; margin: 1.5rem 0; position: relative; }
+    .divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #e8eaed; }
+    .divider span { background: #fff; padding: 0 1rem; position: relative; color: #999; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .social-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .btn-social { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.7rem; border: 2px solid #e8eaed; border-radius: 10px; background: #fff; font-size: 0.85rem; font-weight: 500; color: #333; cursor: pointer; transition: all 0.2s; }
+    .btn-social:hover { border-color: #ccc; background: #f8f9fa; }
+    .btn-social .icon { font-size: 1.1rem; }
+    .signup-link { text-align: center; font-size: 0.9rem; color: #666; }
+    .signup-link a { color: #667eea; text-decoration: none; font-weight: 600; }
+    .signup-link a:hover { text-decoration: underline; }
+    .error-state { background: #fff5f5; border: 1px solid #fed7d7; border-radius: 10px; padding: 0.8rem 1rem; margin-bottom: 1.25rem; color: #c53030; font-size: 0.85rem; display: none; }
+    .error-state.visible { display: block; }
+    .hidden-fields { position: absolute; left: -9999px; opacity: 0; }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="logo-area">
+      <div class="logo-icon"><span>S</span></div>
+      <h1>SynthMail</h1>
+      <p>Sign in to your account</p>
+    </div>
+
+    <div class="error-state" id="error-state" data-testid="login-error">
+      Invalid email or password. Please try again.
+    </div>
+
+    <form id="login-form" data-testid="login-form" autocomplete="on">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" value="sarah.chen@synthmail.io" autocomplete="email" data-testid="email-input" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" value="Tr33H0use!2024" autocomplete="current-password" data-testid="password-input" placeholder="Enter your password">
+      </div>
+      <div class="form-row">
+        <div class="checkbox-group">
+          <input type="checkbox" id="remember" name="remember_me" checked data-testid="remember-checkbox">
+          <label for="remember">Remember me</label>
+        </div>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn-login" data-testid="login-button">Sign In</button>
+    </form>
+
+    <div class="divider"><span>or continue with</span></div>
+
+    <div class="social-buttons">
+      <button class="btn-social" data-testid="google-login">
+        <span class="icon">&#9632;</span> Google
+      </button>
+      <button class="btn-social" data-testid="github-login">
+        <span class="icon">&#9679;</span> GitHub
+      </button>
+    </div>
+
+    <div class="signup-link">
+      Don't have an account? <a href="#">Create one</a>
+    </div>
+  </div>
+
+  <div class="hidden-fields">
+    <input type="hidden" name="session_token" value="sess_8f3k2m9x4p1n7b5v" data-testid="session-token">
+    <input type="hidden" name="_csrf" value="csrf_tok_a8k2m4n6p8r1">
+  </div>
+</body>
+</html>

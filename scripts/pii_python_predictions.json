@@ -1,0 +1,2852 @@
+[
+ {
+  "text": "Saved value: 260 80 2446",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.791249
+ },
+ {
+  "text": "aaravgreen7334",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.996729
+ },
+ {
+  "text": "We need to verify USD 34491.00 before continuing.",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.97362
+ },
+ {
+  "text": "The system recorded Seamless integration with existing tools at the time of entry.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.989426
+ },
+ {
+  "text": "An error occurred while processing $369.55.",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.958836
+ },
+ {
+  "text": "Matches found for ID259-17065",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.975025
+ },
+ {
+  "text": "Retrieved record: Cherry354!@",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.99746
+ },
+ {
+  "text": "An error occurred while processing sk-29058115374986552916683444570019.",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.819629
+ },
+ {
+  "text": "Details provided: 02/07/1951",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.995585
+ },
+ {
+  "text": "Update your profile with 3296465",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.481159
+ },
+ {
+  "text": "Update your profile with Springfield, FL 34119",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.96513
+ },
+ {
+  "text": "anguyen@cloudletters.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.998592
+ },
+ {
+  "text": "6509374871006894",
+  "truth": "CREDIT_CARD",
+  "pred": "API_KEY",
+  "prob": 0.444176
+ },
+ {
+  "text": "Please confirm your information: REC113-02774",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.960968
+ },
+ {
+  "text": "+1 (895) 948-1278",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 1.0
+ },
+ {
+  "text": "sk_live_75228093607835295534",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.999764
+ },
+ {
+  "text": "Your input was 772666557",
+  "truth": "SSN",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.455899
+ },
+ {
+  "text": "Submission value: 3787-6236-6837-985",
+  "truth": "CREDIT_CARD",
+  "pred": "SSN",
+  "prob": 0.527087
+ },
+ {
+  "text": "05/12/1970",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.998898
+ },
+ {
+  "text": "Reference: Bearer iGrRuz1TEocnFGH_Fth919XfkVHub5dlhjwSYoFL",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999852
+ },
+ {
+  "text": "The matching entry is USD 54188.00",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.989654
+ },
+ {
+  "text": "Exact match: 797 902 1077",
+  "truth": "PHONE",
+  "pred": "SSN",
+  "prob": 0.382453
+ },
+ {
+  "text": "An error occurred while processing 310-58-5790.",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.369325
+ },
+ {
+  "text": "Please confirm your information: p@ss_apple_749",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.947197
+ },
+ {
+  "text": "Retrieved record: 01/12/2008",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.998345
+ },
+ {
+  "text": "raven!@672",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.99884
+ },
+ {
+  "text": "liamroberts3798  ",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.961679
+ },
+ {
+  "text": "ZephyrVelocity33",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.903316
+ },
+ {
+  "text": "REC-616907442",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.999511
+ },
+ {
+  "text": "We received the following: 4556598730701312",
+  "truth": "CREDIT_CARD",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.330557
+ },
+ {
+  "text": "We received the following: 5111 8784 9671 1063",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.802711
+ },
+ {
+  "text": "52586595",
+  "truth": "MEDICAL_ID",
+  "pred": "SSN",
+  "prob": 0.408647
+ },
+ {
+  "text": "Matches found for 184410233/0023040128",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.794279
+ },
+ {
+  "text": "Once 5011 Willow Ln, Meadowbrook, TX 78565 is validated, the request proceeds.",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.997907
+ },
+ {
+  "text": "We need to verify 602 02 0931 before continuing.",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.446971
+ },
+ {
+  "text": "487498610/33314655",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.938169
+ },
+ {
+  "text": "Verify this entry: Copyright 2026 All Rights Reserved.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.820818
+ },
+ {
+  "text": "key-1211598918713928205552075404",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.976449
+ },
+ {
+  "text": "Attached value: 5429286314169094",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.329645
+ },
+ {
+  "text": "18vXk_-njKt1owzZqkeF-VSRt9YCqUwqRwah2JZ707oFamhY",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.99993
+ },
+ {
+  "text": "Processed item: 9973 Ivy Ave, Brookhaven, NY 14105",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.999387
+ },
+ {
+  "text": "Processed item: $65593.00",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.98866
+ },
+ {
+  "text": "271 26 7444",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.648348
+ },
+ {
+  "text": "27/04/1963",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.892479
+ },
+ {
+  "text": "458-46-5053",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.559497
+ },
+ {
+  "text": "698-230-3669",
+  "truth": "PHONE",
+  "pred": "SSN",
+  "prob": 0.54116
+ },
+ {
+  "text": "anika38@sendstream.net",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.99667
+ },
+ {
+  "text": "An error occurred while processing 612169233/20886786.",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.45524
+ },
+ {
+  "text": "We need to verify key-3565210078574761751058796800 before continuing.",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.869352
+ },
+ {
+  "text": "790660847947",
+  "truth": "BANK_ACCOUNT",
+  "pred": "API_KEY",
+  "prob": 0.523713
+ },
+ {
+  "text": "Once 02/06/1942 is validated, the request proceeds.",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.952255
+ },
+ {
+  "text": "camila89@postcardwave.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999548
+ },
+ {
+  "text": "1988-11-15",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.954566
+ },
+ {
+  "text": "elijah.anderson@postboxhub.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999875
+ },
+ {
+  "text": "The details for 2308 Rosewood Blvd must be double-checked.",
+  "truth": "ADDRESS",
+  "pred": "PASSWORD",
+  "prob": 0.353745
+ },
+ {
+  "text": "yuki_stewart86@sendstrea",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.599262
+ },
+ {
+  "text": "Ines Clark",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999648
+ },
+ {
+  "text": "_fatima_7028",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.999731
+ },
+ {
+  "text": "An error occurred while processing 1952-07-14.",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.702778
+ },
+ {
+  "text": "11/10/20",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.999998
+ },
+ {
+  "text": "Please provide 455 700 5533 to complete the process.",
+  "truth": "PHONE",
+  "pred": "SSN",
+  "prob": 0.461647
+ },
+ {
+  "text": "Verify this entry: sk-69271895767104036085219837861142",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.86552
+ },
+ {
+  "text": "p@ss_thunder_901",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.995173
+ },
+ {
+  "text": "Please provide xqd6P3kX3bCqO0tPJYi9WpmXdTy0jfZXhYTqsZIP-Soy1zHo to complete the process.",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999911
+ },
+ {
+  "text": "Here is the detail: raj52@vervecourier.com.",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.964327
+ },
+ {
+  "text": "Field input: Greenville, GA 30214",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.998714
+ },
+ {
+  "text": "$78396.",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.998397
+ },
+ {
+  "text": "We need to verify umbrella644 before continuing.",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.682456
+ },
+ {
+  "text": "Matches found for CHART171-84233",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.990421
+ },
+ {
+  "text": "Import data from spreadsheets",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.998467
+ },
+ {
+  "text": "  4487\tDove\tCt,\tLakeside,\tMA\t02740",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.999865
+ },
+ {
+  "text": "Can you confirm marco48@sendline.net is correct?",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.950556
+ },
+ {
+  "text": "The details for 742-53-5621 must be double-checked.",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.589269
+ },
+ {
+  "text": "Entry recorded as +17398884977",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.868781
+ },
+ {
+  "text": "N1dI3KMaRClwVv0XdOMLT0f.F2-T6qW-HtVKmDW57411dXPxyfIMglfhj3GxgJPUSQI9_fK.0EOH-xso6uH6MZwQkAEaR",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999949
+ },
+ {
+  "text": "Benjamin Walker",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999679
+ },
+ {
+  "text": "Saved value: Thompson, Lucas",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.979878
+ },
+ {
+  "text": "Once sk-69247885410154177077585412227996 is validated, the request proceeds.",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.92954
+ },
+ {
+  "text": "An error occurred while processing 1342449485 (routing 129314358).",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.90634
+ },
+ {
+  "text": "Attached value: 378796207217516",
+  "truth": "CREDIT_CARD",
+  "pred": "SSN",
+  "prob": 0.323342
+ },
+ {
+  "text": "The details for $381.04 must be double-checked.",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.945536
+ },
+ {
+  "text": "Once $27389.00 is validated, the request proceeds.",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.955919
+ },
+ {
+  "text": "$5242",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999735
+ },
+ {
+  "text": "The system recorded sk_live_32002822360252596783 at the time of entry.",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.90096
+ },
+ {
+  "text": "5061\tSycamore\tBlvd\tFairview\tNY\t10451 ",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.996114
+ },
+ {
+  "text": "Update your profile with 379198080/969284958",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.744619
+ },
+ {
+  "text": "1993-04-24",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.763441
+ },
+ {
+  "text": "Gomez, Nina",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999896
+ },
+ {
+  "text": "Entry recorded as 225300987",
+  "truth": "SSN",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.410221
+ },
+ {
+  "text": "17/09/1961",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.999816
+ },
+ {
+  "text": "The system recorded Built for performance and speed at the time of entry.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.979701
+ },
+ {
+  "text": "sk-95269788951367734801541130157473",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.978778
+ },
+ {
+  "text": "254954195",
+  "truth": "SSN",
+  "pred": "CREDIT_CARD",
+  "prob": 0.33258
+ },
+ {
+  "text": "Please provide oliviah65@searchlite.net to complete the process.",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.57673
+ },
+ {
+  "text": "Forest966!@",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.999982
+ },
+ {
+  "text": "Please provide +1 (384) 961-1925 to complete the process.",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.995648
+ },
+ {
+  "text": "An error occurred while processing 1960-04-07.",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.751886
+ },
+ {
+  "text": "marco_singh22@emailcraft.org",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.997995
+ },
+ {
+  "text": "5220127095446330",
+  "truth": "CREDIT_CARD",
+  "pred": "API_KEY",
+  "prob": 0.36668
+ },
+ {
+  "text": "Please provide Bearer r70FLbRzAKMsfbKvtJut6ouAodyFnjLHSK273Aqz to complete the process.",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999737
+ },
+ {
+  "text": "The system recorded 5423686656 (routing 222609672) at the time of entry.",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.961785
+ },
+ {
+  "text": "Submission value: 1992-01-15",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.980081
+ },
+ {
+  "text": "02495",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.29669
+ },
+ {
+  "text": "An error occurred while processing USD 62414.00.",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.977434
+ },
+ {
+  "text": "237285977",
+  "truth": "BANK_ACCOUNT",
+  "pred": "API_KEY",
+  "prob": 0.40702
+ },
+ {
+  "text": "Entry recorded as rk-0603876030444778277011760062530734843917",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.884616
+ },
+ {
+  "text": "1346592363",
+  "truth": "BANK_ACCOUNT",
+  "pred": "SSN",
+  "prob": 0.441563
+ },
+ {
+  "text": "The system stored J5Rrny9Y0AUsmmqueSg1.RONy6pyOMAsjqWsCoV8dSuUAmBMOOgk45DwhbfBoDNScswmUlnNkA0rudY.2Fs7-j81XvHPJtiA5CIAjNlYFWm",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.998872
+ },
+ {
+  "text": "Submission value: RX592-10719",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.979384
+ },
+ {
+  "text": " _henry_5261",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.765609
+ },
+ {
+  "text": "Verify this entry: FalconUmbrella147",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.871987
+ },
+ {
+  "text": "(925) 492-3796",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.999326
+ },
+ {
+  "text": "6221 Sage St",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.997792
+ },
+ {
+  "text": "An error occurred while processing Dragon427%&.",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.920211
+ },
+ {
+  "text": "jamesrivera8351",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.999435
+ },
+ {
+  "text": "HC-55908959",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.99649
+ },
+ {
+  "text": "Attached value: rosa_anderson55@courierdash.org",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.861346
+ },
+ {
+  "text": "Bearer bQYSNQrX1VwYrR25l5qbFjBZx033ioNQDDSppCGW",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999999
+ },
+ {
+  "text": "Retrieved record: CHART-402807",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.925081
+ },
+ {
+  "text": "028-78-6294",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.544512
+ },
+ {
+  "text": "$9061.72",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999329
+ },
+ {
+  "text": "Matches found for Turner, Raj",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.994126
+ },
+ {
+  "text": "p@ss_yonder_976",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.99747
+ },
+ {
+  "text": "208-42-7028",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.47497
+ },
+ {
+  "text": "Enjoy 20% off your next purchase",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.99893
+ },
+ {
+  "text": "epi-67610783  ",
+  "truth": "MEDICAL_ID",
+  "pred": "SSN",
+  "prob": 0.443923
+ },
+ {
+  "text": "Can you confirm _henry_67 is correct?",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.789661
+ },
+ {
+  "text": "The matching entry is crystal975",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.759807
+ },
+ {
+  "text": "4920 1892 0283 1087",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.916837
+ },
+ {
+  "text": "The matching entry is quantum7525",
+  "truth": "USERNAME",
+  "pred": "PASSWORD",
+  "prob": 0.646069
+ },
+ {
+  "text": "1363 River Ter Ashton TX 77422",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.982493
+ },
+ {
+  "text": "Submission value: 801.498.9206",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.85237
+ },
+ {
+  "text": "Exact match: 4556 1528 5016 9936",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.911985
+ },
+ {
+  "text": "Matches found for +12426552458",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.898082
+ },
+ {
+  "text": "henry_garcia7@sendgridfake.net",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.987439
+ },
+ {
+  "text": "The system stored Bearer upCfhItlOSxqxOgg8IFWU2CJQdcgM41SEp7RPH5x",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999933
+ },
+ {
+  "text": "Checkout and payment options.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.998861
+ },
+ {
+  "text": "Account: 121617744608, Routing: 1790",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.999817
+ },
+ {
+  "text": "anika.campbell9870",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.979149
+ },
+ {
+  "text": "$619.08",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999722
+ },
+ {
+  "text": "RavenKnight546",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.975791
+ },
+ {
+  "text": "rx-487509068",
+  "truth": "MEDICAL_ID",
+  "pred": "SSN",
+  "prob": 0.542131
+ },
+ {
+  "text": "07/09/1959",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.998978
+ },
+ {
+  "text": "Details provided: Hc6dAFvD0INAW5RLAmd8eYCWmo-n0.99UragZAqq1diLncmShwUQkjUEQKRmabkZHb2P0ombmXshK_ml.uWEzg_lmdXslmH0Fv8GcwW5BGCvqSVrdkUNoBRitrG",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.976511
+ },
+ {
+  "text": "Your input was p@ss_harbor_618",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.82216
+ },
+ {
+  "text": "The record shows 2249212960 (routing 186229479)",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.977569
+ },
+ {
+  "text": "Can you confirm Hillcrest, AZ 86504 is correct?",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.918317
+ },
+ {
+  "text": "270 770 5857",
+  "truth": "PHONE",
+  "pred": "API_KEY",
+  "prob": 0.497396
+ },
+ {
+  "text": "id-327666689",
+  "truth": "MEDICAL_ID",
+  "pred": "SSN",
+  "prob": 0.601497
+ },
+ {
+  "text": "587 03 4962",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.524713
+ },
+ {
+  "text": "user_ali ",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.998489
+ },
+ {
+  "text": "Matches found for _anya_4359",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.981576
+ },
+ {
+  "text": "kxxMUurbSqM30.JrYSbEKwqr3GGczsV_UEgttGpjqIBjVuzpuv9PuujQFm9sF-wspx.fzPj81a5ko-6NidtqVWFp6L0kJYBWg",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999998
+ },
+ {
+  "text": "Field input: 1976-09-14",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.972
+ },
+ {
+  "text": "The record shows 5111678057569601",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.45672
+ },
+ {
+  "text": "-gW1NrRxsE2zqxRoOjJMBlCfB.5z4mgxr5zeiGYxRhYFOkJ_sviAxdPBToNMpE7R.3FjYKQslZSLca7-tn5TEP4VDdnZ2hLlEg2  ",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999999
+ },
+ {
+  "text": "$49511.00 ",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.996107
+ },
+ {
+  "text": "Your input was Real-time analytics dashboard.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.969041
+ },
+ {
+  "text": "mateoy2@correspond.io",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999653
+ },
+ {
+  "text": "PT462-03253",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.992778
+ },
+ {
+  "text": "Saved value: 11/10/2009",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.999964
+ },
+ {
+  "text": "Attached value: jameslee7875",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.758977
+ },
+ {
+  "text": "The record shows 5111 9427 4313 9634",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.874625
+ },
+ {
+  "text": "We need to verify rapid341 before continuing.",
+  "truth": "USERNAME",
+  "pred": "PASSWORD",
+  "prob": 0.504505
+ },
+ {
+  "text": "1961-05-27",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.805281
+ },
+ {
+  "text": "Bearer C0bS0NkjOQz3tcYcYjcg-Ek0UsTz-f7-mPa5W3qX",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999962
+ },
+ {
+  "text": "We received the following: This article discusses modern gardening techniques.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.986538
+ },
+ {
+  "text": "3934 Pine Dr",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.984353
+ },
+ {
+  "text": "Retrieved record: 6777 Xeriscape Dr",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.840025
+ },
+ {
+  "text": "Entry recorded as 4556 0814 2726 9377",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.884143
+ },
+ {
+  "text": "An error occurred while processing 030230211.",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.3751
+ },
+ {
+  "text": "Entry recorded as lcollins@postparcel.org",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.894618
+ },
+ {
+  "text": "09/07/1999",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.999879
+ },
+ {
+  "text": "Can you confirm leila.taylor@maildrop.net is correct?",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.994209
+ },
+ {
+  "text": "664-613-2555",
+  "truth": "PHONE",
+  "pred": "CREDIT_CARD",
+  "prob": 0.492215
+ },
+ {
+  "text": "Please provide ID017274 to complete the process.",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.896609
+ },
+ {
+  "text": "CLIN-21156",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.986842
+ },
+ {
+  "text": "1887 Poppy Ave",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.985973
+ },
+ {
+  "text": "Details provided: 803 98 7936",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.538439
+ },
+ {
+  "text": "Please provide _ali_30 to complete the process.",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.915617
+ },
+ {
+  "text": "Nguyen, Adam",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999573
+ },
+ {
+  "text": "Sign up for a free trial",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.999924
+ },
+ {
+  "text": "The system stored +1 (503) 448-1423",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.999624
+ },
+ {
+  "text": "+12788927364",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.997268
+ },
+ {
+  "text": "2006-05-22",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.856526
+ },
+ {
+  "text": "Entry recorded as 7426 Birch St",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.892019
+ },
+ {
+  "text": "Here is the detail: 644 825 3568.",
+  "truth": "PHONE",
+  "pred": "SSN",
+  "prob": 0.688258
+ },
+ {
+  "text": "5429 2349 4941 7759",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.874815
+ },
+ {
+  "text": "Reference: 10-20-1969",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.988873
+ },
+ {
+  "text": "2217 Lark Way",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.999883
+ },
+ {
+  "text": "Copyright 2026 All Rights Reserved",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.403027
+ },
+ {
+  "text": "Entry recorded as ariat85@messageway.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.993115
+ },
+ {
+  "text": "sk_live_67703089290171848688 ",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.999817
+ },
+ {
+  "text": "Details provided: cturner@staticmail.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.980633
+ },
+ {
+  "text": "The system recorded PT571-73783 at the time of entry.",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.78865
+ },
+ {
+  "text": "sk-47111525540850073484981229278411",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.973186
+ },
+ {
+  "text": "Lucas Anderson",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999394
+ },
+ {
+  "text": "NebulaFores",
+  "truth": "PASSWORD",
+  "pred": "NAME",
+  "prob": 0.553042
+ },
+ {
+  "text": "Exact match: 6509 0009 2123 9727",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.829759
+ },
+ {
+  "text": "\t5748   Elm   Rd",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.90386
+ },
+ {
+  "text": "5111 6256 3164 1164",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.980379
+ },
+ {
+  "text": "acct-204166",
+  "truth": "MEDICAL_ID",
+  "pred": "CREDIT_CARD",
+  "prob": 0.635551
+ },
+ {
+  "text": "Update your profile with USD 75067.00",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.996959
+ },
+ {
+  "text": "jOm0-mLk5a7PvbzdHgPzwkW.3eCnkYjR2lVswCbRfls0pErWchEx0.gmzA2WuMTZlRO54ZHaOeR2dPyektjKmb8w40w5I",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.99985
+ },
+ {
+  "text": "Verify this entry: astro9828",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.938601
+ },
+ {
+  "text": "The record shows Continue reading",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.985402
+ },
+ {
+  "text": "  IslandPhoenix635",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.830417
+ },
+ {
+  "text": "USD 48420.00",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999915
+ },
+ {
+  "text": "4550 Laurel Ter Northgate MA 02114",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.996552
+ },
+ {
+  "text": "Retrieved record: dwalker@replyzone.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.990782
+ },
+ {
+  "text": "Retrieved record: NebulaApple463",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.956306
+ },
+ {
+  "text": "Once 3714 7971 1909 145 is validated, the request proceeds.",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.720156
+ },
+ {
+  "text": "Export results in various formats.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.998834
+ },
+ {
+  "text": "Saved value: ali.nguyen@postboxhub.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.998594
+ },
+ {
+  "text": "4920541092486877",
+  "truth": "CREDIT_CARD",
+  "pred": "API_KEY",
+  "prob": 0.370176
+ },
+ {
+  "text": "Processed item: golden*?886",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.997084
+ },
+ {
+  "text": "Matches found for 5169380901947192",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.426494
+ },
+ {
+  "text": "Can you confirm $30648.00 is correct?",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.959879
+ },
+ {
+  "text": "Reference: $881.00",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999324
+ },
+ {
+  "text": "gabrielstewart2843",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.64317
+ },
+ {
+  "text": "643-46-9833",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.657756
+ },
+ {
+  "text": "isla.walker@correspond.io",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999759
+ },
+ {
+  "text": "Lucas Johnson",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.998299
+ },
+ {
+  "text": "kreyes@relayfield",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.955589
+ },
+ {
+  "text": "7665452760",
+  "truth": "BANK_ACCOUNT",
+  "pred": "API_KEY",
+  "prob": 0.430051
+ },
+ {
+  "text": "The system recorded Account: 8905924686, Routing: 894607080 at the time of entry.",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.991867
+ },
+ {
+  "text": "The system recorded Anya Green at the time of entry.",
+  "truth": "NAME",
+  "pred": "PASSWORD",
+  "prob": 0.449315
+ },
+ {
+  "text": "USD 95288.00",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999867
+ },
+ {
+  "text": "Attached value: 487.869.1296",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.928169
+ },
+ {
+  "text": "Please provide ck-5788042086891403007581315259544288694475 to complete the process.",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.880739
+ },
+ {
+  "text": "The details for 5220 6094 7041 5393 must be double-checked.",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.511019
+ },
+ {
+  "text": "oanderson@emailcraft.org",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999724
+ },
+ {
+  "text": "Once 5111-1140-3264-5203 is validated, the request proceeds.",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.48369
+ },
+ {
+  "text": "Please provide (960) 764-3939 to complete the process.",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.902243
+ },
+ {
+  "text": "Export results in various formats.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.998834
+ },
+ {
+  "text": "Submission value: 4365 Cherry Rd Brookhaven FL 34951",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.990507
+ },
+ {
+  "text": "Welcome to our platform",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.99936
+ },
+ {
+  "text": "  chloestewart8737",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.821289
+ },
+ {
+  "text": "Reference: 365231363",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.480419
+ },
+ {
+  "text": "6011 7092 0689 3357",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.816692
+ },
+ {
+  "text": "Your input was nova_samuel",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.942117
+ },
+ {
+  "text": "Here is the detail: 5169 0708 6658 1816.",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.83354
+ },
+ {
+  "text": "Retrieved record: (790) 259-4119",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.937271
+ },
+ {
+  "text": "Reference: 2U83yD8kz1zD_06Ncql1PxnBeX.aAK2kFScCfMFLpnDwvX99Jfpe-1tFGLjPyneOodUp3ItQVQq.AuRjUwXS_iXHhjwsPIPrGzT17UpXJl1ZtDWPUf7UU",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999806
+ },
+ {
+  "text": "Matches found for +15767323345",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.917064
+ },
+ {
+  "text": "Exact match: ak-3469578489680812056556836090554265252011",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.849504
+ },
+ {
+  "text": "ID39976747",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.994183
+ },
+ {
+  "text": "The details for vqgYWKgrEdJ5FJZVrTiPVPnCqNfJ5AOLU0i3xgfZNVpCoHH0 must be double-checked.",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999985
+ },
+ {
+  "text": "Field input: USD 444.42",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999653
+ },
+ {
+  "text": "3787 1233 7118 941",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.939304
+ },
+ {
+  "text": "The record shows Leo  Morales",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.991781
+ },
+ {
+  "text": "We received the following: 1692 Zephyr Ln",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.702205
+ },
+ {
+  "text": "PT451-16388",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.994571
+ },
+ {
+  "text": "Reference: thunder@544",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.910217
+ },
+ {
+  "text": "Verify this entry: Bearer bIZWeYwkxUB_yFURomww3JUlnGddSDFJS19ek5gR",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999535
+ },
+ {
+  "text": "Please provide omar_morales20@vervecourier.com to complete the process.",
+  "truth": "EMAIL",
+  "pred": "USERNAME",
+  "prob": 0.531549
+ },
+ {
+  "text": "The record shows nRerS8ds32YBdYlJECxPhwZp_PbSGbobpOtxWDGeeRi-eMzP",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999916
+ },
+ {
+  "text": "Matches found for Browse our best sellers.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.996744
+ },
+ {
+  "text": "HC-881022  ",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.999473
+ },
+ {
+  "text": "Field input: CHART630-91810",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.993402
+ },
+ {
+  "text": "  sk_890266351136735460297118",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.998549
+ },
+ {
+  "text": "The system recorded 9847151883 at the time of entry.",
+  "truth": "BANK_ACCOUNT",
+  "pred": "SSN",
+  "prob": 0.404461
+ },
+ {
+  "text": "mgreen@postcardwave.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999511
+ },
+ {
+  "text": "Retrieved record: 2869 Ash Blvd, Fairview, AZ 85251",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.997683
+ },
+ {
+  "text": "Hillcrest, IL 61761",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.997232
+ },
+ {
+  "text": "08-04-1971",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.957333
+ },
+ {
+  "text": "+1 (975) 867-8001",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.999999
+ },
+ {
+  "text": "We need to verify 06/25/1990 before continuing.",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.917812
+ },
+ {
+  "text": "Submission value: ck-0240361265319826576380497284992116104594",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.801352
+ },
+ {
+  "text": "139 Will",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.781205
+ },
+ {
+  "text": "key-0014961779882772635246143407",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.985892
+ },
+ {
+  "text": "The matching entry is 645-943-7142",
+  "truth": "PHONE",
+  "pred": "SSN",
+  "prob": 0.561457
+ },
+ {
+  "text": "MRN903-70159  ",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.999583
+ },
+ {
+  "text": "+1844650",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.999929
+ },
+ {
+  "text": "5111 2381 1080 9870",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.985968
+ },
+ {
+  "text": "The matching entry is sk_live_00390383470032831075",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.970668
+ },
+ {
+  "text": "Saved value: knight#$178",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.872578
+ },
+ {
+  "text": "779 63 8280",
+  "truth": "SSN",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.473386
+ },
+ {
+  "text": "Once 6011-0496-4045-7336 is validated, the request proceeds.",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.497422
+ },
+ {
+  "text": "10-06-1948",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.951136
+ },
+ {
+  "text": "$38.4",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999933
+ },
+ {
+  "text": "Please provide r2rW1Nds5WMkXa.GlsiMAsXHwj3_OmhbxOTwbLThvrZrOVr.ZG1ELbOlIbJfiLducSS9MZHPjO to complete the process.",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999632
+ },
+ {
+  "text": "Sign up for a free trial",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.999924
+ },
+ {
+  "text": "10/02/1958  ",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.998765
+ },
+ {
+  "text": "Phoenix216",
+  "truth": "PASSWORD",
+  "pred": "ADDRESS",
+  "prob": 0.499099
+ },
+ {
+  "text": "Exact match: ihiCMzy-H36tP1v9xjLR8oVIA0H5YjrSBNtBK019CK819hmg",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.998032
+ },
+ {
+  "text": "phoenix#$210",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.986961
+ },
+ {
+  "text": "Matches found for mrn-279496471",
+  "truth": "MEDICAL_ID",
+  "pred": "SSN",
+  "prob": 0.510563
+ },
+ {
+  "text": "falcon",
+  "truth": "PASSWORD",
+  "pred": "NONE",
+  "prob": 0.594487
+ },
+ {
+  "text": "  epi-149798",
+  "truth": "MEDICAL_ID",
+  "pred": "CREDIT_CARD",
+  "prob": 0.564589
+ },
+ {
+  "text": "HC-326487",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.998372
+ },
+ {
+  "text": "Matches found for f5NMOl3DV-A4g3yK4H9i-p6_X1T5zXyyTRzFoSlsZ-A4pXwU",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.998346
+ },
+ {
+  "text": "olivia.silva@dispatchhub.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999785
+ },
+ {
+  "text": "The matching entry is 507 Aspen Ln",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.756281
+ },
+ {
+  "text": "\tkey-6676942455522492006645499589",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.975709
+ },
+ {
+  "text": "655-360-8922",
+  "truth": "PHONE",
+  "pred": "SSN",
+  "prob": 0.51132
+ },
+ {
+  "text": "The system recorded 5169330822907260 at the time of entry.",
+  "truth": "CREDIT_CARD",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.299401
+ },
+ {
+  "text": "We need to verify USD 62.12 before continuing.",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.983051
+ },
+ {
+  "text": "Your input was 260 63 1378",
+  "truth": "SSN",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.430745
+ },
+ {
+  "text": "Av-HYqG3F6cxFlfgRVxF5xxQJ-B4.o7YbBF87yZJb9sCheNGrbJDxe.QZtk8_F46OXTteNquWG7kam3hTphJCQPC5I4G-w ",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999998
+ },
+ {
+  "text": "The details for BananaBanana980 must be double-checked.",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.726915
+ },
+ {
+  "text": "An error occurred while processing 5220 6360 5967 4609.",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.697198
+ },
+ {
+  "text": "The details for p@ss_golden_272 must be double-checked.",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.774576
+ },
+ {
+  "text": "Verify this entry: sk_live_83658630576238494420",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.977895
+ },
+ {
+  "text": "End-to-end encryption built in.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.980625
+ },
+ {
+  "text": "+18467958701",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.997297
+ },
+ {
+  "text": "HbJ_xoSfv0DRVbzTJnL3D_L1zfUOqyZ50Hb9X0BjHQOFQ107",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999988
+ },
+ {
+  "text": "volt_aarav",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.999395
+ },
+ {
+  "text": "Reference: Export results in various formats.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.996738
+ },
+ {
+  "text": "EPI-75759995  ",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.999907
+ },
+ {
+  "text": "491099456",
+  "truth": "SSN",
+  "pred": "CREDIT_CARD",
+  "prob": 0.398981
+ },
+ {
+  "text": "Once 05/10/1983 is validated, the request proceeds.",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.945131
+ },
+ {
+  "text": "Cherry707*?",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.774086
+ },
+ {
+  "text": "Account: 842730846, Routing: 9413",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.999933
+ },
+ {
+  "text": "swift1797",
+  "truth": "USERNAME",
+  "pred": "CREDIT_CARD",
+  "prob": 0.353242
+ },
+ {
+  "text": "Can you confirm 03/26/1960 is correct?",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.949067
+ },
+ {
+  "text": "Retrieved record: Campbell, Kenji",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.997562
+ },
+ {
+  "text": "Field input: sk-62352322517928164054974209898506",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.840408
+ },
+ {
+  "text": "We received the following: Take control of your workflow",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.585769
+ },
+ {
+  "text": "Once Quartz101$ is validated, the request proceeds.",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.498212
+ },
+ {
+  "text": "An error occurred while processing Leila D. Evans.",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.742434
+ },
+ {
+  "text": "Please provide (488) 994-8382 to complete the process.",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.890422
+ },
+ {
+  "text": "206-687-6378",
+  "truth": "PHONE",
+  "pred": "SSN",
+  "prob": 0.730169
+ },
+ {
+  "text": "sofia60@notesmith.net",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999394
+ },
+ {
+  "text": "$2395.95",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.994665
+ },
+ {
+  "text": "Attached value: flux3090",
+  "truth": "USERNAME",
+  "pred": "PASSWORD",
+  "prob": 0.693547
+ },
+ {
+  "text": "Your input was adam.brown3109",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.826109
+ },
+ {
+  "text": " Isabella    Diaz",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999847
+ },
+ {
+  "text": "Processed item: $62.87",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.996378
+ },
+ {
+  "text": "Here is the detail: 4664 Nova Pl.",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.619395
+ },
+ {
+  "text": "The matching entry is Brookhaven, CA 94102",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.996377
+ },
+ {
+  "text": "RX-7913566",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.999049
+ },
+ {
+  "text": "$8498.88 ",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.981659
+ },
+ {
+  "text": "sk-75919579657651873155058020862758",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.981514
+ },
+ {
+  "text": "Processed item: 17/03/1977",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.982974
+ },
+ {
+  "text": "Reference: Terms and conditions apply.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.998627
+ },
+ {
+  "text": "d42OX0I4NUlUlXP0Zvu4aurs5OG3.YzEVH0HZUlb7fOH2q0R6FtA3u_sAKj.IniNY1YxWcAZAXQyuVOTGo6l9m86Mbex7Bho",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999736
+ },
+ {
+  "text": "_raj_1521",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.780428
+ },
+ {
+  "text": "  nadia.baker2868",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.999671
+ },
+ {
+  "text": "The details for EPI801002126 must be double-checked.",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.854299
+ },
+ {
+  "text": "An error occurred while processing HC552-49080.",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.833166
+ },
+ {
+  "text": " wJahb35b8yQ6T4X_llgGclUosNwF5Umitx-6V92zRC4GjQnR",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999869
+ },
+ {
+  "text": "Saved value: CLIN-40250487",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.991486
+ },
+ {
+  "text": "The system stored Cook, Mason",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.995431
+ },
+ {
+  "text": "The system stored Cloud sync across all devices",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.997253
+ },
+ {
+  "text": "FalconForest862",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.990814
+ },
+ {
+  "text": "The record shows sk-71984994466208198766658713865889",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.89423
+ },
+ {
+  "text": "5369 Dove Blvd, Ashton, AZ 85001",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.999035
+ },
+ {
+  "text": "722588083673 (routing 111520192)",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.999021
+ },
+ {
+  "text": "Please confirm your information: 05-07-1956",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.51557
+ },
+ {
+  "text": "  szFA56liMqDckKlRzxWmD3nhNb8QWYxilfMq18aKuBKJ2SUy",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999997
+ },
+ {
+  "text": "Update your profile with 329-13-6201",
+  "truth": "SSN",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.404298
+ },
+ {
+  "text": "4920 5337 1856 8636",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.779262
+ },
+ {
+  "text": "oscar_allen46@notevault.io",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.997241
+ },
+ {
+  "text": "tara.stewart@cloudletters.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999793
+ },
+ {
+  "text": "The system stored 3553 Maple Blvd",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.544056
+ },
+ {
+  "text": "22802197",
+  "truth": "BANK_ACCOUNT",
+  "pred": "CREDIT_CARD",
+  "prob": 0.295564
+ },
+ {
+  "text": "Exact match: Olivia Brooks",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999365
+ },
+ {
+  "text": "Exact match: 03/01/1995",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.997521
+ },
+ {
+  "text": "Field input: 05/02/1998",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.999139
+ },
+ {
+  "text": "3787 7204 7912 567",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.856912
+ },
+ {
+  "text": "Bearer GkdXp1rl4H5uURcEcYmWaPxvliW6mCcsyWYRS_Kv",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999991
+ },
+ {
+  "text": "Matches found for 14 Juniper Way Springfield FL 32011",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.940277
+ },
+ {
+  "text": "$6655.04",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.995977
+ },
+ {
+  "text": "The record shows $8614.63",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.980673
+ },
+ {
+  "text": "4556 7241 4746 5777",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.874402
+ },
+ {
+  "text": "Bearer bB4e20gtQNQIeP7ny54WdAyiXjtiFlV7pYjQpj5P",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999963
+ },
+ {
+  "text": "Please confirm your information: _noah_2718",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.978057
+ },
+ {
+  "text": "laylap35@fastnote.org",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999396
+ },
+ {
+  "text": "Once 6011-4373-1198-1561 is validated, the request proceeds.",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.53192
+ },
+ {
+  "text": "Your input was yonder%&220",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.973683
+ },
+ {
+  "text": "Submission value: CLIN17250819",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.953761
+ },
+ {
+  "text": "An error occurred while processing Jacob Garcia.",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.849782
+ },
+ {
+  "text": "$34.30",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999797
+ },
+ {
+  "text": "Retrieved record: Yuki M. Cooper",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.997947
+ },
+ {
+  "text": "Saved value: 5220919180642548",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.60411
+ },
+ {
+  "text": "The record shows 170-88-4168",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.830734
+ },
+ {
+  "text": "Attached value: 4556-5601-5034-9976",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.719586
+ },
+ {
+  "text": "Update your profile with PAT-65059409",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.970473
+ },
+ {
+  "text": "04-08-1961",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.951136
+ },
+ {
+  "text": "We received the following: niko52@mailvoyage.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.897195
+ },
+ {
+  "text": "The record shows Account: 729108090944, Routing: 400118433",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.996933
+ },
+ {
+  "text": "\tcool_aria",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.994883
+ },
+ {
+  "text": "sgarcia@quickpost.net  ",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999508
+ },
+ {
+  "text": "Update your profile with 6843 Meadow Ter, Crestview, IL 60616",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.988992
+ },
+ {
+  "text": "Verify this entry: 354 99 0837",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.592325
+ },
+ {
+  "text": "Exact match: 677-11-1105",
+  "truth": "SSN",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.810275
+ },
+ {
+  "text": "The system recorded lucas_hill95@postwise.io at the time of entry.",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.410565
+ },
+ {
+  "text": "  omare61@mailharbor.net",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999485
+ },
+ {
+  "text": "The system recorded rk-4830162496792402422061941236458490700344 at the time of entry.",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.857319
+ },
+ {
+  "text": "$6193.00",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999368
+ },
+ {
+  "text": "455 456 5195",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.247493
+ },
+ {
+  "text": "We need to verify E_vZxBwAGAHxhvNG2Bg8-qjohV.LG3H_-IeNPZd1c8nLQSl-X3oXdKOlffmL5uK.Y-DLVAgTtrSTzV-Yl2Ny3VxoIHQZERfglrW5bt5pg before continuing.",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999899
+ },
+ {
+  "text": "+13714621833",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.994704
+ },
+ {
+  "text": "sk-89953018857696873290092009908276",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.98382
+ },
+ {
+  "text": "The details for samuel20@orbyte.io must be double-checked.",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.882135
+ },
+ {
+  "text": "Update your profile with nova1332",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.600663
+ },
+ {
+  "text": "sk_746465450176025672253307",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.998501
+ },
+ {
+  "text": "704-60-7841",
+  "truth": "SSN",
+  "pred": "CREDIT_CARD",
+  "prob": 0.535
+ },
+ {
+  "text": "Your input was omar.silva@notenest.org",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999259
+ },
+ {
+  "text": "Verify this entry: +1 (628) 662-6526",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.999619
+ },
+ {
+  "text": "Hall,\tMia  ",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999726
+ },
+ {
+  "text": "An error occurred while processing USD 585.54.",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.989785
+ },
+ {
+  "text": "Jungle966& ",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.999969
+ },
+ {
+  "text": "  p@ss_crystal_191",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.99755
+ },
+ {
+  "text": "Terms   and   conditions   apply.  ",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.99964
+ },
+ {
+  "text": " $275.57",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.998934
+ },
+ {
+  "text": "Here is the detail: 17/09/1973.",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.989687
+ },
+ {
+  "text": "The system recorded priya.anderson@courierdash.org at the time of entry.",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.914952
+ },
+ {
+  "text": "Here is the detail: Riverside, WA 98802.",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.991623
+ },
+ {
+  "text": "Smith, Vivian",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999894
+ },
+ {
+  "text": "Exact match: Aria Evans",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.995671
+ },
+ {
+  "text": "Attached value: 858-230-2544",
+  "truth": "PHONE",
+  "pred": "SSN",
+  "prob": 0.864617
+ },
+ {
+  "text": "02/04/1991",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.999897
+ },
+ {
+  "text": "Can you confirm 717-79-7668 is correct?",
+  "truth": "SSN",
+  "pred": "SSN",
+  "prob": 0.361507
+ },
+ {
+  "text": "21/06/1976",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.995615
+ },
+ {
+  "text": "Entry recorded as zara_anderson66@inboxpeak.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.942792
+ },
+ {
+  "text": "Enjoy 20% off your next purchase",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.99893
+ },
+ {
+  "text": "Ines Johnson",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.991541
+ },
+ {
+  "text": "CLIN140-64775  ",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.999651
+ },
+ {
+  "text": "83766575 (routing 422094547)",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.998348
+ },
+ {
+  "text": "The system recorded 572029631815 (routing 936201478) at the time of entry.",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.979655
+ },
+ {
+  "text": "617-688-1772",
+  "truth": "PHONE",
+  "pred": "CREDIT_CARD",
+  "prob": 0.501973
+ },
+ {
+  "text": "Account: 3462062596, Routing: 308714889",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.999776
+ },
+ {
+  "text": "1940-10-15",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.994049
+ },
+ {
+  "text": "5052 Willow Ct",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.990697
+ },
+ {
+  "text": "The details for olivers78@maildrop.net must be double-checked.",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.819937
+ },
+ {
+  "text": "Here is the detail: autumn&935.",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.896012
+ },
+ {
+  "text": "Learn more about our prod",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.999779
+ },
+ {
+  "text": "Reference: crystal@25",
+  "truth": "PASSWORD",
+  "pred": "EMAIL",
+  "prob": 0.535885
+ },
+ {
+  "text": "The system recorded USD 39972.00 at the time of entry.",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.978277
+ },
+ {
+  "text": "sk_316043667652491393509335",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.99836
+ },
+ {
+  "text": "+1\t(218)\t899-3711 ",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.999999
+ },
+ {
+  "text": "We need to verify Privacy policy available on request. before continuing.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.978948
+ },
+ {
+  "text": "Can you confirm 6857 Vale Ave is correct?",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.771749
+ },
+ {
+  "text": "$555.04",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999039
+ },
+ {
+  "text": "The details for sk-47499716084171426732365950744122 must be double-checked.",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.6969
+ },
+ {
+  "text": "The details for $486.39 must be double-checked.",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.95072
+ },
+ {
+  "text": "Entry recorded as 1742 Harbor St, Whitfield, MA 02114",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.997686
+ },
+ {
+  "text": "Saved value: Liam Young",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.988262
+ },
+ {
+  "text": "omar74@mailbox.com",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.999939
+ },
+ {
+  "text": "Turner, Isla",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999722
+ },
+ {
+  "text": "An error occurred while processing 08-24-1986.",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.479009
+ },
+ {
+  "text": "Retrieved record: 6114 Pine Ave, Oakmont, FL 34951",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.999277
+ },
+ {
+  "text": "Attached value: Nora Hall",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.997105
+ },
+ {
+  "text": "597767121",
+  "truth": "SSN",
+  "pred": "CREDIT_CARD",
+  "prob": 0.377025
+ },
+ {
+  "text": "sk_live_38445691265407801436 ",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.999754
+ },
+ {
+  "text": "Please provide Anika C. Campbell to complete the process.",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.972648
+ },
+ {
+  "text": "The details for key-9541077931257186122704765513 must be double-checked.",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.655643
+ },
+ {
+  "text": "Clark, Omar",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999498
+ },
+ {
+  "text": " Diego   Morales",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.999388
+ },
+ {
+  "text": "mroberts@postcardwav",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.917946
+ },
+ {
+  "text": "08-13-1961",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.928586
+ },
+ {
+  "text": "Details provided: $50.85",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.998558
+ },
+ {
+  "text": "Reference: RX-82039161",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.995259
+ },
+ {
+  "text": "Processed item: 846.787.6620",
+  "truth": "PHONE",
+  "pred": "PHONE",
+  "prob": 0.86943
+ },
+ {
+  "text": "Verify this entry: Download the mobile app today",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.997526
+ },
+ {
+  "text": "sk_9469745057369076752945",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.998939
+ },
+ {
+  "text": "sk_748077879452136731493326",
+  "truth": "API_KEY",
+  "pred": "API_KEY",
+  "prob": 0.998497
+ },
+ {
+  "text": "The record shows aishat95@notenest.org",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.991695
+ },
+ {
+  "text": "Terms and conditions apply.",
+  "truth": "NONE",
+  "pred": "NONE",
+  "prob": 0.99964
+ },
+ {
+  "text": "Entry recorded as 04/22/1997",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.990149
+ },
+ {
+  "text": "Once gabriel_roberts94@letterway.org is validated, the request proceeds.",
+  "truth": "EMAIL",
+  "pred": "EMAIL",
+  "prob": 0.838963
+ },
+ {
+  "text": "Account: 61124049, Routing: 775826557",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.999808
+ },
+ {
+  "text": "Exact match: 2009-11-25",
+  "truth": "DATE_OF_BIRTH",
+  "pred": "DATE_OF_BIRTH",
+  "prob": 0.98999
+ },
+ {
+  "text": "Saved value: USD 2189.00",
+  "truth": "FINANCIAL_DATA",
+  "pred": "FINANCIAL_DATA",
+  "prob": 0.999016
+ },
+ {
+  "text": "Retrieved record: Clark, Rosa",
+  "truth": "NAME",
+  "pred": "NAME",
+  "prob": 0.991896
+ },
+ {
+  "text": "7793 Birch St, Fairview, FL ",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.998019
+ },
+ {
+  "text": "Once 907825462/267740743 is validated, the request proceeds.",
+  "truth": "BANK_ACCOUNT",
+  "pred": "BANK_ACCOUNT",
+  "prob": 0.312806
+ },
+ {
+  "text": "Retrieved record: p@ss_harbor_517",
+  "truth": "PASSWORD",
+  "pred": "PASSWORD",
+  "prob": 0.747129
+ },
+ {
+  "text": "Bearer\t8ppXTt62qYXSZP59Yd39xJ6OKMuA-BIRRNcj4m1N  ",
+  "truth": "AUTH_TOKEN",
+  "pred": "AUTH_TOKEN",
+  "prob": 0.999984
+ },
+ {
+  "text": "Matches found for PT38266565",
+  "truth": "MEDICAL_ID",
+  "pred": "MEDICAL_ID",
+  "prob": 0.981514
+ },
+ {
+  "text": "2198 Rosewood Ave, Stonebridge, CA 94102",
+  "truth": "ADDRESS",
+  "pred": "ADDRESS",
+  "prob": 0.998976
+ },
+ {
+  "text": "adamanderson552",
+  "truth": "USERNAME",
+  "pred": "USERNAME",
+  "prob": 0.920833
+ },
+ {
+  "text": "Attached value: 6509 0687 4991 0120",
+  "truth": "CREDIT_CARD",
+  "pred": "CREDIT_CARD",
+  "prob": 0.778187
+ }
+]

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthGov - Citizen Portal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.6; }
+    .gov-header { background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: #fff; padding: 0; }
+    .gov-topbar { background: rgba(0,0,0,0.15); padding: 0.3rem 2rem; font-size: 0.7rem; display: flex; justify-content: space-between; }
+    .gov-nav { padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .gov-nav .emblem { display: flex; align-items: center; gap: 0.75rem; }
+    .gov-nav .emblem-icon { width: 44px; height: 44px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+    .gov-nav .emblem-text h1 { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; }
+    .gov-nav .emblem-text p { font-size: 0.7rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+    .gov-nav nav a { color: rgba(255,255,255,0.85); text-decoration: none; margin-left: 1.5rem; font-size: 0.85rem; font-weight: 500; }
+    .gov-nav nav a:hover { color: #fff; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem; }
+    .breadcrumb { font-size: 0.8rem; color: #999; margin-bottom: 1rem; }
+    .breadcrumb a { color: #1a237e; text-decoration: none; }
+    .citizen-header { background: #fff; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; display: flex; gap: 1.5rem; }
+    .citizen-avatar { width: 72px; height: 72px; background: linear-gradient(135deg, #1a237e, #0d47a1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; font-weight: 700; flex-shrink: 0; }
+    .citizen-details h2 { font-size: 1.3rem; font-weight: 700; color: #1a237e; }
+    .citizen-details .subtitle { color: #666; font-size: 0.85rem; }
+    .citizen-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.75rem; }
+    .meta-item .label { font-size: 0.65rem; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
+    .meta-item .value { font-size: 0.9rem; font-weight: 600; color: #333; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .card { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; }
+    .card h3 { font-size: 0.95rem; font-weight: 700; color: #1a237e; margin-bottom: 1rem; border-bottom: 2px solid #e8eaf6; padding-bottom: 0.5rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: #666; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.3px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.65rem 0.85rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.9rem; font-family: inherit; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #1a237e; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+    .btn { padding: 0.7rem 1.5rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+    .btn-primary { background: #1a237e; color: #fff; }
+    .btn-primary:hover { background: #283593; }
+    .btn-secondary { background: #e8eaf6; color: #1a237e; }
+    .upload-zone { border: 2px dashed #c5cae9; border-radius: 10px; padding: 2rem; text-align: center; color: #7986cb; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+    .upload-zone:hover { border-color: #1a237e; background: #f5f5ff; }
+    .upload-zone .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem; }
+    th { font-weight: 600; color: #666; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3px; background: #f8f9fa; }
+    .status-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; }
+    .status-pending { background: #fff3e0; color: #e65100; }
+    .status-approved { background: #e8f5e9; color: #2e7d32; }
+    .status-filed { background: #e3f2fd; color: #1565c0; }
+    footer { background: #1a237e; color: rgba(255,255,255,0.7); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; margin-top: 2rem; }
+    footer a { color: #90caf9; text-decoration: none; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .container { padding: 1rem; } .citizen-header { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <header class="gov-header">
+    <div class="gov-topbar">
+      <span>Official Government Portal of Synth Republic</span>
+      <span>Last Login: Sep 6, 2026 09:15 IST</span>
+    </div>
+    <div class="gov-nav">
+      <div class="emblem">
+        <div class="emblem-icon">&#9733;</div>
+        <div class="emblem-text">
+          <h1>SynthGov Citizen Portal</h1>
+          <p>Digital India Initiative</p>
+        </div>
+      </div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Services</a>
+        <a href="#">Documents</a>
+        <a href="#">Tax Filing</a>
+        <a href="#">Grievances</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="breadcrumb"><a href="#">Home</a> / <a href="#">Citizen Dashboard</a> / My Profile</div>
+
+    <div class="citizen-header" data-testid="citizen-header">
+      <div class="citizen-avatar">PN</div>
+      <div class="citizen-details">
+        <h2 data-testid="citizen-name">Patricia Nguyen</h2>
+        <div class="subtitle">Verified Citizen &mdash; <span class="status-badge status-approved">KYC Verified</span></div>
+        <div class="citizen-meta">
+          <div class="meta-item">
+            <div class="label">Aadhaar Number</div>
+            <div class="value" data-testid="aadhaar-number">2847 1936 5824</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">PAN Number</div>
+            <div class="value" data-testid="pan-number">CZAPN5824M</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Passport</div>
+            <div class="value" data-testid="passport-number">P8472916</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Date of Birth</div>
+            <div class="value" data-testid="citizen-dob">25/06/1985</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Phone</div>
+            <div class="value" data-testid="citizen-phone">+91-98765-43210</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Email</div>
+            <div class="value" data-testid="citizen-email">patricia.nguyen@gov-synth.in</div>
+          </div>
+          <div class="meta-item">
+            <div class="label">Address</div>
+            <div class="value" data-testid="citizen-address">42 Rajiv Gandhi Nagar, New Delhi 110001</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Tax Filing - AY 2026-27</h3>
+        <form data-testid="tax-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pan">PAN</label>
+              <input type="text" id="pan" name="pan" value="CZAPN5824M" data-testid="tax-pan" readonly>
+            </div>
+            <div class="form-group">
+              <label for="filing-status">Filing Status</label>
+              <select id="filing-status" name="filing_status">
+                <option selected>Individual</option>
+                <option>HUF</option>
+                <option>Partnership</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="gross-income">Gross Annual Income</label>
+              <input type="text" id="gross-income" name="gross_income" value="18,50,000" data-testid="gross-income">
+            </div>
+            <div class="form-group">
+              <label for="tax-paid">Tax Already Paid (TDS)</label>
+              <input type="text" id="tax-paid" name="tax_paid" value="2,84,500" data-testid="tax-paid">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="employer">Employer Name</label>
+            <input type="text" id="employer" name="employer" value="SynthTech Solutions Pvt. Ltd.">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bank-account">Bank Account (for refund)</label>
+              <input type="text" id="bank-account" name="bank_account" value="****8472" data-testid="tax-bank-account">
+            </div>
+            <div class="form-group">
+              <label for="ifsc">IFSC Code</label>
+              <input type="text" id="ifsc" name="ifsc" value="SYNB0001234">
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" data-testid="file-tax">File ITR</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Document Upload</h3>
+        <div class="upload-zone" data-testid="upload-zone">
+          <div class="icon">&#128194;</div>
+          <p><strong>Drag & drop files here</strong></p>
+          <p>or click to browse</p>
+          <p style="font-size:0.7rem;margin-top:0.5rem;">Accepted: PDF, JPG, PNG (Max 5MB each)</p>
+        </div>
+        <div style="margin-top:1rem;">
+          <h3 style="font-size:0.85rem;margin-bottom:0.5rem;">Uploaded Documents</h3>
+          <table data-testid="documents-table">
+            <thead><tr><th>Document</th><th>Type</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Aadhaar Card</td><td>ID Proof</td><td>01/01/2026</td><td><span class="status-badge status-approved">Verified</span></td></tr>
+              <tr><td>PAN Card</td><td>Tax ID</td><td>01/01/2026</td><td><span class="status-badge status-approved">Verified</span></td></tr>
+              <tr><td>Form 16 (2025-26)</td><td>Income</td><td>15/07/2026</td><td><span class="status-badge status-approved">Verified</span></td></tr>
+              <tr><td>Bank Statement</td><td>Financial</td><td>01/09/2026</td><td><span class="status-badge status-pending">Pending</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Tax Filing History</h3>
+      <table data-testid="tax-history">
+        <thead><tr><th>Assessment Year</th><th>Filing Date</th><th>Gross Income</th><th>Tax Paid</th><th>Refund/Due</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>2025-26</td><td>15/07/2025</td><td>&#8377;16,80,000</td><td>&#8377;2,54,200</td><td>Refund &#8377;12,400</td><td><span class="status-badge status-approved">Processed</span></td></tr>
+          <tr><td>2024-25</td><td>20/07/2024</td><td>&#8377;15,20,000</td><td>&#8377;2,24,600</td><td>Due &#8377;3,800</td><td><span class="status-badge status-approved">Processed</span></td></tr>
+          <tr><td>2023-24</td><td>10/07/2023</td><td>&#8377;14,50,000</td><td>&#8377;2,10,500</td><td>Refund &#8377;8,200</td><td><span class="status-badge status-approved">Processed</span></td></tr>
+          <tr><td>2026-27</td><td>&mdash;</td><td>&#8377;18,50,000</td><td>&#8377;2,84,500</td><td>&mdash;</td><td><span class="status-badge status-filed">Filed</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <p>SynthGov Citizen Portal &mdash; Synthetic Government Data for Privacy Detection Research</p>
+    <p style="margin-top:0.3rem;">This is a test page. All Aadhaar, PAN, and passport numbers are completely fictional.</p>
+    <p style="margin-top:0.3rem;"><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> | <a href="#">RTI</a> | <a href="#">Grievance Redressal</a></p>
+  </footer>
+</body>
+</html>

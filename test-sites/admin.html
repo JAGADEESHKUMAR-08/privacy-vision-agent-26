@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthBank Admin - Dashboard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; min-height: 100vh; }
+    .layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    .sidebar { background: #1e293b; padding: 1.5rem 0; border-right: 1px solid #334155; }
+    .sidebar .brand { padding: 0 1.25rem; margin-bottom: 2rem; }
+    .sidebar .brand h2 { font-size: 1.1rem; font-weight: 700; color: #f1f5f9; }
+    .sidebar .brand h2 span { color: #f97316; }
+    .sidebar .brand .sub { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+    .sidebar nav a { display: block; padding: 0.6rem 1.25rem; color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; }
+    .sidebar nav a:hover, .sidebar nav a.active { background: #334155; color: #f1f5f9; }
+    .sidebar nav a.active { border-left: 3px solid #f97316; }
+    .main { padding: 1.5rem 2rem; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+    .topbar h1 { font-size: 1.3rem; font-weight: 700; }
+    .admin-badge { display: flex; align-items: center; gap: 0.5rem; }
+    .admin-badge .avatar { width: 34px; height: 34px; background: #f97316; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; }
+    .admin-badge .email { font-size: 0.8rem; color: #94a3b8; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat-card { background: #1e293b; border-radius: 10px; padding: 1.25rem; border: 1px solid #334155; }
+    .stat-card .label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-card .value { font-size: 1.8rem; font-weight: 700; color: #f1f5f9; margin: 0.25rem 0; }
+    .stat-card .change { font-size: 0.8rem; }
+    .change.up { color: #22c55e; }
+    .change.down { color: #ef4444; }
+    .card { background: #1e293b; border-radius: 12px; padding: 1.25rem; border: 1px solid #334155; margin-bottom: 1.5rem; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .card-header h3 { font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid #334155; font-size: 0.85rem; }
+    th { color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; }
+    tr:hover { background: rgba(255,255,255,0.02); }
+    .role-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; }
+    .role-admin { background: rgba(249,115,22,0.15); color: #f97316; }
+    .role-editor { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .role-viewer { background: rgba(100,116,139,0.15); color: #94a3b8; }
+    .key-display { display: grid; gap: 0.75rem; }
+    .key-item { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 0.75rem 1rem; }
+    .key-item .key-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem; }
+    .key-item .key-value { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.8rem; color: #f97316; word-break: break-all; }
+    .log-list { list-style: none; }
+    .log-list li { padding: 0.5rem 0; border-bottom: 1px solid #334155; font-size: 0.8rem; display: flex; gap: 0.75rem; }
+    .log-list .time { color: #64748b; min-width: 70px; font-family: 'SF Mono', monospace; }
+    .log-list .msg { color: #94a3b8; }
+    .log-list .level { padding: 1px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+    .level-info { background: rgba(59,130,246,0.15); color: #60a5fa; }
+    .level-warn { background: rgba(234,179,8,0.15); color: #facc15; }
+    .level-error { background: rgba(239,68,68,0.15); color: #f87171; }
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 0.75rem; }
+    .form-group label { display: block; font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem; }
+    .form-group input, .form-group select { width: 100%; padding: 0.6rem 0.8rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; font-size: 0.85rem; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #f97316; }
+    .btn { padding: 0.6rem 1.5rem; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    .btn-primary { background: #f97316; color: #fff; }
+    .btn-primary:hover { background: #ea580c; }
+    @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>Synth<span>Bank</span></h2>
+        <div class="sub">Admin Panel</div>
+      </div>
+      <nav>
+        <a href="#" class="active">Dashboard</a>
+        <a href="#">Users</a>
+        <a href="#">Transactions</a>
+        <a href="#">API Keys</a>
+        <a href="#">System Logs</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <h1>System Dashboard</h1>
+        <div class="admin-badge">
+          <span class="email" data-testid="admin-email">admin@synthbank.example.com</span>
+          <div class="avatar">AD</div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="label">Total Users</div><div class="value">24,847</div><div class="change up">+12.3%</div></div>
+        <div class="stat-card"><div class="label">Transactions Today</div><div class="value">3,421</div><div class="change up">+5.7%</div></div>
+        <div class="stat-card"><div class="label">Revenue</div><div class="value">$847K</div><div class="change up">+18.2%</div></div>
+        <div class="stat-card"><div class="label">Error Rate</div><div class="value">0.12%</div><div class="change down">-0.03%</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>API Keys & Credentials</h3>
+        </div>
+        <div class="key-display" data-testid="api-keys-panel">
+          <div class="key-item">
+            <div class="key-label">Stripe Live Key</div>
+            <div class="key-value" data-testid="stripe-key">STRIPE_TEST_KEY_REDACTION_FIXTURE</div>
+          </div>
+          <div class="key-item">
+            <div class="key-label">AWS Access Key</div>
+            <div class="key-value" data-testid="aws-key">AKIAIOSFODNN7EXAMPLE</div>
+          </div>
+          <div class="key-item">
+            <div class="key-label">Database Connection URL</div>
+            <div class="key-value" data-testid="database-url">postgresql://admin:P@ssw0rd123@db.synth.internal:5432/production</div>
+          </div>
+          <div class="key-item">
+            <div class="key-label">JWT Secret</div>
+            <div class="key-value" data-testid="jwt-secret">jwt_secret_super_secret_key_2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>User Management</h3>
+        </div>
+        <table data-testid="users-table">
+          <thead>
+            <tr><th>User</th><th>Email</th><th>Role</th><th>Status</th><th>Last Active</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Robert Mitchell</td><td>robert.mitchell@synthmail.com</td><td><span class="role-badge role-admin">Admin</span></td><td>Active</td><td>2 min ago</td></tr>
+            <tr><td>Sarah Chen</td><td>sarah.chen@synthmail.io</td><td><span class="role-badge role-editor">Editor</span></td><td>Active</td><td>15 min ago</td></tr>
+            <tr><td>James Rodriguez</td><td>j.rodriguez@synthmail.com</td><td><span class="role-badge role-viewer">Viewer</span></td><td>Active</td><td>1 hour ago</td></tr>
+            <tr><td>Emily Watson</td><td>dr.watson@medsynth.health</td><td><span class="role-badge role-editor">Editor</span></td><td>Away</td><td>3 hours ago</td></tr>
+            <tr><td>Patricia Nguyen</td><td>patricia.nguyen@gov-synth.in</td><td><span class="role-badge role-viewer">Viewer</span></td><td>Offline</td><td>2 days ago</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="two-col-grid">
+        <div class="card">
+          <div class="card-header"><h3>System Logs</h3></div>
+          <ul class="log-list" data-testid="system-logs">
+            <li><span class="time">14:32:07</span><span class="level level-info">INFO</span><span class="msg">User login: admin@synthbank.example.com</span></li>
+            <li><span class="time">14:31:45</span><span class="level level-warn">WARN</span><span class="msg">Rate limit approaching for IP 192.168.1.45</span></li>
+            <li><span class="time">14:30:22</span><span class="level level-info">INFO</span><span class="msg">Transaction processed: $1,847.50 (TXN-48291)</span></li>
+            <li><span class="time">14:28:11</span><span class="level level-error">ERROR</span><span class="msg">Payment gateway timeout - retrying</span></li>
+            <li><span class="time">14:25:03</span><span class="level level-info">INFO</span><span class="msg">Database backup completed successfully</span></li>
+            <li><span class="time">14:22:58</span><span class="level level-warn">WARN</span><span class="msg">SSL certificate expires in 14 days</span></li>
+            <li><span class="time">14:20:00</span><span class="level level-info">INFO</span><span class="msg">Health check: all services operational</span></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>System Settings</h3></div>
+          <form data-testid="admin-settings-form">
+            <div class="settings-grid">
+              <div class="form-group">
+                <label for="app-name">Application Name</label>
+                <input type="text" id="app-name" name="app_name" value="SynthBank Production">
+              </div>
+              <div class="form-group">
+                <label for="env">Environment</label>
+                <select id="env" name="environment">
+                  <option>Production</option>
+                  <option>Staging</option>
+                  <option>Development</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="max-session">Max Session (min)</label>
+                <input type="number" id="max-session" name="max_session" value="30">
+              </div>
+              <div class="form-group">
+                <label for="rate-limit">Rate Limit (req/min)</label>
+                <input type="number" id="rate-limit" name="rate_limit" value="1000">
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" data-testid="save-settings">Save Settings</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

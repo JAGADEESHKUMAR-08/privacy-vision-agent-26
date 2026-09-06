@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SynthPay - Payment</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f7; color: #1d1d1f; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: #1d1d1f; color: #fff; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .header .brand { font-size: 1.2rem; font-weight: 700; }
+    .header .brand span { color: #30d158; }
+    .header .secure { font-size: 0.8rem; color: #86868b; display: flex; align-items: center; gap: 0.4rem; }
+    .main { flex: 1; max-width: 520px; width: 100%; margin: 2rem auto; padding: 0 1rem; }
+    .payment-card { background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+    .payment-header { background: linear-gradient(135deg, #1d1d1f 0%, #2d2d30 100%); color: #fff; padding: 1.5rem 2rem; }
+    .payment-header h1 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .payment-header .merchant { color: #86868b; font-size: 0.85rem; }
+    .payment-amount { font-size: 2.5rem; font-weight: 800; margin-top: 0.75rem; }
+    .payment-body { padding: 2rem; }
+    .section-label { font-size: 0.75rem; font-weight: 700; color: #86868b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #555; margin-bottom: 0.3rem; }
+    .form-group input { width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e5e7; border-radius: 10px; font-size: 0.95rem; transition: border-color 0.2s; }
+    .form-group input:focus { outline: none; border-color: #30d158; box-shadow: 0 0 0 3px rgba(48,209,88,0.1); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-row-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem; }
+    .divider { border: none; border-top: 1px solid #e5e5e7; margin: 1.5rem 0; }
+    .summary-row { display: flex; justify-content: space-between; padding: 0.4rem 0; font-size: 0.9rem; }
+    .summary-row.total { font-weight: 700; font-size: 1.1rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 2px solid #e5e5e7; }
+    .btn-pay { width: 100%; padding: 1rem; background: #30d158; color: #fff; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 700; cursor: pointer; margin-top: 1.5rem; transition: all 0.2s; }
+    .btn-pay:hover { background: #28b44a; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(48,209,88,0.3); }
+    .secure-footer { text-align: center; margin-top: 1rem; font-size: 0.75rem; color: #86868b; }
+    .secure-footer a { color: #30d158; text-decoration: none; }
+    footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: #999; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">Synth<span>Pay</span></div>
+    <div class="secure">&#128274; Secure Payment</div>
+  </header>
+
+  <main class="main">
+    <div class="payment-card">
+      <div class="payment-header">
+        <h1>Annual Software License</h1>
+        <div class="merchant">Payment to SynthSoft Inc.</div>
+        <div class="payment-amount" data-testid="payment-amount">$1,847.50</div>
+      </div>
+      <div class="payment-body">
+        <div class="section-label">Payment Details</div>
+        <form data-testid="payment-form">
+          <div class="form-group">
+            <label for="card-name">Name on Card</label>
+            <input type="text" id="card-name" name="card_name" value="Victoria Singh" data-testid="payer-name" autocomplete="cc-name">
+          </div>
+          <div class="form-group">
+            <label for="card-number">Card Number</label>
+            <input type="text" id="card-number" name="card_number" value="5425 2334 4412 5556" data-testid="card-number" autocomplete="cc-number" maxlength="19">
+          </div>
+          <div class="form-row-3">
+            <div class="form-group">
+              <label for="exp-month">Expiry</label>
+              <input type="text" id="exp-month" name="expiry" value="11/27" data-testid="card-expiry" placeholder="MM/YY" maxlength="5">
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV</label>
+              <input type="password" id="cvv" name="cvv" value="924" data-testid="card-cvv" maxlength="4" autocomplete="cc-csc">
+            </div>
+            <div class="form-group">
+              <label for="zip">Zip Code</label>
+              <input type="text" id="zip" name="zip" value="98101" data-testid="billing-zip" maxlength="5">
+            </div>
+          </div>
+
+          <hr class="divider">
+          <div class="section-label">Billing Address</div>
+          <div class="form-group">
+            <label for="address">Street Address</label>
+            <input type="text" id="address" name="address" value="456 Pine Road, Seattle, WA 98101" data-testid="billing-address" autocomplete="street-address">
+          </div>
+          <div class="form-group">
+            <label for="email">Email for Receipt</label>
+            <input type="email" id="email" name="email" value="v.singh@synthmail.org" data-testid="payer-email" autocomplete="email">
+          </div>
+
+          <hr class="divider">
+          <div class="summary-row"><span>Software License (Annual)</span><span>$1,847.50</span></div>
+          <div class="summary-row"><span>Tax</span><span>$0.00</span></div>
+          <div class="summary-row total"><span>Total</span><span data-testid="total-amount">$1,847.50</span></div>
+
+          <button type="submit" class="btn-pay" data-testid="pay-button">Pay $1,847.50</button>
+        </form>
+        <div class="secure-footer">
+          &#128274; Secured with 256-bit SSL encryption<br>
+          <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a> | <a href="#">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>SynthPay &copy; 2026 &mdash; Synthetic payment data for privacy detection testing.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Vision - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-logo">
+        <svg width="40" height="40" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7c3aed"/>
+              <stop offset="100%" stop-color="#4f46e5"/>
+            </linearGradient>
+          </defs>
+          <path d="M64 12 L104 28 L104 62 C104 92 86 108 64 116 C42 108 24 92 24 62 L24 28 Z" fill="url(#lg)"/>
+          <path d="M48 56 L48 46 C48 36 55 30 64 30 C73 30 80 36 80 46 L80 56" stroke="white" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <rect x="40" y="54" width="48" height="36" rx="7" fill="white"/>
+          <circle cx="64" cy="70" r="5" fill="#4f46e5"/>
+          <path d="M61 70 L61 82 A3 3 0 0 0 67 82 L67 70 Z" fill="#4f46e5"/>
+        </svg>
+        <div>
+          <h1>Privacy Vision Agent</h1>
+          <p class="header-sub">Settings &amp; Configuration</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="settings-group">
+      <h2>General</h2>
+      <div class="settings-list">
+        <label class="toggle" for="enabled">
+          <input type="checkbox" id="enabled" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">
+            <span class="toggle-title">Enable Privacy Vision</span>
+            <span class="toggle-desc">Master switch for the extension's detection pipeline.</span>
+          </span>
+        </label>
+        <label class="toggle" for="autoScan">
+          <input type="checkbox" id="autoScan" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">
+            <span class="toggle-title">Auto-scan pages on load</span>
+            <span class="toggle-desc">Automatically analyze a page shortly after it loads.</span>
+          </span>
+        </label>
+        <div class="field">
+          <label for="scanInterval">Scan Interval (ms)</label>
+          <div class="field-control">
+            <input type="number" id="scanInterval" value="5000" min="1000" max="30000" step="500">
+            <span class="field-hint">How often to re-scan dynamic content (1000-30000).</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="settings-group">
+      <h2>Detection Sources</h2>
+      <div class="settings-list">
+        <label class="toggle" for="enableOCR">
+          <input type="checkbox" id="enableOCR" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">
+            <span class="toggle-title">Enable OCR Detection</span>
+            <span class="toggle-desc">Use Tesseract.js to read PII from screenshots and images.</span>
+          </span>
+        </label>
+        <label class="toggle" for="enableDOM">
+          <input type="checkbox" id="enableDOM" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">
+            <span class="toggle-title">Enable DOM Analysis</span>
+            <span class="toggle-desc">Inspect page DOM structure for forms, fields, and linked text.</span>
+          </span>
+        </label>
+        <label class="toggle" for="enableVision">
+          <input type="checkbox" id="enableVision">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">
+            <span class="toggle-title">Enable Vision Model</span>
+            <span class="toggle-desc">Use a computer-vision model for detection when available.</span>
+          </span>
+        </label>
+      </div>
+    </section>
+
+    <section class="settings-group">
+      <h2>Privacy</h2>
+      <div class="settings-list">
+        <label class="toggle" for="enableFirewall">
+          <input type="checkbox" id="enableFirewall" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">
+            <span class="toggle-title">Enable Privacy Firewall</span>
+            <span class="toggle-desc">Block or sanitize outbound requests that contain PII.</span>
+          </span>
+        </label>
+        <div class="field">
+          <label for="riskThreshold">Risk Threshold</label>
+          <div class="field-control">
+            <select id="riskThreshold">
+              <option value="LOW">Low - Redact everything detected</option>
+              <option value="MEDIUM" selected>Medium - Redact MEDIUM and above</option>
+              <option value="HIGH">High - Only redact HIGH and CRITICAL</option>
+              <option value="CRITICAL">Critical - Only redact CRITICAL</option>
+            </select>
+            <span class="field-hint">Minimum risk level that triggers redaction.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="settings-group">
+      <h2>Redaction Methods</h2>
+      <div class="redaction-methods" id="redactionMethods">
+        <!-- Populated dynamically by options.js -->
+      </div>
+    </section>
+
+    <section class="settings-group">
+      <h2>UI</h2>
+      <div class="settings-list">
+        <div class="field">
+          <label for="theme">Theme</label>
+          <div class="field-control">
+            <select id="theme">
+              <option value="dark" selected>Dark</option>
+              <option value="light">Light</option>
+              <option value="system">System</option>
+            </select>
+            <span class="field-hint">Color scheme for the extension popup and options page.</span>
+          </div>
+        </div>
+        <label class="toggle" for="enableLogging">
+          <input type="checkbox" id="enableLogging" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">
+            <span class="toggle-title">Enable Audit Logging</span>
+            <span class="toggle-desc">Record privacy decisions and detections in the audit log.</span>
+          </span>
+        </label>
+        <div class="field">
+          <label for="maxLogEntries">Max Log Entries</label>
+          <div class="field-control">
+            <input type="number" id="maxLogEntries" value="200" min="50" max="1000" step="50">
+            <span class="field-hint">How many entries to keep in the audit log (50-1000).</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button class="btn primary" id="saveBtn">Save Settings</button>
+      <button class="btn secondary" id="resetBtn">Reset to Defaults</button>
+      <button class="btn secondary" id="exportBtn">Export Settings</button>
+    </div>
+
+    <div class="status" id="statusMsg"></div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

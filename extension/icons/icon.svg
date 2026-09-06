@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="lockBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e0e7ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#312e81" flood-opacity="0.5"/>
+    </filter>
+    <filter id="innerGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"/>
+      <feOffset dx="0" dy="2" result="offsetBlur"/>
+      <feFlood flood-color="#a78bfa" flood-opacity="0.6" result="color"/>
+      <feComposite in="color" in2="offsetBlur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Shield body -->
+  <path d="M64 12 C64 12 24 28 24 28 L24 62 C24 92 42 108 64 116 C86 108 104 92 104 62 L104 28 Z"
+        fill="url(#shieldGrad)"
+        stroke="#4f46e5"
+        stroke-width="3"
+        filter="url(#shadow)"/>
+
+  <!-- Shield inner highlight -->
+  <path d="M64 22 C64 22 32 35 32 35 L32 60 C32 85 47 99 64 106 C81 99 96 85 96 60 L96 35 Z"
+        fill="none"
+        stroke="#a5b4fc"
+        stroke-width="2"
+        stroke-opacity="0.7"/>
+
+  <!-- Lock shackle -->
+  <path d="M48 56 L48 46 C48 36 55 30 64 30 C73 30 80 36 80 46 L80 56"
+        fill="none"
+        stroke="#ffffff"
+        stroke-width="8"
+        stroke-linecap="round"
+        filter="url(#innerGlow)"/>
+
+  <!-- Lock body -->
+  <rect x="40" y="54" width="48" height="36" rx="7" fill="url(#lockBody)"/>
+
+  <!-- Lock keyhole -->
+  <circle cx="64" cy="70" r="5" fill="#4f46e5"/>
+  <path d="M61 70 L61 82 A3 3 0 0 0 67 82 L67 70 Z" fill="#4f46e5"/>
+
+  <!-- Subtle top reflection -->
+  <path d="M64 12 C64 12 24 28 24 28 L24 34 C24 34 64 18 64 18 Z" fill="#a78bfa" opacity="0.5"/>
+</svg>

@@ -1,0 +1,37 @@
+{
+  "name": "privacy-vision-agent",
+  "version": "1.0.0",
+  "description": "On-device Visual Perception for Light-weight Browser Agents - SIH 2026",
+  "private": true,
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "tsc --noEmit",
+    "test:e2e": "playwright test",
+    "test:browser": "playwright test tests/browser/",
+    "serve:test-sites": "node test-sites/server.js",
+    "benchmark": "node benchmark/run.js",
+    "train": "python ml/training/train_pii.py",
+    "generate-data": "python ml/data_generation/generate_pii.py",
+    "evaluate": "python ml/evaluation/evaluate_pii.py",
+    "export:onnx": "python ml/export/export_pii_onnx.py",
+    "verify:ml": "node training/verify_ml.js",
+    "verify:pii": "python scripts/verify-pii-python.py; node scripts/verify-pii-js.js",
+    "icons": "node scripts/gen-icons.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/chrome": "^0.0.287",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "playwright": "^1.48.0",
+    "sharp": "^0.35.4",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.0"
+  },
+  "dependencies": {
+    "tesseract.js": "^5.1.0"
+  }
+}
