@@ -1325,6 +1325,30 @@
     return false;
   }
 
+  function executeSelect(selector, value) {
+    var el;
+    try { el = document.querySelector(selector); } catch (e) { return false; }
+    if (!(el instanceof HTMLSelectElement)) return false;
+    var option = Array.prototype.find.call(el.options, function (candidate) {
+      return candidate.value === value || candidate.textContent.trim() === value;
+    });
+    if (!option) return false;
+    el.value = option.value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+    return true;
+  }
+
+  function executeKeypress(selector, key) {
+    var el;
+    try { el = selector ? document.querySelector(selector) : document.activeElement; } catch (e) { return false; }
+    if (!el) return false;
+    el.focus();
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: key, code: key, bubbles: true, cancelable: true }));
+    el.dispatchEvent(new KeyboardEvent('keyup', { key: key, code: key, bubbles: true, cancelable: true }));
+    return true;
+  }
+
   // ─── MutationObserver for Dynamic Content ───────────────────────────────────
   function startObserver() {
     if (observerActive) return;
@@ -1426,6 +1450,19 @@
           actionResult = executeScroll(message.direction, message.amount);
         } else if (message.action === 'submit') {
           actionResult = executeSubmit(message.target);
+        } else if (message.action === 'select') {
+          actionResult = executeSelect(message.target, message.value);
+        } else if (message.action === 'keypress') {
+          actionResult = executeKeypress(message.target, message.key);
+        } else if (message.action === 'back') {
+          history.back();
+          actionResult = true;
+        } else if (message.action === 'forward') {
+          history.forward();
+          actionResult = true;
+        } else if (message.action === 'reload') {
+          window.location.reload();
+          actionResult = true;
         }
         sendResponse({ success: actionResult });
         return false;

@@ -7,6 +7,10 @@
 var PVA_VERSION = '1.0.0';
 var MAX_LOG_ENTRIES = 200;
 var HF_ROUTER_ENDPOINT = 'https://router.huggingface.co/v1/chat/completions';
+var HF_MODELS = [
+  'mistralai/Mistral-7B-Instruct-v0.3',
+  'meta-llama/Llama-3.1-8B-Instruct'
+];
 var DEFAULT_SETTINGS = {
   enabled: true,
   autoScan: true,
@@ -22,7 +26,7 @@ var DEFAULT_SETTINGS = {
   cloudAi: {
     enabled: false,
     endpoint: 'https://router.huggingface.co/v1/chat/completions',
-    model: 'Qwen/Qwen2.5-7B-Instruct',
+    model: 'mistralai/Mistral-7B-Instruct-v0.3',
     token: ''
   }
 };
@@ -292,8 +296,8 @@ function requestCloudAgent(message) {
     var prompt = [
       'You are a privacy-safe browser assistant.',
       'The page context below has already been redacted locally. Never ask for or infer the hidden values.',
-      'Return JSON only, with this exact shape: {"answer":"short explanation","actions":[{"action":"click|type|scroll|submit","target":"safe selector or empty string","value":"non-sensitive text only","direction":"up|down|top|bottom|left|right","amount":500}]}',
-      'Use at most 5 actions. Never type passwords, tokens, financial data, personal data, or secrets. Use empty actions when the instruction is ambiguous.',
+      'Return JSON only, with this exact shape: {"answer":"short explanation","actions":[{"action":"click|type|scroll|submit|select|keypress|back|forward|reload","target":"safe selector or empty string","value":"non-sensitive text only","key":"Enter|Escape|Tab","direction":"up|down|top|bottom|left|right","amount":500}]}',
+      'Use at most 8 actions. Never type passwords, tokens, financial data, personal data, or secrets. Use empty actions when the instruction is ambiguous.',
       'USER INSTRUCTION:', safeInstruction,
       'SANITIZED PAGE CONTEXT:', safeContext
     ].join('\n');
@@ -310,7 +314,7 @@ function requestCloudAgent(message) {
         'Authorization': 'Bearer ' + cloud.token
       },
       body: JSON.stringify({
-        model: cloud.model || 'Qwen/Qwen2.5-7B-Instruct',
+        model: HF_MODELS.indexOf(cloud.model) >= 0 ? cloud.model : HF_MODELS[0],
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 300,
         temperature: 0.2
@@ -348,16 +352,19 @@ function requestCloudAgent(message) {
 }
 
 function validateCloudActions(actions) {
-  var allowed = { click: true, type: true, scroll: true, submit: true };
+  var allowed = { click: true, type: true, scroll: true, submit: true, select: true, keypress: true, back: true, forward: true, reload: true };
+  var allowedKeys = { Enter: true, Escape: true, Tab: true, ArrowUp: true, ArrowDown: true, ArrowLeft: true, ArrowRight: true };
   var sensitive = /(?:password|passwd|token|secret|api[_-]?key|credit|card|ssn|social security|account number)/i;
   return (Array.isArray(actions) ? actions : []).filter(function (item) {
     if (!item || !allowed[item.action]) return false;
     if (typeof item.target !== 'string' || item.target.length > 300) return false;
     if (item.action === 'type' && (typeof item.value !== 'string' || item.value.length > 500 || sensitive.test(item.value) || sensitive.test(item.target))) return false;
+    if (item.action === 'select' && (typeof item.value !== 'string' || item.value.length > 200 || sensitive.test(item.value))) return false;
+    if (item.action === 'keypress' && !allowedKeys[item.key]) return false;
     if (item.action === 'scroll' && item.amount !== undefined && (!Number.isFinite(item.amount) || item.amount < 1 || item.amount > 2000)) return false;
     return true;
   }).map(function (item) {
-    return { action: item.action, target: item.target || '', value: typeof item.value === 'string' ? item.value : '', direction: item.direction || 'down', amount: Number.isFinite(item.amount) ? item.amount : 500 };
+    return { action: item.action, target: item.target || '', value: typeof item.value === 'string' ? item.value : '', key: item.key || '', direction: item.direction || 'down', amount: Number.isFinite(item.amount) ? item.amount : 500 };
   });
 }
 
@@ -370,7 +377,7 @@ function executeCloudActions(actions) {
       var results = [];
       function next(index) {
         if (index >= safeActions.length) { resolve({ success: true, results: results }); return; }
-        chrome.tabs.sendMessage(tab.id, { type: 'EXECUTE_ACTION', action: safeActions[index].action, target: safeActions[index].target, value: safeActions[index].value, direction: safeActions[index].direction, amount: safeActions[index].amount }, function (response) {
+        chrome.tabs.sendMessage(tab.id, { type: 'EXECUTE_ACTION', action: safeActions[index].action, target: safeActions[index].target, value: safeActions[index].value, key: safeActions[index].key, direction: safeActions[index].direction, amount: safeActions[index].amount }, function (response) {
           results.push({ action: safeActions[index].action, success: !!(response && response.success), error: response && response.error });
           next(index + 1);
         });
