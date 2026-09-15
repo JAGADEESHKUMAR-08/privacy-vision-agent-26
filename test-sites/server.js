@@ -32,6 +32,8 @@ const ROUTES = {
   '/email': 'email.html',
   '/government': 'government.html',
   '/redaction-demo': 'redaction-demo.html',
+  '/showcase': 'executive-portal.html',
+  '/executive-portal': 'executive-portal.html',
 };
 
 const server = http.createServer((req, res) => {

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apex Global Wealth & Health VIP Portal | Executive Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070d1a;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(51, 65, 85, 0.6);
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #070d1a 60%, #030712 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    /* Top Navigation Header */
+    .navbar {
+      background: rgba(11, 19, 43, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.9rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    .nav-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 3px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-meta {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.85rem;
+    }
+
+    .live-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--success);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .compliance-pill {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1320px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.8rem 2.2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-info h1 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-info p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+      text-align: right;
+    }
+
+    .hero-stat-item .stat-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .hero-stat-item .stat-lbl {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Dashboard Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tag-pii { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .tag-fin { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .tag-med { background: rgba(14, 165, 233, 0.15); color: #7dd3fc; border: 1px solid rgba(14, 165, 233, 0.3); }
+    .tag-sec { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+    /* Key-Value Pair Layouts */
+    .field-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .field-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      padding: 4px 0;
+    }
+
+    .field-label {
+      color: var(--text-muted);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .field-val {
+      font-weight: 600;
+      color: var(--text-main);
+      text-align: right;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem;
+    }
+
+    .highlight-sensitive {
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Credit Card Graphic */
+    .credit-card-preview {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin: 1rem 0;
+      box-shadow: 0 8px 24px rgba(67, 56, 202, 0.25);
+      position: relative;
+    }
+
+    .cc-chip {
+      width: 38px;
+      height: 28px;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
+    .cc-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.8rem;
+    }
+
+    .cc-bottom {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-top: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    /* Action Buttons */
+    .btn-action {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 0.8rem;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Grid Span Helpers */
+    .col-4 { grid-column: span 4; }
+    .col-6 { grid-column: span 6; }
+    .col-8 { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+
+    @media (max-width: 980px) {
+      .col-4, .col-6, .col-8 { grid-column: span 12; }
+      .hero { flex-direction: column; text-align: center; gap: 1rem; }
+      .hero-stats { text-align: center; }
+    }
+
+    /* Demo Helper Bar at top */
+    .demo-bar {
+      background: linear-gradient(90deg, #312e81, #1e1b4b);
+      border-bottom: 1px solid rgba(99, 102, 241, 0.4);
+      padding: 6px 1.5rem;
+      font-size: 0.8rem;
+      color: #c7d2fe;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .demo-bar a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Demo Banner -->
+  <div class="demo-bar">
+    <span>🛡 <strong>Smart India Hackathon Showcase Portal</strong> &mdash; Test with Privacy Vision Extension</span>
+    <span>Ready for live AI scan &amp; Redacted Screenshot Verification</span>
+  </div>
+
+  <!-- Main Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <div class="brand-icon">⚡</div>
+      <span>Apex Global Wealth &amp; Health</span>
+      <span class="nav-badge">VIP Executive Portal</span>
+    </div>
+    <div class="nav-meta">
+      <span class="compliance-pill">HIPAA &bull; PCI-DSS &bull; DPDP 2023 Compliant</span>
+      <div class="live-status">
+        <span class="live-dot"></span> Secure Session Active
+      </div>
+    </div>
+  </nav>
+
+  <!-- Container -->
+  <div class="container">
+
+    <!-- Hero Profile Summary -->
+    <div class="hero">
+      <div class="hero-info">
+        <h1>Welcome, Dr. Alexander Vance</h1>
+        <p>Chief Medical Director &bull; Account Tier: Ultra High Net Worth (UHNW) Private Wealth</p>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat-item">
+          <div class="stat-num">$2,840,500.00</div>
+          <div class="stat-lbl">Liquid Balance</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="stat-num">Tier 1</div>
+          <div class="stat-lbl">Privacy Clearance</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Content Grid -->
+    <div class="grid">
+
+      <!-- CARD 1: Executive Identity & Demographics -->
+      <div class="card col-4">
+        <div class="card-header">
+          <div class="card-title">👤 Identity Profile</div>
+          <span class="card-tag tag-pii">Critical PII</span>
+        </div>
+        <div class="field-list">
+          <div class="field-row">
+            <span class="field-label">Full Legal Name:</span>
+            <span class="field-val" id="clientName">Dr. Alexander Vance</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Primary Email:</span>
+            <span class="field-val mono highlight-sensitive" id="clientEmail">alexander.vance@vancemedical.org</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Mobile Phone:</span>
+            <span class="field-val mono highlight-sensitive" id="clientPhone">+1 (555) 382-9104</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Govt SSN / Aadhaar:</span>
+            <span class="field-val mono highlight-sensitive" id="clientSsn">482-19-8472</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Date of Birth:</span>
+            <span class="field-val mono" id="clientDob">1984-04-12</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Registered Address:</span>
+            <span class="field-val" id="clientAddress">742 Evergreen Terrace, San Francisco, CA 94107</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: VIP Banking & Payment Credentials -->
+      <div class="card col-4">
+        <div class="card-header">
+          <div class="card-title">💳 Banking &amp; Cards</div>
+          <span class="card-tag tag-fin">PCI Protected</span>
+        </div>
+
+        <!-- Visual Credit Card -->
+        <div class="credit-card-preview">
+          <div class="cc-chip"></div>
+          <div class="cc-number" id="cardDisplay">4532 8901 2345 6789</div>
+          <div class="cc-bottom">
+            <div>
+              <div style="font-size:0.65rem; color:#94a3b8;">Cardholder</div>
+              <div style="font-weight:700;">ALEXANDER VANCE</div>
+            </div>
+            <div>
+              <div style="font-size:0.65rem; color:#94a3b8;">Expires / CVV</div>
+              <div style="font-weight:700;" class="mono">08/29 &bull; <span class="highlight-sensitive">894</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-list">
+          <div class="field-row">
+            <span class="field-label">Account Number:</span>
+            <span class="field-val mono highlight-sensitive" id="bankAccount">84920194821</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Routing Transit (ABA):</span>
+            <span class="field-val mono highlight-sensitive" id="bankRouting">021000021</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Wire Transfer PIN:</span>
+            <span class="field-val mono highlight-sensitive" id="wirePin">9841</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: Protected Healthcare Records (HIPAA) -->
+      <div class="card col-4">
+        <div class="card-header">
+          <div class="card-title">🩺 Medical Health Record</div>
+          <span class="card-tag tag-med">HIPAA Protected</span>
+        </div>
+        <div class="field-list">
+          <div class="field-row">
+            <span class="field-label">Patient Record ID:</span>
+            <span class="field-val mono highlight-sensitive" id="mrnNumber">MRN-940281-H</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Attending Physician:</span>
+            <span class="field-val" id="physician">Dr. Sarah Jenkins, MD</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Primary Diagnosis:</span>
+            <span class="field-val highlight-sensitive" id="diagnosis">Chronic Cardiovascular Hypertension</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Active Prescription:</span>
+            <span class="field-val mono" id="prescription">Lisinopril 20mg &bull; Atorvastatin 40mg</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Health Insurance ID:</span>
+            <span class="field-val mono highlight-sensitive" id="insuranceId">BCBS-849102849</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Emergency Contact:</span>
+            <span class="field-val" id="emergencyContact">Elena Vance &bull; 555-491-0294</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4: Interactive Wire Transfer Form -->
+      <div class="card col-6">
+        <div class="card-header">
+          <div class="card-title">💸 Immediate Wire Transfer</div>
+          <span class="card-tag tag-fin">Live Form</span>
+        </div>
+        <form id="wireTransferForm" onsubmit="event.preventDefault();">
+          <div class="form-group">
+            <label for="recipientName">Beneficiary Name</label>
+            <input type="text" id="recipientName" class="form-control" value="Apex Capital Investments LLC" />
+          </div>
+          <div class="form-group">
+            <label for="recipientIban">Beneficiary Account / IBAN</label>
+            <input type="text" id="recipientIban" class="form-control mono" value="US33APEX84920194821094" />
+          </div>
+          <div class="form-group">
+            <label for="transferAmount">Transfer Amount ($ USD)</label>
+            <input type="text" id="transferAmount" class="form-control mono" value="25,000.00" />
+          </div>
+          <div class="form-group">
+            <label for="accountPassword">Authorization Password</label>
+            <input type="password" id="accountPassword" class="form-control" value="SecureVance2026!#" />
+          </div>
+          <button type="submit" class="btn-action" id="submitWireBtn">Execute Secure Wire Transfer</button>
+        </form>
+      </div>
+
+      <!-- CARD 5: Developer API Secrets & Cloud Infrastructure -->
+      <div class="card col-6">
+        <div class="card-header">
+          <div class="card-title">🔑 Cloud Infrastructure Secrets</div>
+          <span class="card-tag tag-sec">Developer Vault</span>
+        </div>
+        <div class="field-list">
+          <div class="field-row">
+            <span class="field-label">Production API Secret:</span>
+            <span class="field-val mono highlight-sensitive" id="prodApiKey">sk_live_9482910482910482918294</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">JWT Bearer Token:</span>
+            <span class="field-val mono highlight-sensitive" id="bearerToken">ey48291048201.eyJzdWIiOiIxMjM0NTY3ODkwIn0</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">AWS S3 Bucket Secret:</span>
+            <span class="field-val mono highlight-sensitive" id="awsKey">AKIAIOSFODNN7EXAMPLE</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Database RDS Endpoint:</span>
+            <span class="field-val mono" id="dbHost">apex-prod-db.c91829.us-east-1.rds.amazonaws.com:5432</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Encryption Protocol:</span>
+            <span class="field-val" style="color:#10b981;">AES-256-GCM (Hardware HSM)</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.2rem; background: rgba(30, 41, 59, 0.5); padding: 10px; border-radius: 8px; border: 1px dashed rgba(99, 102, 241, 0.3);">
+          <div style="font-size: 0.75rem; color: #a5b4fc; font-weight: 600;">DEMONSTRATION NOTE FOR JUDGES:</div>
+          <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 4px;">
+            This page contains real-world PII spanning Financial, Health, Identity, and Cloud Credentials. When Privacy Vision scans this page, every single one of these values is protected locally before transmission.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
