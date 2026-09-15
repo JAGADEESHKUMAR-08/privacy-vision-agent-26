@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const __dir = __dirname;
 
 const MIME_TYPES = {
@@ -31,6 +31,7 @@ const ROUTES = {
   '/profile': 'profile.html',
   '/email': 'email.html',
   '/government': 'government.html',
+  '/redaction-demo': 'redaction-demo.html',
 };
 
 const server = http.createServer((req, res) => {

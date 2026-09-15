@@ -1367,11 +1367,57 @@
     }
     if (!rect && entity.bbox && entity.bbox.width > 0) {
       rect = {
-        x: entity.bbox.x + (window.scrollX || 0),
-        y: entity.bbox.y + (window.scrollY || 0),
+        x: (entity.bbox.pageLeft != null ? entity.bbox.pageLeft : entity.bbox.x + (window.scrollX || 0)),
+        y: (entity.bbox.pageTop != null ? entity.bbox.pageTop : entity.bbox.y + (window.scrollY || 0)),
         width: entity.bbox.width || 20,
         height: entity.bbox.height || 20
       };
+    }
+    if (!rect && entity.value && typeof document !== 'undefined') {
+      try {
+        var targetVal = String(entity.value).trim();
+        if (targetVal.length >= 2) {
+          var inputs = document.querySelectorAll('input, textarea');
+          for (var i = 0; i < inputs.length; i++) {
+            var inp = inputs[i];
+            if (inp.value && inp.value.indexOf(targetVal) !== -1) {
+              var ir = inp.getBoundingClientRect();
+              if (ir.width > 0 || ir.height > 0) {
+                rect = {
+                  x: ir.left + window.scrollX,
+                  y: ir.top + window.scrollY,
+                  width: ir.width,
+                  height: ir.height
+                };
+                break;
+              }
+            }
+          }
+          if (!rect && document.createTreeWalker) {
+            var walker = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null);
+            var node;
+            while ((node = walker.nextNode())) {
+              var text = node.nodeValue || '';
+              var idx = text.indexOf(targetVal);
+              if (idx !== -1) {
+                var range = document.createRange();
+                range.setStart(node, idx);
+                range.setEnd(node, idx + targetVal.length);
+                var clientRect = range.getBoundingClientRect();
+                if (clientRect && (clientRect.width > 0 || clientRect.height > 0)) {
+                  rect = {
+                    x: clientRect.left + window.scrollX,
+                    y: clientRect.top + window.scrollY,
+                    width: clientRect.width,
+                    height: clientRect.height
+                  };
+                  break;
+                }
+              }
+            }
+          }
+        }
+      } catch (err) {}
     }
     return rect;
   }

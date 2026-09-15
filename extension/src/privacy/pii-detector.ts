@@ -631,7 +631,10 @@ export class PIIDetector {
 
   private extractTextChunks(text: string): string[] {
     if (!text) return [];
-    const sentences = text.split(/[.!?\n]+/).filter((s) => s.trim().length > 0);
+    // Only split on sentence punctuation that is followed by whitespace or end
+    // of string, so tokens containing internal dots (emails, URLs, decimals)
+    // are never chopped apart.
+    const sentences = text.split(/[.!?]+(?=\s|$|\n)/).filter((s) => s.trim().length > 0);
     const chunks: string[] = [];
     for (const sentence of sentences) {
       chunks.push(sentence.trim());

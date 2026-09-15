@@ -29,6 +29,17 @@
   var agentInstruction = document.getElementById('agentInstruction');
   var askAgentBtn = document.getElementById('askAgentBtn');
   var agentResult = document.getElementById('agentResult');
+  var screenshotStorage = document.getElementById('screenshotStorage');
+  var saveFolderBtn = document.getElementById('saveFolderBtn');
+  var downloadScreenshotBtn = document.getElementById('downloadScreenshotBtn');
+  var downloadPrivacyIndicator = document.getElementById('downloadPrivacyIndicator');
+  var exportStatus = document.getElementById('exportStatus');
+  var hfConfigToggle = document.getElementById('hfConfigToggle');
+  var hfConfigBox = document.getElementById('hfConfigBox');
+  var hfModelSelect = document.getElementById('hfModelSelect');
+  var hfTokenInput = document.getElementById('hfTokenInput');
+  var saveHfConfigBtn = document.getElementById('saveHfConfigBtn');
+  var hfConfigStatus = document.getElementById('hfConfigStatus');
 
   var lastResult = null;
   var settingsPanel = null;
@@ -145,6 +156,21 @@
     if (result && result.totalEntities > 0) {
       redactedCount.textContent = result.totalEntities;
     }
+  }
+
+  function updateScreenshotIndicator(result) {
+    chrome.runtime.sendMessage({ type: 'LIST_SCREENSHOTS' }, function (response) {
+      var stored = response && response.success ? (response.count || 0) : 0;
+      if (screenshotStorage) {
+        var scanStored = !!(result && result.screenshotStored);
+        screenshotStorage.textContent = scanStored
+          ? stored + ' stored (this scan saved)'
+          : stored + ' stored';
+        screenshotStorage.title = 'Screenshots are stored locally on this device only. ' +
+          'They are never uploaded or sent to any AI service.';
+        screenshotStorage.classList.toggle('nonzero', stored > 0);
+      }
+    });
   }
 
   function renderEntitiesList(entities, risks) {
@@ -333,12 +359,16 @@
     }
   }
 
-  async function handleScan() {
+  async function handleScan(options) {
+    var shouldDownload = options && options.download === true;
     showLoading(scanBtn, true);
     reportPanel.style.display = 'none';
 
     try {
-      var response = await sendMessageToContent({ type: 'SCAN_PAGE' });
+      var response = await sendMessageToContent({
+        type: 'SCAN_PAGE',
+        autoExport: shouldDownload
+      });
 
       if (response && response.success) {
         lastResult = response;
@@ -347,6 +377,7 @@
         updateCounts(response.counts);
         updateMetrics(response);
         renderEntitiesList(response.entities, response.risks);
+        updateScreenshotIndicator(response);
 
         // Update access status
         if (response.totalEntities > 0) {
@@ -369,6 +400,12 @@
           message: 'Manual scan completed',
           data: { entityCount: response.totalEntities, risk: response.overallRisk }
         });
+
+        // Only download if explicitly requested (e.g. user clicked "Scan Page")
+        if (shouldDownload) {
+          await handleDownloadScreenshot();
+        }
+
         return true;
       } else {
         updateRiskDisplay('--');
@@ -391,9 +428,9 @@
   }
 
   async function handlePreview() {
-    // Ensure we have scan results first.
+    // Ensure we have scan results first without downloading photo!
     if (!lastResult || !lastResult.entities || lastResult.entities.length === 0) {
-      await handleScan();
+      await handleScan({ download: false });
     }
 
     // Opening the full privacy visualizer requires detected entities.
@@ -428,6 +465,197 @@
     }
   }
 
+  var exportDirHandle = null;
+
+  function setExportStatus(message, kind) {
+    exportStatus.hidden = false;
+    exportStatus.textContent = message;
+    exportStatus.className = 'export-status ' + (kind || 'info');
+  }
+
+  function fetchAllStoredRecords() {
+    return new Promise(function (resolve) {
+      chrome.runtime.sendMessage({ type: 'LIST_SCREENSHOTS' }, function (listResp) {
+        var meta = (listResp && listResp.screenshots) || [];
+        if (meta.length === 0) {
+          resolve([]);
+          return;
+        }
+        var pending = meta.length;
+        var records = [];
+        meta.forEach(function (m) {
+          chrome.runtime.sendMessage({ type: 'GET_SCREENSHOT', id: m.id }, function (got) {
+            if (got && got.success && got.record) records.push(got.record);
+            pending -= 1;
+            if (pending === 0) resolve(records);
+          });
+        });
+      });
+    });
+  }
+
+  function exportViaDownloads(records) {
+    var pushed = 0;
+    records.forEach(function (r) {
+      var base = 'privacy-vision-agent-screenshots/' + r.id;
+      // CRITICAL PRIVACY FIX: NEVER download unredacted screenshot when PII was detected!
+      var safeUrl = r.redactedDataUrl || (r.entityCount === 0 ? r.originalDataUrl : null);
+      if (safeUrl) {
+        chrome.downloads.download({ url: safeUrl, filename: base + '_after.png', saveAs: false });
+        pushed += 1;
+      }
+    });
+    return pushed;
+  }
+
+  var downloadInProgress = false;
+
+  function fallbackDownload(dataUrl, filename) {
+    var a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  async function handleDownloadScreenshot() {
+    if (downloadInProgress) return;
+    if (!downloadScreenshotBtn) return;
+
+    downloadInProgress = true;
+    downloadScreenshotBtn.disabled = true;
+    downloadScreenshotBtn.classList.add('protecting');
+    downloadScreenshotBtn.classList.remove('download-success');
+    var originalBtnText = 'Download Protected Screenshot';
+    downloadScreenshotBtn.textContent = 'Protecting Screenshot...';
+
+    if (downloadPrivacyIndicator) {
+      downloadPrivacyIndicator.style.display = 'none';
+    }
+
+    try {
+      // 1. If scan is not done yet or empty, run scan first
+      if (!lastResult) {
+        var scanOk = await handleScan();
+        if (!scanOk || !lastResult) {
+          throw new Error('Privacy scan failed. Download blocked for safety.');
+        }
+      }
+
+      // 2. Request protected screenshot from content script
+      var response = await sendMessageToContent({ type: 'GET_PROTECTED_SCREENSHOT' });
+      if (!response || !response.success || !response.protectedDataUrl) {
+        throw new Error((response && response.error) || 'Failed to generate protected screenshot.');
+      }
+
+      var dataUrl = response.protectedDataUrl;
+      var entityCount = response.entityCount || (lastResult ? (lastResult.totalEntities || 0) : 0);
+
+      // 3. Security check: Ensure we are NOT downloading raw unredacted image when PII exists
+      if (entityCount > 0 && response.isClean) {
+        throw new Error('Security check failed: Redacted output is not protected.');
+      }
+
+      // 4. Download file
+      var dateStr = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+      var filename = 'protected-screenshot-' + dateStr + '.png';
+
+      if (chrome.downloads && chrome.downloads.download) {
+        await new Promise(function (resolve) {
+          chrome.downloads.download({
+            url: dataUrl,
+            filename: filename,
+            saveAs: false
+          }, function () {
+            if (chrome.runtime.lastError) {
+              fallbackDownload(dataUrl, filename);
+            }
+            resolve();
+          });
+        });
+      } else {
+        fallbackDownload(dataUrl, filename);
+      }
+
+      // 5. Update UI to success state
+      downloadScreenshotBtn.classList.remove('protecting');
+      downloadScreenshotBtn.classList.add('download-success');
+      downloadScreenshotBtn.textContent = '✓ Download Protected Screenshot';
+
+      if (downloadPrivacyIndicator) {
+        downloadPrivacyIndicator.style.display = 'flex';
+        if (entityCount > 0) {
+          downloadPrivacyIndicator.className = 'privacy-status-indicator';
+          downloadPrivacyIndicator.innerHTML = '&#128737; Sensitive data protected (' + entityCount + ' item' + (entityCount > 1 ? 's' : '') + ' redacted)';
+        } else {
+          downloadPrivacyIndicator.className = 'privacy-status-indicator safe';
+          downloadPrivacyIndicator.innerHTML = '&#9989; No sensitive data detected';
+        }
+      }
+
+      setTimeout(function () {
+        downloadScreenshotBtn.textContent = originalBtnText;
+        downloadScreenshotBtn.classList.remove('download-success');
+        downloadScreenshotBtn.disabled = false;
+        downloadInProgress = false;
+      }, 2500);
+
+    } catch (err) {
+      downloadScreenshotBtn.classList.remove('protecting');
+      downloadScreenshotBtn.textContent = 'Download Blocked';
+      setExportStatus('Download blocked: ' + displayError(err && err.message, 'Detection or protection error.'), 'error');
+
+      setTimeout(function () {
+        downloadScreenshotBtn.textContent = originalBtnText;
+        downloadScreenshotBtn.disabled = false;
+        downloadInProgress = false;
+      }, 3000);
+    }
+  }
+
+  async function handleSaveToFolder() {
+    if (!saveFolderBtn) return;
+    saveFolderBtn.disabled = true;
+    setExportStatus('Reading local store...', 'info');
+    try {
+      var records = await fetchAllStoredRecords();
+      if (records.length === 0) {
+        setExportStatus('No screenshots stored yet. Run a scan on a page with PII first.', 'warn');
+        return;
+      }
+
+      var picker = window.showDirectoryPicker;
+      if (!picker) {
+        if (!chrome.downloads) {
+          setExportStatus('This browser does not expose a folder picker here. Open the extension in Chrome.', 'warn');
+          return;
+        }
+        var pushed = exportViaDownloads(records);
+        setExportStatus('Folder picker unavailable - saved ' + pushed + ' PNG(s) to your Downloads/privacy-vision-agent-screenshots folder.', 'ok');
+        return;
+      }
+
+      if (exportDirHandle && (await exportDirHandle.queryPermission({ mode: 'readwrite' })) !== 'granted') {
+        if ((await exportDirHandle.requestPermission({ mode: 'readwrite' })) !== 'granted') exportDirHandle = null;
+      }
+      if (!exportDirHandle) {
+        exportDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+      }
+
+      var manifestRecords = await window.PVA_Export.exportRecordsToDir(exportDirHandle, records);
+      setExportStatus('Saved ' + manifestRecords.length + ' before/after screenshot record(s) + manifest.json to your chosen folder.', 'ok');
+    } catch (err) {
+      if (err && err.name === 'AbortError') {
+        setExportStatus('Export cancelled.', 'warn');
+      } else {
+        setExportStatus('Export failed: ' + displayError(err && err.message, 'Unknown error.'), 'error');
+      }
+    } finally {
+      saveFolderBtn.disabled = false;
+    }
+  }
+
   async function handleAskAgent() {
     var instruction = agentInstruction.value.trim();
     if (!instruction) {
@@ -437,20 +665,25 @@
     }
 
     askAgentBtn.disabled = true;
-    askAgentBtn.textContent = 'Checking and asking...';
+    askAgentBtn.textContent = 'Asking Hugging Face AI...';
     agentResult.hidden = false;
     agentResult.textContent = 'Scanning locally and preparing sanitized context...';
 
     try {
-      var scanOk = await handleScan();
+      // Local scan strictly WITHOUT downloading screenshot!
+      var scanOk = await handleScan({ download: false });
       if (!scanOk || !lastResult || !lastResult.sanitizedContext) {
         throw new Error('Local scan failed. Refresh the webpage and reload the extension before asking AI.');
       }
       var response = await new Promise(function (resolve) {
         chrome.runtime.sendMessage({ type: 'CLOUD_AGENT_REQUEST', instruction: instruction, context: lastResult.sanitizedContext }, resolve);
       });
-      if (!response || !response.success) throw new Error(displayError(response && response.error, 'Cloud AI request failed.'));
+      if (!response || !response.success) throw new Error(displayError(response && response.error, 'Hugging Face AI request failed.'));
       agentResult.textContent = displayError(response.answer, 'No guidance returned.');
+      if (response.needsToken && hfConfigBox) {
+        hfConfigBox.style.display = 'block';
+        if (hfTokenInput) hfTokenInput.focus();
+      }
       if (Array.isArray(response.actions) && response.actions.length > 0) {
         var execution = await new Promise(function (resolve) {
           chrome.runtime.sendMessage({ type: 'CLOUD_EXECUTE_ACTIONS', actions: response.actions }, resolve);
@@ -462,8 +695,48 @@
       agentResult.textContent = err.message;
     } finally {
       askAgentBtn.disabled = false;
-      askAgentBtn.textContent = 'Ask Open-Source AI';
+      askAgentBtn.textContent = '\u{1F917} Ask Hugging Face AI';
     }
+  }
+
+  function toggleHfConfig() {
+    if (!hfConfigBox) return;
+    var isHidden = hfConfigBox.style.display === 'none' || !hfConfigBox.style.display;
+    hfConfigBox.style.display = isHidden ? 'block' : 'none';
+  }
+
+  function saveHfConfig() {
+    var model = hfModelSelect ? hfModelSelect.value : 'Qwen/Qwen2.5-72B-Instruct';
+    var token = hfTokenInput ? hfTokenInput.value.trim() : '';
+
+    chrome.storage.local.get(['settings'], function (res) {
+      var settings = res.settings || {};
+      if (!settings.cloudAi) settings.cloudAi = {};
+      settings.cloudAi.enabled = true;
+      settings.cloudAi.model = model;
+      settings.cloudAi.token = token;
+      settings.cloudAi.endpoint = 'https://router.huggingface.co/v1/chat/completions';
+
+      chrome.storage.local.set({ settings: settings }, function () {
+        if (hfConfigStatus) {
+          hfConfigStatus.textContent = 'Saved!';
+          setTimeout(function () { hfConfigStatus.textContent = ''; }, 2000);
+        }
+      });
+    });
+  }
+
+  function loadHfConfig() {
+    chrome.storage.local.get(['settings'], function (res) {
+      var settings = res.settings || {};
+      var cloud = settings.cloudAi || {};
+      if (hfModelSelect) {
+        hfModelSelect.value = cloud.model || 'Qwen/Qwen2.5-72B-Instruct';
+      }
+      if (hfTokenInput && cloud.token) {
+        hfTokenInput.value = cloud.token;
+      }
+    });
   }
 
   async function handleSettings() {
@@ -542,14 +815,24 @@
   }
 
   // ─── Event Listeners ───────────────────────────────────────────────────────
-  scanBtn.addEventListener('click', handleScan);
+  scanBtn.addEventListener('click', function () {
+    handleScan({ download: true });
+  });
   previewBtn.addEventListener('click', handlePreview);
   reportBtn.addEventListener('click', handleReport);
   settingsBtn.addEventListener('click', handleSettings);
   askAgentBtn.addEventListener('click', handleAskAgent);
+  if (saveFolderBtn) saveFolderBtn.addEventListener('click', handleSaveToFolder);
+  if (downloadScreenshotBtn) downloadScreenshotBtn.addEventListener('click', handleDownloadScreenshot);
+  if (hfConfigToggle) hfConfigToggle.addEventListener('click', toggleHfConfig);
+  if (saveHfConfigBtn) saveHfConfigBtn.addEventListener('click', saveHfConfig);
+  if (hfModelSelect) hfModelSelect.addEventListener('change', saveHfConfig);
 
   // ─── Initialize ────────────────────────────────────────────────────────────
   function init() {
+    // Load Hugging Face configuration
+    loadHfConfig();
+
     // Try to load last scan result from content script
     sendMessageToContent({ type: 'GET_LAST_SCAN' })
       .then(function (response) {
@@ -559,6 +842,7 @@
           updateCounts(lastResult.counts);
           updateMetrics(lastResult);
           renderEntitiesList(lastResult.entities, lastResult.risks);
+          updateScreenshotIndicator(lastResult);
         }
       })
       .catch(function () {
@@ -584,6 +868,9 @@
         }
       }
     });
+
+    // Show how many screenshots are stored locally on this device.
+    updateScreenshotIndicator(null);
   }
 
   init();

@@ -218,6 +218,8 @@ export interface AgentResponse {
   action?: string;
   error?: string;
   screenshot?: string;
+  screenshotBefore?: string;
+  redacted?: boolean;
 }
 
 export interface ExtensionSettings {

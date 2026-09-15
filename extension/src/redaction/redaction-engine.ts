@@ -92,35 +92,42 @@ export class RedactionEngine {
     if (!ctx) return canvas;
 
     for (const entity of entities) {
-      if (entity.bbox.width <= 0 || entity.bbox.height <= 0) continue;
+      const boxes: BoundingBox[] =
+        Array.isArray((entity as any).bboxes) && (entity as any).bboxes.length > 0
+          ? (entity as any).bboxes
+          : [entity.bbox];
 
       const method = methods?.[entity.type] ?? 'mask';
 
-      switch (method) {
-        case 'blur':
-          this.applyBlur(ctx, entity.bbox, 10);
-          break;
-        case 'pixelate':
-          this.applyPixelate(ctx, entity.bbox, 8);
-          break;
-        case 'mask':
-          this.applyMask(ctx, entity.bbox, '#000000');
-          break;
-        case 'replace':
-          this.applyMask(ctx, entity.bbox, '#cccccc');
-          this.drawTextOverlay(ctx, entity.bbox, `[${CATEGORY_LABEL[entity.type]}]`);
-          break;
-        case 'tokenize':
-          this.applyMask(ctx, entity.bbox, '#e0e0e0');
-          this.drawTextOverlay(
-            ctx,
-            entity.bbox,
-            this.generateTokenizedValue(entity.type, 0),
-          );
-          break;
-        default:
-          this.applyMask(ctx, entity.bbox, '#000000');
-          break;
+      for (const bbox of boxes) {
+        if (!bbox || bbox.width <= 0 || bbox.height <= 0) continue;
+
+        switch (method) {
+          case 'blur':
+            this.applyBlur(ctx, bbox, 10);
+            break;
+          case 'pixelate':
+            this.applyPixelate(ctx, bbox, 8);
+            break;
+          case 'mask':
+            this.applyMask(ctx, bbox, '#000000');
+            break;
+          case 'replace':
+            this.applyMask(ctx, bbox, '#cccccc');
+            this.drawTextOverlay(ctx, bbox, `[${CATEGORY_LABEL[entity.type]}]`);
+            break;
+          case 'tokenize':
+            this.applyMask(ctx, bbox, '#e0e0e0');
+            this.drawTextOverlay(
+              ctx,
+              bbox,
+              this.generateTokenizedValue(entity.type, 0),
+            );
+            break;
+          default:
+            this.applyMask(ctx, bbox, '#000000');
+            break;
+        }
       }
     }
 

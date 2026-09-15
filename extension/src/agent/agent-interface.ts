@@ -12,14 +12,14 @@ const REDACTION_METHODS_DEFAULTS: Record<string, string> = {
   NAME: 'mask',
   ADDRESS: 'mask',
   PASSWORD: 'mask',
-  USERNAME: 'replace',
-  CREDIT_CARD: 'tokenize',
-  BANK_ACCOUNT: 'tokenize',
+  USERNAME: 'mask',
+  CREDIT_CARD: 'mask',
+  BANK_ACCOUNT: 'mask',
   API_KEY: 'mask',
   AUTH_TOKEN: 'mask',
   DATE_OF_BIRTH: 'mask',
-  GOVERNMENT_ID: 'tokenize',
-  MEDICAL_ID: 'tokenize',
+  GOVERNMENT_ID: 'mask',
+  MEDICAL_ID: 'mask',
   FINANCIAL_DATA: 'mask',
   PRIVATE_DOCUMENT_CONTENT: 'mask',
 };
@@ -33,9 +33,10 @@ export class AgentInterface {
     this.redactionEngine = new RedactionEngine();
   }
 
-  async getPageScreenshot(): Promise<{ canvas: HTMLCanvasElement; sanitized: boolean }> {
+  async getPageScreenshot(): Promise<{ canvas: HTMLCanvasElement; sanitized: boolean; originalDataUrl?: string }> {
     const canvas = document.createElement('canvas');
     let sanitized = false;
+    let originalDataUrl: string | undefined;
 
     try {
       const dataUrl = await new Promise<string>((resolve, reject) => {
@@ -68,6 +69,7 @@ export class AgentInterface {
         throw new Error('Failed to get canvas 2d context');
       }
       ctx.drawImage(img, 0, 0);
+      originalDataUrl = dataUrl;
 
       if (this.lastScanResult && this.lastScanResult.entities.length > 0) {
         const entitiesWithBbox = this.lastScanResult.entities.filter(
@@ -107,7 +109,7 @@ export class AgentInterface {
       }
     }
 
-    return { canvas, sanitized };
+    return { canvas, sanitized, originalDataUrl };
   }
 
   getSanitizedContext(): SanitizedContext | null {
@@ -256,17 +258,22 @@ export class AgentInterface {
         }
 
         case 'screenshot': {
-          const { canvas, sanitized } = await this.getPageScreenshot();
+          const { canvas, sanitized, originalDataUrl } = await this.getPageScreenshot();
           let dataUrl: string;
           try {
             dataUrl = canvas.toDataURL('image/png');
           } catch {
             dataUrl = '';
           }
+          const after = dataUrl || undefined;
+          const before = originalDataUrl || after;
+          await this.persistScreenshotLocally(before, after);
           return {
             success: true,
             action: 'screenshot',
-            screenshot: dataUrl || undefined,
+            screenshot: after,
+            screenshotBefore: before,
+            redacted: sanitized,
           };
         }
 
@@ -288,6 +295,33 @@ export class AgentInterface {
   storeScanResult(result: ScanResult): void {
     this.lastScanResult = result;
     this.lastSanitizedContext = result.sanitizedContext;
+  }
+
+  private async persistScreenshotLocally(before: string | undefined, after: string | undefined): Promise<boolean> {
+    if (!before) {
+      return false;
+    }
+    const record: Record<string, unknown> = {
+      url: this.lastScanResult?.sanitizedContext?.url || (globalThis.location?.href ?? ''),
+      title: this.lastScanResult?.sanitizedContext?.title || (globalThis.document?.title ?? ''),
+      pageType: this.lastScanResult?.sanitizedContext?.pageType || 'unknown',
+      timestamp: Date.now(),
+      overallRisk: this.lastScanResult?.privacyReport?.overallRisk || 'UNKNOWN',
+      entityCount: this.lastScanResult?.privacyReport?.totalEntities || this.lastScanResult?.sanitizedContext?.entityCount || 0,
+      originalDataUrl: before,
+      redactedDataUrl: after || '',
+    };
+    const chrome = (globalThis as { chrome?: { runtime?: { sendMessage: (...args: unknown[]) => unknown } } }).chrome;
+    const runtime = chrome?.runtime;
+    if (!runtime || typeof runtime.sendMessage !== 'function') {
+      return false;
+    }
+    const sendMessage = runtime.sendMessage.bind(runtime);
+    return new Promise((resolve) => {
+      sendMessage({ type: 'SAVE_SCREENSHOT', record }, (resp: { success?: boolean } | undefined) => {
+        resolve(!!resp && resp.success === true);
+      });
+    });
   }
 
   getLastScanResult(): ScanResult | null {

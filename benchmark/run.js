@@ -591,6 +591,46 @@ console.log('='.repeat(80) + '\n');
     console.error('[Benchmark] Failed to save results:', err.message);
   }
 
+  // ─── CSV Export (per-method summary + per-class F1) ───────────────────────
+  const csvPath = path.resolve(__dirname, 'results.csv');
+  try {
+    const methods = [resultsA, resultsB, resultsC, resultsD];
+    const rows = [];
+    rows.push('method,accuracy,macro_precision,macro_recall,macro_f1,weighted_f1,avg_time_us,total_samples,correct_detections,memory_rss_mb,memory_heap_mb');
+    for (const m of methods) {
+      rows.push([
+        m.method,
+        (m.accuracy * 100).toFixed(2),
+        (m.macroPrecision * 100).toFixed(2),
+        (m.macroRecall * 100).toFixed(2),
+        (m.macroF1 * 100).toFixed(2),
+        (m.weightedF1 * 100).toFixed(2),
+        m.avgTimePerSampleUs,
+        m.totalSamples,
+        m.correctDetections,
+        m.memoryRssMB,
+        m.memoryHeapUsedMB,
+      ].join(','));
+    }
+    rows.push('');
+    rows.push('category,' + methods.map((m) => m.method.replace(/[^A-Za-z0-9_-]+/g, '_')).join(','));
+    const allCatUnion = new Set([
+      ...Object.keys(resultsA.perClass), ...Object.keys(resultsB.perClass),
+      ...Object.keys(resultsC.perClass), ...Object.keys(resultsD.perClass),
+    ]);
+    for (const cat of [...allCatUnion].sort()) {
+      rows.push(cat + ',' + methods.map((m) => ((m.perClass[cat]?.f1 ?? 0) * 100).toFixed(2) + '%').join(','));
+    }
+    rows.push('');
+    rows.push('summary_best_accuracy,' + outputResults.summary.bestAccuracy);
+    rows.push('summary_best_f1,' + outputResults.summary.bestF1);
+    rows.push('summary_fastest,' + outputResults.summary.fastestMethod);
+    fs.writeFileSync(csvPath, rows.join('\n') + '\n', 'utf-8');
+    console.log(`[Benchmark] CSV saved to ${csvPath}`);
+  } catch (err) {
+    console.error('[Benchmark] Failed to save CSV:', err.message);
+  }
+
   console.log('\n' + '='.repeat(80));
   console.log('  Benchmark Complete');
   console.log('='.repeat(80) + '\n');

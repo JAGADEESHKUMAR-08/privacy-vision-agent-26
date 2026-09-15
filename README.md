@@ -54,10 +54,10 @@ Privacy Vision Agent solves this by creating a **privacy firewall** between the 
          |  |  PII Text Detector |  |
          |  |  (Regex patterns)  |  |
          |  +--------------------+  |
-         |  +--------------------+  |
-         |  |  ML Classifier     |  |
-         |  |  (NumPy, 88% acc)  |  |
-         |  +--------------------+  |
+|  +--------------------+  |
+          |  |  ML Classifier     |  |
+          |  |  (JSON, 94.5% hyb) |  |
+          |  +--------------------+  |
          |  +--------------------+  |
          |  |  Page Classifier   |  |
          |  |  (Context aware)   |  |
@@ -115,11 +115,12 @@ Privacy Vision Agent solves this by creating a **privacy firewall** between the 
 
 | Property | Value |
 |----------|-------|
-| Implementation | Pure NumPy (no TensorFlow/PyTorch) |
+| Implementation | Pure NumPy training → bundled JSON weights, pure-JS inference (no TensorFlow/PyTorch, no ONNX runtime, no network) |
 | Architecture | Embedding -> GlobalAveragePooling -> Dense(256, ReLU) -> Dropout(0.3) -> Dense(15, Softmax) |
 | Vocabulary | Character-level + word-level tokenization |
-| Model Size | ~450 KB (ONNX export) |
-| Accuracy | 89.1% on test set (475 samples) |
+| Model Bundle | `extension/model/pii_model.json` (~few hundred KB) |
+| Accuracy | **89.9% (ML-only), 94.5% (hybrid)** on 475-sample test set (honest benchmark) |
+| Parity check | `scripts/verify-pii-js.js`: 0.8989 JS vs 0.8905 Python, label parity 0.9621 |
 | Training Epochs | 31 |
 | Optimizer | Adam (from scratch) |
 
@@ -195,7 +196,7 @@ extension/
   background.js          # Service worker (screenshot, OCR, firewall, settings)
   content.js             # Content script (DOM extraction, PII detection, overlays)
   popup.html/js/css      # Extension popup UI
-  model/                 # ML model files (ONNX format)
+  model/                 # ML model files (JSON weights)
   icons/                 # Extension icons
 ```
 
@@ -209,7 +210,13 @@ All scripts run from the extension bundle. No external resources are loaded at r
 
 ### Local Model Loading
 
-The ML model is bundled with the extension and loaded via `chrome.runtime.getURL()`. No model data is ever sent to external servers.
+The ML model (JSON weights) and the vision model are bundled with the extension and loaded via `chrome.runtime.getURL()`. No model data is ever sent to external servers.
+
+### Screenshot Storage
+
+Captured page screenshots are stored **on the local device only** (IndexedDB via `extension/screenshot-store.js`) — capped at 10 records / ~6 MB each. Each record persists **both** the **before** (`originalDataUrl`, raw capture) and **after** (`redactedDataUrl`, visually redacted) images, plus metadata only (URL, page type, risk, counts) — never raw PII values. The agent's `screenshot` action likewise returns both (`screenshotBefore` / `screenshot`). `list()` never exposes image data; full records are retrievable only locally via `get(id)`.
+
+**Save to a local folder:** the popup's *Save to Folder* button (File System Access API) writes per-record `<id>_before.png`, `<id>_after.png`, and a `manifest.json` (metadata only, URLs scrubbed of query strings) into any folder you choose on this machine; if the folder picker isn't available, it falls back to your Downloads folder under `privacy-vision-agent-screenshots/`. **Automatic folder export (`autoExportScreenshots`, on by default) writes ONLY the visually redacted image** to your download folder per stored record — the raw before-capture never leaves IndexedDB, so nothing sensitive lands on disk by itself. IndexedDB remains the automatic always-on store of both before/after; disk copies are the redacted output.
 
 ## Privacy Guarantees
 
@@ -238,7 +245,8 @@ The ML model is bundled with the extension and loaded via `chrome.runtime.getURL
 
 - OCR accuracy depends on Tesseract.js loading time (~2-5 seconds first run)
 - Visual-only PII (text in images, not in DOM) requires OCR which may miss some fonts
-- ML classifier has 88% accuracy; some edge cases may be missed
+- Hybrid detector weighs regex hard-claims (short numeric look-alikes) more than the ML layer; the risk engine down-weights low-confidence hits — an intentional over-redaction safety bias
+- ML classifier is a complement to, not a replacement for, regex detection; some adversarial edge cases are missed
 - No support for handwritten text detection
 - Dynamic SPAs may require re-scanning after route changes
 
@@ -250,8 +258,10 @@ The ML model is bundled with the extension and loaded via `chrome.runtime.getURL
 |------|----------|-----------|---------|
 | Unit | `tests/unit/` | Vitest | Individual component testing |
 | Integration | `tests/integration/` | Vitest | Module interaction testing |
-| Security | `tests/security/` | Vitest | Attack scenario testing |
-| Browser | `tests/browser/` | Playwright | E2E extension testing |
+| Security | `tests/security/` | Vitest | Attack scenario testing (real background.js in VM sandbox) |
+| Browser | `tests/browser/` | Playwright | E2E extension testing (real unpacked extension) |
+
+**Current:** 248 Vitest tests across 13 files (unit 222, integration 6, security 16) + 4 browser E2E tests, all passing; `tsc --noEmit` clean; PII and vision parity checkers green. See [`docs/feature-audit.md`](docs/feature-audit.md).
 
 ### Running Tests
 
@@ -271,13 +281,16 @@ npx vitest run && npx playwright test
 
 ## Benchmark Results
 
-### Detection Accuracy (475 test samples)
+### Detection Accuracy (475 test samples, honest harness)
 
-| Method | Accuracy | Precision | Recall | F1 |
-|--------|----------|-----------|--------|-----|
-| Regex-Only | ~72% | ~75% | ~68% | ~69% |
-| DOM-Context-Enhanced | ~82% | ~84% | ~78% | ~79% |
-| Full Pipeline | ~89% | ~89% | ~88% | ~88% |
+| Method | Accuracy | Precision (macro) | Recall (macro) | F1 (macro) | Weighted F1 |
+|--------|----------:|------------------:|---------------:|-----------:|------------:|
+| Regex-Only | 41.9% | 61.2% | 39.8% | 38.6% | 40.8% |
+| DOM-Context-Enhanced | 41.9% | 61.2% | 39.8% | 38.6% | 40.8% |
+| ML-Only | **89.9%** | 90.0% | 89.0% | 89.0% | 89.8% |
+| **Hybrid (Regex + ML)** | **94.5%** | 81.4% | 94.0% | 84.8% | **85.6%** |
+
+The shipped scan path is the **hybrid** strategy (regex + DOM hints + on-device ML + OCR + vision). Full per-category F1 tables, timings, and CSV export are in [`docs/benchmark.md`](docs/benchmark.md) and `benchmark/results.csv`.
 
 ### Latency
 
@@ -413,11 +426,11 @@ npx vitest run && npx playwright test
 ## Limitations
 
 1. **OCR Loading Time**: Tesseract.js requires ~2-5 seconds to load the first time; subsequent uses are faster
-2. **Vision Model Not Yet Integrated**: The architecture supports a future vision model for screenshot-based PII detection, but it is not yet implemented
+2. **MV3 CSP**: the optimizer path of the original ML booster is blocked by `unsafe-eval` restrictions, so the shipped runtime uses the pure-function JSON inference engine (this is the verified, benchmarked path)
 3. **Edge Cases**: Some PII formats (international phone numbers, non-Latin scripts) may not be fully covered
 4. **Dynamic Content**: Single-page applications may require manual re-scan after navigation
 5. **Performance**: Heavy pages with many DOM elements may slow down the extraction step
-6. **Accuracy**: The ML classifier achieves 88% accuracy; it is a complement to, not a replacement for, regex detection
+6. **Accuracy**: Hybrid detection achieves 94.5% on the benchmark; it is a complement to, not a replacement for, regex detection
 
 ## Future Improvements
 

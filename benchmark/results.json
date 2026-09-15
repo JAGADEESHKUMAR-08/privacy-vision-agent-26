@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-06T16:02:25.899Z",
+  "timestamp": "2026-09-07T06:34:49.984Z",
   "testSamples": 475,
   "note": "Honest evaluation: every method predicts purely from input text; no ground-truth label is fed to any classifier.",
   "methods": {
@@ -12,10 +12,10 @@
       "weightedPrecision": 0.6418662597909771,
       "weightedRecall": 0.4189473684210526,
       "weightedF1": 0.4080820799975876,
-      "avgTimePerSampleUs": 128,
+      "avgTimePerSampleUs": 59,
       "totalSamples": 475,
       "correctDetections": 199,
-      "memoryRssMB": 71,
+      "memoryRssMB": 70,
       "memoryHeapUsedMB": 30,
       "perClass": {
         "ADDRESS": {
@@ -164,7 +164,7 @@
       "weightedPrecision": 0.6418662597909771,
       "weightedRecall": 0.4189473684210526,
       "weightedF1": 0.4080820799975876,
-      "avgTimePerSampleUs": 118,
+      "avgTimePerSampleUs": 44,
       "totalSamples": 475,
       "correctDetections": 199,
       "memoryRssMB": 74,
@@ -309,34 +309,34 @@
     },
     "ml-only": {
       "method": "ML-Only",
-      "accuracy": 0.8905263157894737,
-      "macroPrecision": 0.8945363736638373,
-      "macroRecall": 0.8839006457125778,
-      "macroF1": 0.8845837320160197,
-      "weightedPrecision": 0.9028718278112117,
-      "weightedRecall": 0.8905263157894737,
-      "weightedF1": 0.8920849711074855,
-      "avgTimePerSampleUs": 207,
+      "accuracy": 0.8989473684210526,
+      "macroPrecision": 0.8996710023951402,
+      "macroRecall": 0.8897560382609402,
+      "macroF1": 0.8900217876860654,
+      "weightedPrecision": 0.9074452702118764,
+      "weightedRecall": 0.8989473684210526,
+      "weightedF1": 0.8984375601701924,
+      "avgTimePerSampleUs": 117,
       "totalSamples": 475,
-      "correctDetections": 423,
-      "memoryRssMB": 77,
-      "memoryHeapUsedMB": 28,
+      "correctDetections": 427,
+      "memoryRssMB": 76,
+      "memoryHeapUsedMB": 29,
       "perClass": {
         "ADDRESS": {
-          "precision": 0.9722222222222222,
-          "recall": 0.9722222222222222,
-          "f1": 0.9722222222222222,
-          "tp": 35,
-          "fp": 1,
-          "fn": 1,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 36,
+          "fp": 0,
+          "fn": 0,
           "support": 36
         },
         "API_KEY": {
-          "precision": 0.8157894736842105,
+          "precision": 0.8378378378378378,
           "recall": 1,
-          "f1": 0.898550724637681,
+          "f1": 0.911764705882353,
           "tp": 31,
-          "fp": 7,
+          "fp": 6,
           "fn": 0,
           "support": 31
         },
@@ -350,21 +350,21 @@
           "support": 29
         },
         "BANK_ACCOUNT": {
-          "precision": 0.75,
-          "recall": 0.75,
-          "f1": 0.75,
-          "tp": 18,
-          "fp": 6,
-          "fn": 6,
+          "precision": 0.7083333333333334,
+          "recall": 0.7083333333333334,
+          "f1": 0.7083333333333334,
+          "tp": 17,
+          "fp": 7,
+          "fn": 7,
           "support": 24
         },
         "CREDIT_CARD": {
-          "precision": 0.7297297297297297,
-          "recall": 0.7941176470588235,
-          "f1": 0.7605633802816901,
-          "tp": 27,
-          "fp": 10,
-          "fn": 7,
+          "precision": 0.6666666666666666,
+          "recall": 0.8823529411764706,
+          "f1": 0.7594936708860759,
+          "tp": 30,
+          "fp": 15,
+          "fn": 4,
           "support": 34
         },
         "DATE_OF_BIRTH": {
@@ -377,12 +377,12 @@
           "support": 38
         },
         "EMAIL": {
-          "precision": 0.975609756097561,
-          "recall": 0.975609756097561,
-          "f1": 0.975609756097561,
-          "tp": 40,
-          "fp": 1,
-          "fn": 1,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "tp": 41,
+          "fp": 0,
+          "fn": 0,
           "support": 41
         },
         "FINANCIAL_DATA": {
@@ -395,30 +395,30 @@
           "support": 34
         },
         "GOVERNMENT_ID": {
-          "precision": 0.48484848484848486,
-          "recall": 0.6153846153846154,
-          "f1": 0.5423728813559322,
-          "tp": 16,
-          "fp": 17,
-          "fn": 10,
+          "precision": 0.56,
+          "recall": 0.5384615384615384,
+          "f1": 0.5490196078431373,
+          "tp": 14,
+          "fp": 11,
+          "fn": 12,
           "support": 26
         },
         "MEDICAL_ID": {
-          "precision": 1,
+          "precision": 0.9333333333333333,
           "recall": 0.8,
-          "f1": 0.888888888888889,
+          "f1": 0.8615384615384616,
           "tp": 28,
-          "fp": 0,
+          "fp": 2,
           "fn": 7,
           "support": 35
         },
         "NAME": {
-          "precision": 0.9642857142857143,
-          "recall": 0.9642857142857143,
-          "f1": 0.9642857142857143,
-          "tp": 27,
+          "precision": 0.9655172413793104,
+          "recall": 1,
+          "f1": 0.9824561403508771,
+          "tp": 28,
           "fp": 1,
-          "fn": 1,
+          "fn": 0,
           "support": 28
         },
         "NONE": {
@@ -431,12 +431,12 @@
           "support": 27
         },
         "PASSWORD": {
-          "precision": 0.8529411764705882,
-          "recall": 0.8787878787878788,
-          "f1": 0.8656716417910447,
-          "tp": 29,
-          "fp": 5,
-          "fn": 4,
+          "precision": 0.9090909090909091,
+          "recall": 0.9090909090909091,
+          "f1": 0.9090909090909091,
+          "tp": 30,
+          "fp": 3,
+          "fn": 3,
           "support": 33
         },
         "PHONE": {
@@ -449,11 +449,11 @@
           "support": 32
         },
         "USERNAME": {
-          "precision": 0.9583333333333334,
+          "precision": 1,
           "recall": 0.8518518518518519,
-          "f1": 0.9019607843137256,
+          "f1": 0.92,
           "tp": 23,
-          "fp": 1,
+          "fp": 0,
           "fn": 4,
           "support": 27
         }
@@ -461,34 +461,34 @@
     },
     "hybrid-regex+ml": {
       "method": "Hybrid-Regex+ML",
-      "accuracy": 0.9368421052631579,
-      "macroPrecision": 0.8136263804607011,
-      "macroRecall": 0.9327127629088412,
-      "macroF1": 0.843738659791116,
-      "weightedPrecision": 0.8213056459466267,
-      "weightedRecall": 0.9368421052631579,
-      "weightedF1": 0.8511724525511234,
-      "avgTimePerSampleUs": 399,
+      "accuracy": 0.9452631578947368,
+      "macroPrecision": 0.8142119129606752,
+      "macroRecall": 0.9402184924733944,
+      "macroF1": 0.8481313700746471,
+      "weightedPrecision": 0.8218788677155189,
+      "weightedRecall": 0.9452631578947368,
+      "weightedF1": 0.8558926889065593,
+      "avgTimePerSampleUs": 149,
       "totalSamples": 475,
-      "correctDetections": 445,
+      "correctDetections": 449,
       "memoryRssMB": 77,
-      "memoryHeapUsedMB": 24,
+      "memoryHeapUsedMB": 25,
       "perClass": {
         "ADDRESS": {
-          "precision": 0.7058823529411765,
+          "precision": 0.72,
           "recall": 1,
-          "f1": 0.8275862068965517,
+          "f1": 0.8372093023255813,
           "tp": 36,
-          "fp": 15,
+          "fp": 14,
           "fn": 0,
           "support": 36
         },
         "API_KEY": {
-          "precision": 0.8157894736842105,
+          "precision": 0.8378378378378378,
           "recall": 1,
-          "f1": 0.898550724637681,
+          "f1": 0.911764705882353,
           "tp": 31,
-          "fp": 7,
+          "fp": 6,
           "fn": 0,
           "support": 31
         },
@@ -502,21 +502,21 @@
           "support": 29
         },
         "BANK_ACCOUNT": {
-          "precision": 0.75,
-          "recall": 0.75,
-          "f1": 0.75,
-          "tp": 18,
-          "fp": 6,
-          "fn": 6,
+          "precision": 0.7083333333333334,
+          "recall": 0.7083333333333334,
+          "f1": 0.7083333333333334,
+          "tp": 17,
+          "fp": 7,
+          "fn": 7,
           "support": 24
         },
         "CREDIT_CARD": {
-          "precision": 0.7297297297297297,
-          "recall": 0.7941176470588235,
-          "f1": 0.7605633802816901,
-          "tp": 27,
-          "fp": 10,
-          "fn": 7,
+          "precision": 0.6666666666666666,
+          "recall": 0.8823529411764706,
+          "f1": 0.7594936708860759,
+          "tp": 30,
+          "fp": 15,
+          "fn": 4,
           "support": 34
         },
         "DATE_OF_BIRTH": {
@@ -529,11 +529,11 @@
           "support": 38
         },
         "EMAIL": {
-          "precision": 0.9761904761904762,
+          "precision": 1,
           "recall": 1,
-          "f1": 0.9879518072289156,
+          "f1": 1,
           "tp": 41,
-          "fp": 1,
+          "fp": 0,
           "fn": 0,
           "support": 41
         },
@@ -547,30 +547,30 @@
           "support": 34
         },
         "GOVERNMENT_ID": {
-          "precision": 0.2926829268292683,
+          "precision": 0.3116883116883117,
           "recall": 0.9230769230769231,
-          "f1": 0.4444444444444444,
+          "f1": 0.4660194174757282,
           "tp": 24,
-          "fp": 58,
+          "fp": 53,
           "fn": 2,
           "support": 26
         },
         "MEDICAL_ID": {
-          "precision": 1,
+          "precision": 0.9354838709677419,
           "recall": 0.8285714285714286,
-          "f1": 0.90625,
+          "f1": 0.8787878787878788,
           "tp": 29,
-          "fp": 0,
+          "fp": 2,
           "fn": 6,
           "support": 35
         },
         "NAME": {
-          "precision": 0.9642857142857143,
-          "recall": 0.9642857142857143,
-          "f1": 0.9642857142857143,
-          "tp": 27,
+          "precision": 0.9655172413793104,
+          "recall": 1,
+          "f1": 0.9824561403508771,
+          "tp": 28,
           "fp": 1,
-          "fn": 1,
+          "fn": 0,
           "support": 28
         },
         "NONE": {
@@ -583,12 +583,12 @@
           "support": 27
         },
         "PASSWORD": {
-          "precision": 0.8529411764705882,
-          "recall": 0.8787878787878788,
-          "f1": 0.8656716417910447,
-          "tp": 29,
-          "fp": 5,
-          "fn": 4,
+          "precision": 0.9090909090909091,
+          "recall": 0.9090909090909091,
+          "f1": 0.9090909090909091,
+          "tp": 30,
+          "fp": 3,
+          "fn": 3,
           "support": 33
         },
         "PHONE": {
@@ -601,11 +601,11 @@
           "support": 32
         },
         "USERNAME": {
-          "precision": 0.9583333333333334,
+          "precision": 1,
           "recall": 0.8518518518518519,
-          "f1": 0.9019607843137256,
+          "f1": 0.92,
           "tp": 23,
-          "fp": 1,
+          "fp": 0,
           "fn": 4,
           "support": 27
         }

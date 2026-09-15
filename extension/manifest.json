@@ -7,7 +7,8 @@
     "activeTab",
     "storage",
     "scripting",
-    "tabs"
+    "tabs",
+    "downloads"
   ],
   "host_permissions": [
     "<all_urls>",
@@ -41,7 +42,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["model/*", "icons/*", "visualizer.js", "pii-inference.js"],
+      "resources": ["model/*", "icons/*", "visualizer.js", "pii-inference.js", "vision-inference.js", "lib/tesseract/*"],
       "matches": ["<all_urls>"]
     }
   ],

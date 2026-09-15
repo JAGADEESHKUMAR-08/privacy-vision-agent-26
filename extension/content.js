@@ -708,12 +708,12 @@
   function extractFormFields() {
     var fields = [];
     var inputs = document.querySelectorAll('input, select, textarea');
-    var processed = {};
+    var processed = new Set();
 
     for (var i = 0; i < inputs.length; i++) {
       var el = inputs[i];
-      if (processed[el]) continue;
-      processed[el] = true;
+      if (processed.has(el)) continue;
+      processed.add(el);
 
       if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button' || el.type === 'reset') continue;
       if (el.hasAttribute('hidden') || el.closest('[hidden]')) continue;
@@ -865,81 +865,232 @@
     return lastScanResult || window.__PVA_LAST_SCAN__ || null;
   }
 
+  // ─── DOM Location + Bounding Box Resolution ─────────────────────────────────
+  function locateEntityInDOM(entity) {
+    if (!entity || !entity.value) return [];
+    var regions = [];
+    var val = String(entity.value).trim();
+    if (!val) return [];
+
+    // 1. If entity has a domSelector, check if the selector resolves
+    if (entity.domSelector) {
+      try {
+        var el = document.querySelector(entity.domSelector);
+        if (el && isElementVisible(el)) {
+          var r = el.getBoundingClientRect();
+          if (r.width > 0 && r.height > 0) {
+            regions.push({
+              x: Math.round(r.left * 100) / 100,
+              y: Math.round(r.top * 100) / 100,
+              width: Math.round(r.width * 100) / 100,
+              height: Math.round(r.height * 100) / 100
+            });
+          }
+        }
+      } catch (e) {}
+    }
+
+    // 2. Check form inputs / textareas / selects for value match
+    try {
+      var inputs = document.querySelectorAll('input, textarea, select');
+      for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        if (!isElementVisible(input)) continue;
+        var inputVal = input.value || '';
+        if (inputVal && (inputVal.indexOf(val) !== -1 || inputVal.toLowerCase().indexOf(val.toLowerCase()) !== -1)) {
+          var ir = input.getBoundingClientRect();
+          if (ir.width > 0 && ir.height > 0) {
+            regions.push({
+              x: Math.round(ir.left * 100) / 100,
+              y: Math.round(ir.top * 100) / 100,
+              width: Math.round(ir.width * 100) / 100,
+              height: Math.round(ir.height * 100) / 100
+            });
+            if (!entity.domSelector) {
+              try { entity.domSelector = cssSelector(input); } catch (e) {}
+            }
+          }
+        }
+      }
+    } catch (e) {}
+
+    // 3. Scan DOM text nodes using TreeWalker and Range for exact text matches
+    try {
+      if (document.body) {
+        var walker = document.createTreeWalker(
+          document.body,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode: function (node) {
+              if (!node || !node.nodeValue) return NodeFilter.FILTER_REJECT;
+              var parent = node.parentElement;
+              if (!parent) return NodeFilter.FILTER_REJECT;
+              var tag = parent.tagName.toLowerCase();
+              if (tag === 'script' || tag === 'style' || tag === 'noscript' || tag === 'template') {
+                return NodeFilter.FILTER_REJECT;
+              }
+              // Skip if element is hidden or is part of PVA visualizer / overlays
+              if (parent.closest('#__pva-viz-host') || parent.closest('#' + OVERLAY_PREFIX + 'container')) {
+                return NodeFilter.FILTER_REJECT;
+              }
+              if (!isElementVisible(parent)) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          }
+        );
+
+        var node;
+        while ((node = walker.nextNode())) {
+          var text = node.nodeValue;
+          var startIdx = 0;
+          var matchIdx;
+          while (startIdx < text.length) {
+            matchIdx = text.indexOf(val, startIdx);
+            if (matchIdx === -1) {
+              var lowerText = text.toLowerCase();
+              var lowerVal = val.toLowerCase();
+              matchIdx = lowerText.indexOf(lowerVal, startIdx);
+              if (matchIdx === -1) break;
+            }
+
+            try {
+              var range = document.createRange();
+              range.setStart(node, matchIdx);
+              range.setEnd(node, matchIdx + val.length);
+              var rects = range.getClientRects();
+              if (rects && rects.length > 0) {
+                for (var ri = 0; ri < rects.length; ri++) {
+                  var rect = rects[ri];
+                  if (rect.width > 0 && rect.height > 0) {
+                    regions.push({
+                      x: Math.round(rect.left * 100) / 100,
+                      y: Math.round(rect.top * 100) / 100,
+                      width: Math.round(rect.width * 100) / 100,
+                      height: Math.round(rect.height * 100) / 100
+                    });
+                  }
+                }
+              } else {
+                var singleRect = range.getBoundingClientRect();
+                if (singleRect.width > 0 && singleRect.height > 0) {
+                  regions.push({
+                    x: Math.round(singleRect.left * 100) / 100,
+                    y: Math.round(singleRect.top * 100) / 100,
+                    width: Math.round(singleRect.width * 100) / 100,
+                    height: Math.round(singleRect.height * 100) / 100
+                  });
+                }
+              }
+              if (!entity.domSelector && node.parentElement) {
+                try { entity.domSelector = cssSelector(node.parentElement); } catch (e) {}
+              }
+            } catch (rangeErr) {}
+            startIdx = matchIdx + Math.max(1, val.length);
+          }
+        }
+      }
+    } catch (e) {}
+
+    // Deduplicate overlapping/identical regions
+    var unique = [];
+    for (var u = 0; u < regions.length; u++) {
+      var cand = regions[u];
+      var isDup = false;
+      for (var k = 0; k < unique.length; k++) {
+        var ex = unique[k];
+        if (Math.abs(ex.x - cand.x) < 2 && Math.abs(ex.y - cand.y) < 2 &&
+            Math.abs(ex.width - cand.width) < 4 && Math.abs(ex.height - cand.height) < 4) {
+          isDup = true;
+          break;
+        }
+      }
+      if (!isDup) unique.push(cand);
+    }
+
+    return unique;
+  }
+
+  function resolveEntityBboxes(entities) {
+    if (!entities || !entities.length) return;
+    for (var i = 0; i < entities.length; i++) {
+      var ent = entities[i];
+      var located = locateEntityInDOM(ent);
+      if (located.length > 0) {
+        ent.bbox = located[0];
+        ent.bboxes = located;
+      }
+    }
+  }
+
   function createOverlayForEntities(entities, risks) {
     removeOverlays();
 
     var riskMap = {};
-    for (var r = 0; r < risks.length; r++) {
+    for (var r = 0; r < (risks || []).length; r++) {
       riskMap[risks[r].entityId] = risks[r];
     }
 
-    var COLOR_MAP = {
-      CRITICAL: { bg: 'rgba(220, 38, 38, 0.15)', border: '#dc2626', text: '#fca5a5' },
-      HIGH: { bg: 'rgba(234, 88, 12, 0.12)', border: '#ea580c', text: '#fdba74' },
-      MEDIUM: { bg: 'rgba(234, 179, 8, 0.10)', border: '#eab308', text: '#fde047' },
-      LOW: { bg: 'rgba(59, 130, 246, 0.08)', border: '#3b82f6', text: '#93c5fd' }
-    };
-
     var container = document.createElement('div');
     container.id = OVERLAY_PREFIX + 'container';
-    container.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2147483647;';
+    container.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2147483647;';
 
     var created = 0;
-    for (var i = 0; i < entities.length; i++) {
+    for (var i = 0; i < (entities || []).length; i++) {
       var entity = entities[i];
-      var risk = riskMap[entity.id];
-      var riskLevel = risk ? risk.level : entity.risk;
-      var color = COLOR_MAP[riskLevel] || COLOR_MAP.LOW;
-
-      var targetRect = null;
-      if (entity.domSelector) {
-        try {
-          var targetEl = document.querySelector(entity.domSelector);
-          if (targetEl) targetRect = targetEl.getBoundingClientRect();
-        } catch (e) {}
+      var regions = (entity.bboxes && entity.bboxes.length > 0) ? entity.bboxes : [entity.bbox];
+      if (!regions || regions.length === 0 || (!regions[0].width && !regions[0].height)) {
+        regions = locateEntityInDOM(entity);
       }
 
-      if (!targetRect && entity.bbox.width > 0 && entity.bbox.height > 0) {
-        targetRect = entity.bbox;
+      for (var ri = 0; ri < regions.length; ri++) {
+        var targetRect = regions[ri];
+        if (!targetRect || targetRect.width <= 0 || targetRect.height <= 0) continue;
+
+        var overlay = document.createElement('div');
+        overlay.className = OVERLAY_PREFIX + 'box';
+        // Solid black redaction box covering sensitive text on the screen
+        overlay.style.cssText =
+          'position:absolute;' +
+          'left:' + Math.max(0, targetRect.x + window.scrollX - 2) + 'px;' +
+          'top:' + Math.max(0, targetRect.y + window.scrollY - 2) + 'px;' +
+          'width:' + (targetRect.width + 4) + 'px;' +
+          'height:' + (targetRect.height + 4) + 'px;' +
+          'background:#020617;' +
+          'color:#ffffff;' +
+          'border:1px solid rgba(255,255,255,0.18);' +
+          'border-radius:3px;' +
+          'pointer-events:auto;' +
+          'display:flex;align-items:center;justify-content:center;' +
+          'box-shadow:0 1px 4px rgba(0,0,0,0.6);' +
+          'font-family:monospace;font-size:10px;font-weight:700;' +
+          'letter-spacing:1px;user-select:none;cursor:default;';
+
+        overlay.title = entity.type + ' (Protected by Privacy Vision)';
+        overlay.textContent = '████████';
+
+        var label = document.createElement('div');
+        label.style.cssText =
+          'position:absolute;top:-18px;left:0;' +
+          'background:#0f172a;' +
+          'color:#38bdf8;' +
+          'border:1px solid #0284c7;' +
+          'font-size:9px;' +
+          'font-weight:700;' +
+          'padding:1px 5px;' +
+          'border-radius:3px;' +
+          'white-space:nowrap;' +
+          'font-family:monospace;' +
+          'letter-spacing:0.3px;';
+        label.textContent = entity.type + ' (' + Math.round(entity.confidence * 100) + '%)';
+        overlay.appendChild(label);
+
+        container.appendChild(overlay);
+        created++;
       }
-
-      if (!targetRect) continue;
-
-      var overlay = document.createElement('div');
-      overlay.className = OVERLAY_PREFIX + 'box';
-      overlay.style.cssText =
-        'position:absolute;' +
-        'left:' + (targetRect.x + window.scrollX) + 'px;' +
-        'top:' + (targetRect.y + window.scrollY) + 'px;' +
-        'width:' + targetRect.width + 'px;' +
-        'height:' + targetRect.height + 'px;' +
-        'background:' + color.bg + ';' +
-        'border:2px solid ' + color.border + ';' +
-        'border-radius:3px;' +
-        'pointer-events:none;' +
-        'box-shadow:0 0 4px ' + color.border + '40;';
-
-      var label = document.createElement('div');
-      label.style.cssText =
-        'position:absolute;top:-18px;left:0;' +
-        'background:' + color.border + ';' +
-        'color:#fff;' +
-        'font-size:9px;' +
-        'font-weight:700;' +
-        'padding:1px 5px;' +
-        'border-radius:3px;' +
-        'white-space:nowrap;' +
-        'font-family:monospace;' +
-        'letter-spacing:0.3px;';
-      label.textContent = entity.type + ' (' + Math.round(entity.confidence * 100) + '%)';
-      overlay.appendChild(label);
-
-      container.appendChild(overlay);
-      created++;
     }
 
     if (created > 0) {
-      document.documentElement.appendChild(container);
+      document.body.appendChild(container);
       overlayVisible = true;
       window.__PVA_OVERLAY_VISIBLE__ = true;
     }
@@ -1082,8 +1233,408 @@
     return entities;
   }
 
+  // ─── Screenshot Redaction + Local Storage ───────────────────────────────────
+  // Screenshots are captured locally, redacted locally, then persisted in the
+  // extension's own IndexedDB (see screenshot-store.js in the service worker).
+  // The originals NEVER leave the device; only the sanitized context is ever
+  // made available to an external AI agent.
+
+  var VISION_REDACTION_METHODS = {
+    EMAIL: 'mask', PHONE: 'mask', NAME: 'mask', ADDRESS: 'mask',
+    PASSWORD: 'mask', USERNAME: 'mask', CREDIT_CARD: 'mask',
+    BANK_ACCOUNT: 'mask', API_KEY: 'mask', AUTH_TOKEN: 'mask',
+    DATE_OF_BIRTH: 'mask', GOVERNMENT_ID: 'mask', MEDICAL_ID: 'mask',
+    FINANCIAL_DATA: 'mask', PRIVATE_DOCUMENT_CONTENT: 'mask',
+    SSN: 'mask', JWT: 'mask', GOV_ID: 'mask', BEARER: 'mask'
+  };
+
+  function clampRegion(rect, canvas) {
+    var x = Math.max(0, Math.round(rect.x));
+    var y = Math.max(0, Math.round(rect.y));
+    var x2 = Math.min(canvas.width, Math.round(rect.x + rect.w));
+    var y2 = Math.min(canvas.height, Math.round(rect.y + rect.h));
+    return { x: x, y: y, w: Math.max(0, x2 - x), h: Math.max(0, y2 - y) };
+  }
+
+  function pixelateRegion(ctx, region, pixelSize) {
+    var ps = Math.max(2, Math.round(pixelSize || 8));
+    var imageData = ctx.getImageData(region.x, region.y, region.w, region.h);
+    var data = imageData.data;
+    for (var by = 0; by < region.h; by += ps) {
+      for (var bx = 0; bx < region.w; bx += ps) {
+        var rSum = 0, gSum = 0, bSum = 0, cnt = 0;
+        var bey = Math.min(by + ps, region.h);
+        var bex = Math.min(bx + ps, region.w);
+        for (var y = by; y < bey; y++) {
+          for (var x = bx; x < bex; x++) {
+            var idx = (y * region.w + x) * 4;
+            rSum += data[idx]; gSum += data[idx + 1]; bSum += data[idx + 2]; cnt++;
+          }
+        }
+        var rAvg = (rSum / cnt) | 0, gAvg = (gSum / cnt) | 0, bAvg = (bSum / cnt) | 0;
+        for (var y2 = by; y2 < bey; y2++) {
+          for (var x2 = bx; x2 < bex; x2++) {
+            var i2 = (y2 * region.w + x2) * 4;
+            data[i2] = rAvg; data[i2 + 1] = gAvg; data[i2 + 2] = bAvg;
+          }
+        }
+      }
+    }
+    ctx.putImageData(imageData, region.x, region.y);
+  }
+
+  function blurRegion(ctx, region, sourceImage) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(region.x, region.y, region.w, region.h);
+    ctx.clip();
+    try {
+      if (typeof ctx.filter === 'string') {
+        ctx.filter = 'blur(' + Math.max(8, Math.min(20, region.h * 0.4)) + 'px)';
+        ctx.drawImage(sourceImage, region.x, region.y, region.w, region.h, region.x, region.y, region.w, region.h);
+      } else {
+        pixelateRegion(ctx, region, 8);
+      }
+    } catch (e) {
+      pixelateRegion(ctx, region, 8);
+    }
+    ctx.restore();
+  }
+
+  function drawRegionLabel(ctx, region, text) {
+    var fontSize = Math.max(10, Math.min(14, region.h * 0.5));
+    ctx.font = 'bold ' + fontSize + 'px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    var w = ctx.measureText(text).width;
+    if (w > region.w - 4 || fontSize > region.h - 4) return;
+    ctx.fillStyle = '#333333';
+    ctx.fillText(text, region.x + region.w / 2, region.y + region.h / 2);
+  }
+
+  function redactScreenshotDataUrl(dataUrl, entities) {
+    return new Promise(function (resolve) {
+      if (!dataUrl) {
+        resolve('');
+        return;
+      }
+      if (!entities || entities.length === 0) {
+        resolve(dataUrl);
+        return;
+      }
+      var image = new Image();
+      image.onload = function () {
+        try {
+          var canvas = document.createElement('canvas');
+          canvas.width = image.naturalWidth || image.width;
+          canvas.height = image.naturalHeight || image.height;
+          var ctx = canvas.getContext('2d');
+          if (!ctx || canvas.width <= 0 || canvas.height <= 0) {
+            resolve('');
+            return;
+          }
+          ctx.drawImage(image, 0, 0);
+
+          var scaleX = canvas.width / Math.max(1, window.innerWidth);
+          var scaleY = canvas.height / Math.max(1, window.innerHeight);
+          var idCounterIdx = 0;
+
+          (entities || []).forEach(function (entity) {
+            var bboxes = (entity.bboxes && entity.bboxes.length > 0)
+              ? entity.bboxes
+              : (entity.bbox && entity.bbox.width > 0 ? [entity.bbox] : locateEntityInDOM(entity));
+
+            bboxes.forEach(function (bb) {
+              if (!bb || bb.width <= 0 || bb.height <= 0) return;
+
+              // Scale to canvas space, add safety padding, and clamp to canvas dimensions
+              var rawRegion = {
+                x: bb.x * scaleX,
+                y: bb.y * scaleY,
+                w: bb.width * scaleX,
+                h: bb.height * scaleY
+              };
+              var region = clampRegion({
+                x: rawRegion.x - 3,
+                y: rawRegion.y - 3,
+                w: rawRegion.w + 6,
+                h: rawRegion.h + 6
+              }, canvas);
+
+              if (region.w < 1 || region.h < 1) return;
+
+              var method = VISION_REDACTION_METHODS[entity.type] || 'mask';
+              if (method === 'blur') {
+                blurRegion(ctx, region, image);
+              } else if (method === 'pixelate') {
+                pixelateRegion(ctx, region, 8);
+              } else if (method === 'tokenize') {
+                ctx.fillStyle = '#e0e0e0';
+                ctx.fillRect(region.x, region.y, region.w, region.h);
+                drawRegionLabel(ctx, region, (entity.type || 'DATA').slice(0, 5) + '_' + String(idCounterIdx).padStart(3, '0'));
+                idCounterIdx++;
+              } else if (method === 'replace') {
+                ctx.fillStyle = '#cccccc';
+                ctx.fillRect(region.x, region.y, region.w, region.h);
+                drawRegionLabel(ctx, region, '[' + (entity.type || 'DATA').slice(0, 5) + ']');
+              } else {
+                // Default 'mask': solid opaque black permanently burned into the image pixels
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(region.x, region.y, region.w, region.h);
+              }
+            });
+          });
+
+          resolve(canvas.toDataURL('image/png'));
+        } catch (e) {
+          resolve('');
+        }
+      };
+      image.onerror = function () { resolve(''); };
+      image.src = dataUrl;
+    });
+  }
+
+  // ─── On-Device Vision Booster ───────────────────────────────────────────────
+  // Uses the trained binary vision classifier (vision-inference.js +
+  // model/vision_model.json) on the RENDERED pixels of each detected region to
+  // visually confirm whether the region actually contains sensitive UI content.
+  // Regions that the model scores as sensitive get their source upgraded to
+  // 'VISION' and their confidence raised - a genuine visual-perception signal,
+  // never a text lookup. Pixels stay on the page; only the verdict is used.
+
+  var VISION_MAX_REGIONS = 12;
+  var VISION_MIN_REGION = 10;   // px on the screenshot canvas
+  var VISION_CONFIRM_THRESHOLD = 0.6;
+
+  var visionML = null;
+  var visionMLLoadPromise = null;
+
+  function ensureVisionML() {
+    if (visionML) return Promise.resolve(visionML);
+    if (visionMLLoadPromise) return visionMLLoadPromise;
+
+    visionMLLoadPromise = (async function () {
+      try {
+        var resp = await fetch(chrome.runtime.getURL('vision-inference.js'));
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        var src = await resp.text();
+        var engine = eval(src + '\n;VISION');
+        await engine.load();
+        visionML = engine;
+        return engine;
+      } catch (e) {
+        console.warn('[PVA] Vision engine unavailable:', e && e.message);
+        visionMLLoadPromise = null;
+        return null;
+      }
+    })();
+
+    return visionMLLoadPromise;
+  }
+
+  function loadGrayscaleCrop(source, rect, targetW, targetH) {
+    try {
+      var crop = document.createElement('canvas');
+      crop.width = targetW;
+      crop.height = targetH;
+      var ctx = crop.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return null;
+      ctx.drawImage(source, rect.x, rect.y, rect.w, rect.h, 0, 0, targetW, targetH);
+      var pixels = ctx.getImageData(0, 0, targetW, targetH).data;
+      var gray = new Float32Array(targetW * targetH);
+      for (var i = 0, n = targetW * targetH; i < n; i++) gray[i] = pixels[i * 4] / 255;
+      return gray;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function runVisionBoost(dataUrl, entities) {
+    return new Promise(function (resolve) {
+      if (!entities || !entities.length) {
+        resolve(0);
+        return;
+      }
+      var image = new Image();
+      image.onload = function () {
+        try {
+          var canvas = document.createElement('canvas');
+          canvas.width = image.naturalWidth || image.width;
+          canvas.height = image.naturalHeight || image.height;
+          var ctx = canvas.getContext('2d');
+          if (!ctx || canvas.width <= 0 || canvas.height <= 0) {
+            resolve(0);
+            return;
+          }
+          ensureVisionML().then(function (engine) {
+            if (!engine) { resolve(0); return; }
+            var scaleX = canvas.width / Math.max(1, window.innerWidth);
+            var scaleY = canvas.height / Math.max(1, window.innerHeight);
+            var examined = 0;
+            var boosted = 0;
+            for (var i = 0; i < entities.length && examined < VISION_MAX_REGIONS; i++) {
+              var bb = entities[i].bbox;
+              if (!bb || !bb.width || !bb.height) continue;
+              examined++;
+              var region = clampRegion({
+                x: bb.x * scaleX, y: bb.y * scaleY,
+                w: bb.width * scaleX, h: bb.height * scaleY
+              }, canvas);
+              if (region.w < VISION_MIN_REGION || region.h < VISION_MIN_REGION) continue;
+              var gray = loadGrayscaleCrop(image, region, 96, 48);
+              if (!gray) continue;
+              var prob = 0;
+              try { prob = engine.classify(gray); } catch (e) { continue; }
+              if (prob >= VISION_CONFIRM_THRESHOLD) {
+                entities[i].source = 'VISION';
+                entities[i].visualConfirmed = true;
+                entities[i].confidence = Math.max(entities[i].confidence || 0, Math.round(prob * 1000) / 1000);
+                boosted++;
+              }
+            }
+            if (boosted > 0) {
+              console.log('[PVA] Vision engine visually confirmed ' + boosted + ' sensitive region(s)');
+            }
+            resolve(boosted);
+          }).catch(function () { resolve(0); });
+        } catch (e) {
+          resolve(0);
+        }
+      };
+      image.onerror = function () { resolve(0); };
+      image.src = dataUrl;
+    });
+  }
+
+  function captureAndStoreScreenshot(scanResult, options) {
+    return new Promise(function (resolve) {
+      scanResult.screenshotStored = false;
+      scanResult.visionFlagged = 0;
+      if (!scanResult || !scanResult.entities || scanResult.entities.length === 0) {
+        resolve();
+        return;
+      }
+      var allowAutoExport = !!(options && options.autoExport === true);
+chrome.runtime.sendMessage({ type: 'CAPTURE_SCREENSHOT' }, function (capture) {
+          if (chrome.runtime.lastError || !capture || !capture.success || !capture.dataUrl) {
+            resolve();
+            return;
+          }
+        resolveEntityBboxes(scanResult.entities);
+        runVisionBoost(capture.dataUrl, scanResult.entities).then(function (flagged) {
+          scanResult.visionFlagged = flagged;
+          redactScreenshotDataUrl(capture.dataUrl, scanResult.entities).then(function (redacted) {
+            var record = {
+              url: scanResult.url,
+              title: scanResult.pageTitle,
+              pageType: scanResult.pageType,
+              timestamp: Date.now(),
+              overallRisk: scanResult.overallRisk,
+              entityCount: scanResult.totalEntities,
+              originalDataUrl: capture.dataUrl,
+              redactedDataUrl: redacted,
+              autoExport: allowAutoExport
+            };
+chrome.runtime.sendMessage({ type: 'SAVE_SCREENSHOT', record: record }, function (saveResp) {
+                if (!chrome.runtime.lastError && saveResp && saveResp.success && saveResp.id) {
+                  scanResult.screenshotStored = true;
+                  scanResult.screenshotId = saveResp.id;
+                  scanResult.localScreenshotCount = saveResp.count;
+                } else {
+                }
+              scanResult.screenshot = (scanResult.entities && scanResult.entities.length > 0) ? (redacted || capture.dataUrl) : capture.dataUrl;
+              if (scanResult.sanitizedContext) {
+                scanResult.sanitizedContext.screenshot = (scanResult.entities && scanResult.entities.length > 0) ? (redacted || capture.dataUrl) : capture.dataUrl;
+                scanResult.sanitizedContext.redactedScreenshot = redacted;
+              }
+              resolve();
+            });
+          });
+        });
+      });
+    });
+  }
+
+  function getProtectedScreenshot(callback) {
+    if (scanInProgress) {
+      var waitTries = 0;
+      var poll = setInterval(function () {
+        waitTries++;
+        if (!scanInProgress) {
+          clearInterval(poll);
+          getProtectedScreenshot(callback);
+        } else if (waitTries > 100) {
+          clearInterval(poll);
+          callback({ success: false, error: 'Scan timed out' });
+        }
+      }, 100);
+      return;
+    }
+
+    function doCaptureAndRedact(scanRes) {
+      chrome.runtime.sendMessage({ type: 'CAPTURE_SCREENSHOT' }, function (capture) {
+        if (chrome.runtime.lastError || !capture || !capture.success || !capture.dataUrl) {
+          callback({ success: false, error: 'Failed to capture screenshot: ' + ((chrome.runtime.lastError && chrome.runtime.lastError.message) || 'Unknown error') });
+          return;
+        }
+
+        var entities = (scanRes && scanRes.entities) || [];
+        resolveEntityBboxes(entities);
+
+        // If no sensitive entities detected on the page, download normal clean screenshot
+        if (entities.length === 0) {
+          callback({
+            success: true,
+            protectedDataUrl: capture.dataUrl,
+            entityCount: 0,
+            overallRisk: 'LOW',
+            isClean: true
+          });
+          return;
+        }
+
+        redactScreenshotDataUrl(capture.dataUrl, entities).then(function (redacted) {
+          if (!redacted) {
+            callback({ success: false, error: 'Screenshot redaction failed' });
+            return;
+          }
+
+          // CRITICAL SECURITY CHECK: Ensure sensitive data is not being leaked in the download
+          if (redacted === capture.dataUrl) {
+            callback({ success: false, error: 'Critical Security Error: Redacted image matches original unredacted image' });
+            return;
+          }
+
+          callback({
+            success: true,
+            protectedDataUrl: redacted,
+            entityCount: entities.length,
+            overallRisk: scanRes.overallRisk || 'LOW',
+            isClean: false
+          });
+        }).catch(function (err) {
+          callback({ success: false, error: 'Redaction failed: ' + (err && err.message) });
+        });
+      });
+    }
+
+    if (lastScanResult) {
+      doCaptureAndRedact(lastScanResult);
+    } else {
+      runFullScan(function (scanResult) {
+        if (!scanResult || !scanResult.success) {
+          callback({ success: false, error: (scanResult && scanResult.error) || 'Full page scan failed before capture' });
+          return;
+        }
+        doCaptureAndRedact(scanResult);
+      });
+    }
+  }
+
   // ─── Full Pipeline Scan ─────────────────────────────────────────────────────
-  function runFullScan(callback) {
+  function runFullScan(callback, options) {
+    options = options || {};
     if (scanInProgress) {
       callback({ success: false, error: 'Scan already in progress' });
       return;
@@ -1118,6 +1669,9 @@
         }
       }
 
+      // Resolve exact DOM text node and element bboxes for all detected entities
+      resolveEntityBboxes(entities);
+
       var detectTiming = Math.round(performance.now() - startTime - domTiming);
 
       // Best-effort ML boost (async model load) - never blocks the response.
@@ -1125,6 +1679,7 @@
         (pageContext.formFields && pageContext.formFields.length > 0);
 
       function finalizeScan() {
+        resolveEntityBboxes(entities);
         var risks = scoreEntities(entities, pageContext.pageType);
         var riskTiming = Math.round(performance.now() - startTime - detectTiming - domTiming - mlScanMs);
 
@@ -1207,7 +1762,13 @@
         });
 
         scanInProgress = false;
-        callback(scanResult);
+
+        // Capture -> redact -> store locally (non-blocking for the DOM scan).
+        captureAndStoreScreenshot(scanResult, options).then(function () {
+          callback(scanResult);
+        }).catch(function () {
+          callback(scanResult);
+        });
       }
 
       if (hasContent) {
@@ -1422,7 +1983,7 @@
           if (overlayVisible) {
             runFullScan(function (result) {
               if (result.success) createOverlayForEntities(result.entities, result.risks);
-            });
+            }, { autoExport: false });
           }
         }, 500);
       }
@@ -1449,6 +2010,13 @@
       case 'SCAN_PAGE':
         runFullScan(function (result) {
           sendResponse(result);
+        }, { autoExport: message.autoExport !== false });
+        return true;
+
+      case 'GET_PROTECTED_SCREENSHOT':
+      case 'DOWNLOAD_PROTECTED_SCREENSHOT':
+        getProtectedScreenshot(function (resp) {
+          sendResponse(resp);
         });
         return true;
 
@@ -1516,7 +2084,7 @@
             } else {
               sendResponse({ success: true, overlayCount: 0, message: 'No entities detected' });
             }
-          });
+          }, { autoExport: false });
           return true;
         }
         return false;
@@ -1554,7 +2122,7 @@
             } else {
               sendResponse({ success: true, visible: false, message: 'Nothing to show' });
             }
-          });
+          }, { autoExport: false });
           return true;
         }
         return false;

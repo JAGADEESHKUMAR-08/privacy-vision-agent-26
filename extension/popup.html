@@ -18,9 +18,33 @@
     </div>
 
     <div class="agent-panel">
-      <label for="agentInstruction">Instruction for cloud AI</label>
-      <textarea id="agentInstruction" rows="3" placeholder="What should I do on this page?"></textarea>
-      <button class="btn cloud" id="askAgentBtn">Ask Open-Source AI</button>
+      <div class="agent-panel-header">
+        <label for="agentInstruction">&#129303; Hugging Face Cloud AI</label>
+        <button type="button" class="hf-config-toggle" id="hfConfigToggle" title="Configure Hugging Face model and access token">&#9881; HF Config</button>
+      </div>
+      <div class="hf-config-box" id="hfConfigBox" style="display:none;">
+        <div class="hf-free-badge">&#10024; Free Open Models &bull; Works with or without token!</div>
+        <div class="hf-config-row">
+          <label for="hfModelSelect">Model:</label>
+          <select id="hfModelSelect">
+            <option value="Qwen/Qwen2.5-72B-Instruct" selected>Qwen/Qwen2.5-72B-Instruct (Free)</option>
+            <option value="deepseek-ai/DeepSeek-R1">deepseek-ai/DeepSeek-R1 (Free)</option>
+            <option value="meta-llama/Llama-3.1-8B-Instruct">meta-llama/Llama-3.1-8B-Instruct (Free)</option>
+            <option value="mistralai/Mistral-7B-Instruct-v0.3">mistralai/Mistral-7B-Instruct-v0.3 (Free)</option>
+            <option value="google/gemma-2-9b-it">google/gemma-2-9b-it (Free)</option>
+          </select>
+        </div>
+        <div class="hf-config-row">
+          <label for="hfTokenInput">Token:</label>
+          <input type="password" id="hfTokenInput" placeholder="Optional (free token: hf_...)" autocomplete="off" />
+        </div>
+        <div class="hf-config-actions">
+          <button type="button" class="btn btn-sm" id="saveHfConfigBtn">Save HF Config</button>
+          <span class="hf-config-status" id="hfConfigStatus"></span>
+        </div>
+      </div>
+      <textarea id="agentInstruction" rows="3" placeholder="What should I do on this page? (Sanitized context will be sent)"></textarea>
+      <button class="btn cloud" id="askAgentBtn">&#129303; Ask Hugging Face AI</button>
       <div class="agent-result" id="agentResult" hidden></div>
     </div>
 
@@ -73,6 +97,10 @@
         <span>Page Type:</span>
         <span id="pageTypeValue">--</span>
       </div>
+      <div class="metric-row">
+        <span>Screenshots (local):</span>
+        <span id="screenshotStorage">0 stored</span>
+      </div>
     </div>
 
     <div class="entities-list" id="entitiesList" style="display:none;"></div>
@@ -80,13 +108,20 @@
     <div class="buttons">
       <button class="btn secondary" id="previewBtn">Preview Redaction</button>
       <button class="btn primary" id="scanBtn">Scan Page</button>
+      <button class="btn download-protected" id="downloadScreenshotBtn">&#128737; Download Protected Screenshot</button>
       <button class="btn secondary" id="reportBtn">Privacy Report</button>
+      <button class="btn secondary" id="saveFolderBtn">Save to Folder</button>
       <button class="btn secondary" id="settingsBtn">Settings</button>
     </div>
+
+    <div class="privacy-status-indicator" id="downloadPrivacyIndicator" style="display:none;"></div>
+
+    <div class="export-status" id="exportStatus" hidden></div>
 
     <div class="report-panel" id="reportPanel" style="display:none;"></div>
   </div>
 
+  <script src="export-screenshots.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

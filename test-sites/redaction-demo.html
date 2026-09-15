@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Redaction Demo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+      color: #0f172a;
+    }
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #dbe4f0;
+    }
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: #0f172a;
+    }
+    .brand span { color: #2563eb; }
+    .navlink {
+      color: #334155;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .eyebrow {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 0.45rem 0.8rem;
+      margin-bottom: 0.75rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.1;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      max-width: 760px;
+      margin: 0 auto;
+      font-size: 1rem;
+      color: #475569;
+    }
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .panel {
+      background: #ffffff;
+      border: 1px solid #dfe7f1;
+      border-radius: 18px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid #ebf0f7;
+      background: #f8fafc;
+    }
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .before-badge { background: #dbeafe; color: #1d4ed8; }
+    .after-badge { background: #dcfce7; color: #15803d; }
+    .screen {
+      padding: 1.2rem;
+    }
+    .profile-shell {
+      background: #f4f7fb;
+      border: 1px solid #dde5ef;
+      border-radius: 12px;
+      padding: 1rem;
+    }
+    .topnav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1rem;
+    }
+    .brand-mini { font-weight: 800; color: #1e293b; }
+    .brand-mini span { color: #2563eb; }
+    .nav-pills { display: flex; gap: 0.7rem; color: #64748b; font-size: 0.8rem; }
+    .profile-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1rem;
+    }
+    .profile-top {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: white;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+    }
+    .name { font-size: 1.1rem; font-weight: 800; color: #0f172a; }
+    .sub { color: #64748b; font-size: 0.82rem; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem 1rem;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+    .value {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      min-height: 38px;
+      padding: 0.6rem 0.7rem;
+      font-size: 0.82rem;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+    }
+    .full { grid-column: 1 / -1; }
+    .redact {
+      background: #020617;
+      color: #020617;
+      border-color: #020617;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+      filter: contrast(1.15) saturate(0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    .redact::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        135deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.08) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      opacity: 0.7;
+    }
+    .cta {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+    .button {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #0f172a;
+      color: #fff;
+      font-weight: 700;
+      padding: 0.8rem 1.2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.14);
+    }
+    @media (max-width: 900px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="brand">Privacy<span>Vision</span></div>
+      <a class="navlink" href="/">Back to test pages</a>
+    </div>
+
+    <div class="hero">
+      <div class="eyebrow">Privacy protection demo</div>
+      <h1>Before and after personal data redaction</h1>
+      <p class="subtitle">The page below shows how sensitive personal information is visible before detection and fully hidden after local redaction.</p>
+    </div>
+
+    <div class="compare">
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Before</div>
+          <span class="badge before-badge">Visible PII</span>
+        </div>
+        <div class="screen">
+          <div class="profile-shell">
+            <div class="topnav">
+              <div class="brand-mini">Synth<span>Mail</span></div>
+              <div class="nav-pills">
+                <span>Home</span>
+                <span>Profile</span>
+                <span>Settings</span>
+              </div>
+            </div>
+
+            <div class="profile-card">
+              <div class="profile-top">
+                <div class="avatar">MC</div>
+                <div>
+                  <div class="name">Dr. Michael Chang</div>
+                  <div class="sub">Computer Science Department</div>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="field">
+                  <div class="label">First name</div>
+                  <div class="value">Michael</div>
+                </div>
+                <div class="field">
+                  <div class="label">Last name</div>
+                  <div class="value">Chang</div>
+                </div>
+                <div class="field">
+                  <div class="label">Date of birth</div>
+                  <div class="value">12/08/1975</div>
+                </div>
+                <div class="field">
+                  <div class="label">SSN</div>
+                  <div class="value">XXX-XX-4521</div>
+                </div>
+                <div class="field full">
+                  <div class="label">Email</div>
+                  <div class="value">m.chang@university-synth.edu</div>
+                </div>
+                <div class="field">
+                  <div class="label">Phone</div>
+                  <div class="value">(617) 555-0198</div>
+                </div>
+                <div class="field">
+                  <div class="label">Employee ID</div>
+                  <div class="value">EMP-29481</div>
+                </div>
+                <div class="field full">
+                  <div class="label">Address</div>
+                  <div class="value">321 Academic Way, Cambridge, MA 02139</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title">After</div>
+          <span class="badge after-badge">Redacted</span>
+        </div>
+        <div class="screen">
+          <div class="profile-shell">
+            <div class="topnav">
+              <div class="brand-mini">Synth<span>Mail</span></div>
+              <div class="nav-pills">
+                <span>Home</span>
+                <span>Profile</span>
+                <span>Settings</span>
+              </div>
+            </div>
+
+            <div class="profile-card">
+              <div class="profile-top">
+                <div class="avatar">MC</div>
+                <div>
+                  <div class="name">[NAME_REDACTED]</div>
+                  <div class="sub">Computer Science Department</div>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="field">
+                  <div class="label">First name</div>
+                  <div class="value redact"></div>
+                </div>
+                <div class="field">
+                  <div class="label">Last name</div>
+                  <div class="value redact"></div>
+                </div>
+                <div class="field">
+                  <div class="label">Date of birth</div>
+                  <div class="value redact"></div>
+                </div>
+                <div class="field">
+                  <div class="label">SSN</div>
+                  <div class="value redact"></div>
+                </div>
+                <div class="field full">
+                  <div class="label">Email</div>
+                  <div class="value redact"></div>
+                </div>
+                <div class="field">
+                  <div class="label">Phone</div>
+                  <div class="value redact"></div>
+                </div>
+                <div class="field">
+                  <div class="label">Employee ID</div>
+                  <div class="value redact"></div>
+                </div>
+                <div class="field full">
+                  <div class="label">Address</div>
+                  <div class="value redact"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="cta">
+      <a class="button" href="/profile">Open the original profile sample</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -100,6 +100,14 @@
             <span class="toggle-desc">Block or sanitize outbound requests that contain PII.</span>
           </span>
         </label>
+        <label class="toggle" for="autoExportScreenshots">
+          <input type="checkbox" id="autoExportScreenshots">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">
+            <span class="toggle-title">Auto-save screenshots to local folder</span>
+            <span class="toggle-desc">Automatically copy the before and after screenshots into your browser download folder when a scan stores them. On-device only.</span>
+          </span>
+        </label>
         <div class="field">
           <label for="riskThreshold">Risk Threshold</label>
           <div class="field-control">
@@ -130,8 +138,21 @@
           <span class="toggle-slider"></span>
           <span class="toggle-label"><span class="toggle-title">Allow sanitized context to cloud AI</span><span class="toggle-desc">Uses Hugging Face Inference API. Raw PII is blocked locally before transmission.</span></span>
         </label>
+        <div class="field">
+          <label for="cloudAiModel">Free Hugging Face Model</label>
+          <div class="field-control">
+            <select id="cloudAiModel">
+              <option value="Qwen/Qwen2.5-72B-Instruct" selected>Qwen/Qwen2.5-72B-Instruct (Free Open Model)</option>
+              <option value="deepseek-ai/DeepSeek-R1">deepseek-ai/DeepSeek-R1 (Free Open Model)</option>
+              <option value="meta-llama/Llama-3.1-8B-Instruct">meta-llama/Llama-3.1-8B-Instruct (Free Open Model)</option>
+              <option value="mistralai/Mistral-7B-Instruct-v0.3">mistralai/Mistral-7B-Instruct-v0.3 (Free Open Model)</option>
+              <option value="google/gemma-2-9b-it">google/gemma-2-9b-it (Free Open Model)</option>
+            </select>
+            <span class="field-hint">Select a free open-source model. Works with or without token.</span>
+          </div>
+        </div>
         <div class="field"><label for="cloudAiEndpoint">Hugging Face endpoint</label><div class="field-control"><input type="text" id="cloudAiEndpoint" value="https://router.huggingface.co/v1/chat/completions"><span class="field-hint">Use the Hugging Face router endpoint shown above.</span></div></div>
-        <div class="field"><label for="cloudAiToken">Hugging Face access token</label><div class="field-control"><input type="password" id="cloudAiToken" autocomplete="off"><span class="field-hint">Stored locally in this browser and never written to audit logs.</span></div></div>
+        <div class="field"><label for="cloudAiToken">Hugging Face access token</label><div class="field-control"><input type="password" id="cloudAiToken" autocomplete="off"><span class="field-hint">Optional (Free access token: hf_...). Stored locally and never written to audit logs.</span></div></div>
       </div>
     </section>
 

@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import fs from 'node:fs';
+import path from 'node:path';
 import { RedactionEngine } from '../../extension/src/redaction/redaction-engine';
 import {
   entity,
@@ -121,6 +123,14 @@ describe('RedactionEngine - Tokenized value generation', () => {
   it('falls back to a default data label for unknown categories', () => {
     expect(engine.generateTokenizedValue('CUSTOM' as DetectedEntity['type'], 0)).toBe('DATA_000');
   });
+});
+
+it('uses mask as the default screenshot redaction method for exported images', () => {
+  const background = fs.readFileSync(path.join(__dirname, '../../extension/background.js'), 'utf8');
+  const content = fs.readFileSync(path.join(__dirname, '../../extension/content.js'), 'utf8');
+
+  expect(background).toContain("EMAIL: 'mask'");
+  expect(content).toContain("EMAIL: 'mask'");
 });
 
 describe('RedactionEngine - Blur/pixelate/mask on canvas', () => {

@@ -264,7 +264,7 @@ const CLASSIFICATION_RULES: ClassificationRule[] = [
   {
     type: 'profile',
     urlPatterns: [
-      /profile/i, /account/i, /me/i, /user/i, /member/i,
+      /profile/i, /account/i, /\bme\b/i, /\buser\b/i, /\bmember\b/i,
     ],
     titlePatterns: [
       /profile/i, /my.?account/i, /my.?info/i,

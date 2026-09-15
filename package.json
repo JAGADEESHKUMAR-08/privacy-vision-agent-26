@@ -19,6 +19,8 @@
     "export:onnx": "python ml/export/export_pii_onnx.py",
     "verify:ml": "node training/verify_ml.js",
     "verify:pii": "python scripts/verify-pii-python.py; node scripts/verify-pii-js.js",
+    "export:vision-ref": "python ml/vision/export_reference.py",
+    "verify:vision": "python ml/vision/export_reference.py; node scripts/verify-vision-js.js",
     "icons": "node scripts/gen-icons.js"
   },
   "devDependencies": {
@@ -26,6 +28,8 @@
     "@types/chrome": "^0.0.287",
     "@types/node": "^22.0.0",
     "@vitest/coverage-v8": "^2.1.0",
+    "fake-indexeddb": "^6.2.5",
+    "jsdom": "^30.0.1",
     "playwright": "^1.48.0",
     "sharp": "^0.35.4",
     "typescript": "^5.9.3",

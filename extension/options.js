@@ -34,12 +34,13 @@
     enableVision: false,
     enableFirewall: true,
     enableLogging: true,
+    autoExportScreenshots: false,
     maxLogEntries: 200,
     theme: 'dark',
     cloudAi: {
-      enabled: false,
+      enabled: true,
       endpoint: 'https://router.huggingface.co/v1/chat/completions',
-      model: 'meta-llama/Llama-3.1-8B-Instruct',
+      model: 'Qwen/Qwen2.5-72B-Instruct',
       token: ''
     }
   };
@@ -82,12 +83,14 @@
   var enableVisionEl = document.getElementById('enableVision');
   var enableFirewallEl = document.getElementById('enableFirewall');
   var enableLoggingEl = document.getElementById('enableLogging');
+  var autoExportScreenshotsEl = document.getElementById('autoExportScreenshots');
   var maxLogEntriesEl = document.getElementById('maxLogEntries');
   var saveBtn = document.getElementById('saveBtn');
   var resetBtn = document.getElementById('resetBtn');
   var exportBtn = document.getElementById('exportBtn');
   var statusMsg = document.getElementById('statusMsg');
   var cloudAiEnabledEl = document.getElementById('cloudAiEnabled');
+  var cloudAiModelEl = document.getElementById('cloudAiModel');
   var cloudAiEndpointEl = document.getElementById('cloudAiEndpoint');
   var cloudAiTokenEl = document.getElementById('cloudAiToken');
 
@@ -174,9 +177,11 @@
     enableVisionEl.checked = !!settings.enableVision;
     enableFirewallEl.checked = !!settings.enableFirewall;
     enableLoggingEl.checked = !!settings.enableLogging;
+    autoExportScreenshotsEl.checked = !!settings.autoExportScreenshots;
     maxLogEntriesEl.value = settings.maxLogEntries || 200;
     var cloudAi = settings.cloudAi || DEFAULT_SETTINGS.cloudAi;
     cloudAiEnabledEl.checked = !!cloudAi.enabled;
+    if (cloudAiModelEl) cloudAiModelEl.value = cloudAi.model || DEFAULT_SETTINGS.cloudAi.model;
     cloudAiEndpointEl.value = cloudAi.endpoint || DEFAULT_SETTINGS.cloudAi.endpoint;
     cloudAiTokenEl.value = cloudAi.token || '';
 
@@ -244,12 +249,13 @@
       enableVision: enableVisionEl.checked,
       enableFirewall: enableFirewallEl.checked,
       enableLogging: enableLoggingEl.checked,
+      autoExportScreenshots: autoExportScreenshotsEl.checked,
       maxLogEntries: clamp(parseInt(maxLogEntriesEl.value, 10), 50, 1000, 200),
       theme: themeEl.value,
       cloudAi: {
         enabled: cloudAiEnabledEl.checked,
         endpoint: cloudAiEndpointEl.value.trim(),
-        model: 'meta-llama/Llama-3.1-8B-Instruct',
+        model: cloudAiModelEl ? cloudAiModelEl.value : ((base.cloudAi && base.cloudAi.model) || 'Qwen/Qwen2.5-72B-Instruct'),
         token: cloudAiTokenEl.value.trim()
       }
     };
